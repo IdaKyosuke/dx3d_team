@@ -102,7 +102,6 @@ void Quaternion::RotateAxisYZ(const int model, const float rotAngle, const Vecto
 {
 	MATRIX m = MGetIdent();
 	m = MMult(m, MGetRotZ(Math::DegtoRad(180)));
-	//m = MMult(m, MGetRotX(Math::DegtoRad(-180)));
 	m = MMult(m, MGetRotY(-rotAngle + Math::RadtoDeg(Math::Pi / 2)));
 	m = MMult(m, MGetTranslate(pos));
 	MV1SetMatrix(model, m);
