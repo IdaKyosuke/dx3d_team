@@ -6,31 +6,33 @@
 class Item : public Actor
 {
 private:
-	char m_itemNumder;
+	int m_itemNumber;
 
-	enum class itemName
+	enum class ItemName
 	{
 		Diamond,
 
 		Length,
 	};
 
-	const char* ItemName[static_cast<int>(itemName::Length)] =
+	const char* ItemNameList[static_cast<int>(ItemName::Length)] =
 	{
 		"Diamond"
 	};
 
-		const ItemDate itemDate[static_cast<int>(itemName::Length)] =
+		const ItemDate itemDate[static_cast<int>(ItemName::Length)] =
 	{
 		ItemDate("Diamond.mv1",100)
 	};
 
 
 protected:
+	virtual void Load();
+	virtual void Release();
 	virtual void Update();
 
 public:
-	Item(char itemName);
+	Item(int itemNumber);
 
 	void ItemSearch();
 };
