@@ -12,9 +12,11 @@ private:
 	static constexpr float CamDiff = 400.0f;	// プレイヤーとカメラの距離
 	static constexpr float DiffTagY = 200.0f;	// 上を向く時の差分
 	static constexpr float AddAngleY = 2.0f;	// y軸の差分を加算していくための値
+	static constexpr float CamRot = 720.0f;	// マウスの移動量に対するカメラの回転の分母
 
 	Vector3 m_camPos;
 	Vector3 m_camTarget;
+	Vector3 m_pastPlayerPos;
 
 	LoadPlayer* m_loadPlayerNode;
 	bool m_pastTerning;		// 1フレーム前の重力の向き

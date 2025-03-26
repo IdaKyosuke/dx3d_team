@@ -14,6 +14,8 @@ Camera::Camera(LoadPlayer* player) :
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->PlayerPos());
 	m_camTarget = Vector3(playerPos.x, m_camTarget.y, playerPos.z);
+	// プレイヤーの移動量
+	m_pastPlayerPos = player->PlayerPos();
 };
 
 // カメラの場所と焦点を設定
@@ -69,32 +71,32 @@ Vector3 Camera::CamRight()
 // プレイヤーを追いかける
 void Camera::ChasePlayer(const Vector3& playerPos)
 {
-	/*
-	// カメラの移動（左右キー）
-	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_RIGHT))
+	// 3人称視点
+	if (Input::GetInstance()->GetMousePoint().x != Screen::Center.x)
 	{
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / 90);
+		// マウスを動かすと
+		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / 10;
+		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / CamRot * diffX);
+		// プレイヤーと一定距離を保つ
+		m_camPos = m_camTarget - CamFrontPlaneVec() * CamDiff;
 	}
-	else if (Input::GetInstance()->IsKeyPress(KEY_INPUT_LEFT))
+	else if (m_pastPlayerPos != playerPos)
 	{
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), -DX_PI_F / 90);
+		// マウスの移動量がないときはプレイヤーと同じ動きをする
+		m_camPos += playerPos - m_pastPlayerPos;
 	}
-	*/
 
-	// カメラの移動(マウス)
-	if (Input::GetInstance()->GetMousePoint() > Screen::Center)
-	{
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / 90);
-	}
-	else if (Input::GetInstance()->GetMousePoint() < Screen::Center)
-	{
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), -DX_PI_F / 90);
-	}
+	// 1人称視点
+	
 
 	m_camTarget = Vector3(playerPos.x, m_camPos.y, playerPos.z);
-
-	// プレイヤーと一定距離を保つ
-	m_camPos = m_camTarget - CamFrontPlaneVec() * CamDiff;
+	// カメラの高さは常にプレイヤーの移動量と同じにする
+	if (m_pastPlayerPos != playerPos)
+	{
+		
+	}
+	m_camPos.y = m_camTarget.y - CamFrontPlaneVec().y * CamDiff;
+	m_pastPlayerPos = playerPos;
 
 	// 重力の向きが変わったら角度を変えていく
 	if (m_loadPlayerNode->IsTerning() != m_pastTerning)
@@ -127,7 +129,7 @@ void Camera::ChasePlayer(const Vector3& playerPos)
 	m_pastTerning = m_loadPlayerNode->IsTerning();
 
 	// カメラのスクリーン座標を中心に戻す
-
+	Input::GetInstance()->SetMousePoint();
 }
 
 void Camera::Update()
