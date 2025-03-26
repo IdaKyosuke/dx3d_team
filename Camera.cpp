@@ -72,32 +72,50 @@ Vector3 Camera::CamRight()
 void Camera::ChasePlayer(const Vector3& playerPos)
 {
 	// 3人称視点
+	ThirdPerson(playerPos);
+
+	// カメラの高さは常にプレイヤーの移動量と同じにする
+	if (m_pastPlayerPos != playerPos)
+	{
+		m_camPos.y = playerPos.y + DiffY;
+	}
+	m_pastPlayerPos = playerPos;
+
+	// カメラのスクリーン座標を中心に戻す
+	Input::GetInstance()->SetMousePoint();
+}
+
+
+// 3人称視点
+void Camera::ThirdPerson(const Vector3& playerPos)
+{
+	// 3人称視点
 	if (Input::GetInstance()->GetMousePoint().x != Screen::Center.x)
 	{
 		// マウスを動かすと
-		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / 10;
+		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / DecMouseDiff;
 		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / CamRot * diffX);
 		// プレイヤーと一定距離を保つ
-		m_camPos = m_camTarget - CamFrontPlaneVec() * CamDiff;
+		Vector3 pos = Vector3(m_camTarget - CamFrontPlaneVec() * CamDiff);
+		m_camPos = Vector3(pos.x, playerPos.y + DiffY, pos.z);
 	}
 	else if (m_pastPlayerPos != playerPos)
 	{
 		// マウスの移動量がないときはプレイヤーと同じ動きをする
 		m_camPos += playerPos - m_pastPlayerPos;
 	}
-
-	// 1人称視点
-	
-
 	m_camTarget = Vector3(playerPos.x, m_camPos.y, playerPos.z);
-	// カメラの高さは常にプレイヤーの移動量と同じにする
-	if (m_pastPlayerPos != playerPos)
-	{
-		
-	}
-	m_camPos.y = m_camTarget.y - CamFrontPlaneVec().y * CamDiff;
-	m_pastPlayerPos = playerPos;
+}
 
+// 1人称視点
+void Camera::FirstPerson(const Vector3& playerPos)
+{
+
+}
+
+// 反重力用カメラ
+void Camera::AntiGravity(const Vector3& playerPos)
+{
 	// 重力の向きが変わったら角度を変えていく
 	if (m_loadPlayerNode->IsTerning() != m_pastTerning)
 	{
@@ -127,9 +145,6 @@ void Camera::ChasePlayer(const Vector3& playerPos)
 
 	// 1フレーム前の重力の状態を保存
 	m_pastTerning = m_loadPlayerNode->IsTerning();
-
-	// カメラのスクリーン座標を中心に戻す
-	Input::GetInstance()->SetMousePoint();
 }
 
 void Camera::Update()
