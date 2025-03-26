@@ -1,6 +1,5 @@
 #include "Input.h"
 #include "DxLib.h"
-#include"Screen.h"
 #include <cstring>
 
 // 更新
@@ -56,9 +55,7 @@ bool Input::IsAnyKeyDown()
 }
 
 // マウス位置を設定する
-void Input::SetMousePoint()
+Input::SetMousePoint()
 {
-	int x = static_cast<int>(Screen::Center.x);
-	int y = static_cast<int>(Screen::Center.y);
-	DxLib::SetMousePoint(x, y);
+	
 }
