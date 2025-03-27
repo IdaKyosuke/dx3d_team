@@ -151,6 +151,11 @@ void Camera::FirstPerson(const Vector3& playerPos)
 		m_camTarget = Vector3(rotPos.x, m_camTarget.y, rotPos.z);
 		// カメラと注視点を一定距離に保つ
 		Vector3 pos = Vector3(playerPos + CamFrontPlaneVec() * CamDiff);
+		// プレイヤーの上下移動があった時はその分を加算する
+		if (playerPos.y != m_pastPlayerPos.y)
+		{
+			m_camTarget.y += playerPos.y - m_pastPlayerPos.y;
+		}
 		m_camTarget = Vector3(pos.x, m_camTarget.y, pos.z);
 	}
 	else
@@ -168,6 +173,13 @@ void Camera::FirstPerson(const Vector3& playerPos)
 		// マウスの視点の上限下限を実装
 		if (m_camTarget.y >= playerPos.y + MaxCamHeight)
 		{
+			// 上限
+			m_camTarget.y = playerPos.y + MaxCamHeight;
+		}
+		else if(m_camTarget.y <= playerPos.y + MinCamHeight)
+		{
+			// 下限
+			m_camTarget.y = playerPos.y + MinCamHeight;
 		}
 	}
 	
