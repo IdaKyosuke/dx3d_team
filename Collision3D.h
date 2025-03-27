@@ -16,7 +16,7 @@ private:
 	int m_model;	// 読み込まれたモデルハンドル
 	MV1_COLL_RESULT_POLY m_stagePoly;	// レイの先にあるメッシュの情報
 	MV1_COLL_RESULT_POLY m_polyHeight;	// レイの先にあるメッシュの情報
-	MV1_REF_POLYGONLIST m_refPoly;
+	MV1_REF_POLYGONLIST m_refPoly;	// ステージモデル全体の参照用メッシュ情報
 
 	// 移動可能範囲のチェック用(プレイヤーの足元より下に長く)
 	Vector3 m_checkMoveStart;	
@@ -49,5 +49,11 @@ public:
 	Vector3 RayLength()
 	{
 		return DiffGetLine;
+	}
+
+	// ステージのメッシュ情報を取得する
+	MV1_REF_POLYGONLIST GetStageMesh()
+	{
+		return m_refPoly;
 	}
 };

@@ -53,8 +53,8 @@ public:
 	// カメラの右方向ベクトルを取得
 	Vector3 CamRight();
 
-	// プレイヤーの方を向く
-	void ChasePlayer(const Vector3& playerPos);
+	// カメラを動かす
+	void MoveCam(const Vector3& playerPos);
 
 	// 3人称視点
 	void ThirdPerson(const Vector3& playerPos);

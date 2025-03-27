@@ -91,8 +91,8 @@ Vector3 Camera::CamRight()
 	return Math::Normalized(camRight);
 }
 
-// プレイヤーを追いかける
-void Camera::ChasePlayer(const Vector3& playerPos)
+// カメラを動かす
+void Camera::MoveCam(const Vector3& playerPos)
 {
 	switch (m_sightMode)
 	{
@@ -223,8 +223,8 @@ void Camera::AntiGravity(const Vector3& playerPos)
 
 void Camera::Update()
 {	
-	// プレイヤーの方を向く
-	ChasePlayer(m_loadPlayerNode->PlayerPos());
+	// カメラを動かす
+	MoveCam(m_loadPlayerNode->PlayerPos());
 }
 
 void Camera::Draw()
