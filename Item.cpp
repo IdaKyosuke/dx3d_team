@@ -37,7 +37,11 @@ void Item::Update()
 {
 	MV1SetPosition(m_model,m_itemPos);
 	 
-	m_playerToDistance = Distance(m_itemPos, m_player->GetPosition());
+	float num = m_itemPos.x - m_player->PlayerPos().x;
+	float num2 = m_itemPos.y - m_player->PlayerPos().y;
+	float num3 = m_itemPos.z - m_player->PlayerPos().z;
+
+	m_playerToDistance = std::sqrt(num * num + num2 * num2 + num3 * num3);;
 	
 	if (m_playerToDistance <= 5)
 	{
