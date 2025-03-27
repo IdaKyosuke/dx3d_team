@@ -241,8 +241,8 @@ void LoadPlayer::NormalMove()
 	if (m_collision3D->CapsuleCollider(m_playerPos, m_isTerning) != 0)
 	{
 		// i‚Ş—\’èæ‚É•Ç‚ª‚ ‚Á‚½
-m_playerPos.x = m_playerPastPos.x;
-m_playerPos.z = m_playerPastPos.z;
+		m_playerPos.x = m_playerPastPos.x;
+		m_playerPos.z = m_playerPastPos.z;
 	}
 
 	// ƒWƒƒƒ“ƒv

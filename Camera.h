@@ -6,6 +6,13 @@ class LoadPlayer;
 
 class Camera : public Actor
 {
+public:
+	enum SightMode
+	{
+		First,
+		Third,
+	};
+
 private:
 	static constexpr Vector3 StartPos = Vector3(1300, 250, 300);
 	static constexpr float DiffY = 150;
@@ -22,6 +29,7 @@ private:
 	LoadPlayer* m_loadPlayerNode;
 	bool m_pastTerning;		// 1フレーム前の重力の向き
 	float m_diffY;		// カメラ角度を少しずつ変えるよう
+	SightMode m_sightMode;	// 今の視点モード
 
 protected:
 	virtual void Update() override;
