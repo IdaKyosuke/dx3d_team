@@ -44,7 +44,7 @@ Vector3 Math::RotateVec(const Vector3& v, const Quaternion& q)
 }
 
 // ベクトルのなす角(XZ)を計算する
-float Math::ACos(const Vector3& v1, const Vector3& v2)
+float Math::ACosPlane(const Vector3& v1, const Vector3& v2)
 {
 	Vector3 vec1 = Vector3(v1.x, 0, v1.z);
 	Vector3 vec2 = Vector3(v2.x, 0, v2.z);
@@ -62,11 +62,38 @@ float Math::ACos(const Vector3& v1, const Vector3& v2)
 	if (crossProduct.y < 0)
 	{
 		// 外積のy成分が負の時、反時計回り（角度 - 180度）
-		cosSita = 2.0f * DX_PI_F - cosSita;
+		//cosSita = 2.0f * DX_PI_F - cosSita;
+		sita = 2.0f * DX_PI_F - sita;
 	}
 
 	// 0～180度で返す
-	return sita * (Pi / DX_PI_F);
+	return sita * Pi / DX_PI_F;
+}
+
+// ベクトルのなす角(XYZ)を計算する
+float Math::ACos(const Vector3& v1, const Vector3& v2)
+{
+	Vector3 vec1 = Vector3(v1.x, v1.y, v1.z);
+	Vector3 vec2 = Vector3(v2.x, v2.y, v2.z);
+	// ベクトルのなす角（cosθ）を出す
+	float cosSita = VDot(vec1, vec2) / (vec1.Magnitude() * vec2.Magnitude());
+	// cosSitaの値が-1～1に収まるように制限
+	if (cosSita > 1.0f) cosSita = 1.0f;
+	if (cosSita < -1.0f) cosSita = -1.0f;
+
+	// 外積で角度の符号を判定
+	Vector3 crossProduct = v1.CrossP(v2);
+	if (crossProduct.z < 0)
+	{
+		// 外積のz成分が負の時、反時計回り（角度 - 180度）
+		cosSita = 2.0f * DX_PI_F - cosSita;
+	}
+
+	// ラジアンに変換
+	float sita = acosf(cosSita);
+
+	// 0～180度で返す
+	return sita * Pi / DX_PI_F;
 }
 
 // 前方ベクトルを基準に回転行列を作成する
@@ -84,7 +111,7 @@ Vector3 Math::TransformVec(const Vector3& v, const MATRIX mat)
 	return Vector3(x, y, z);
 }
 
-// 点の回転（回転し続ける）
+// 点の回転（XZ平面を回転し続ける）
 Vector3 Math::PointRotate(const Vector3& satellite, const Vector3& center, const float angle)
 {
 	float ox = satellite.x - center.x;
@@ -96,3 +123,4 @@ Vector3 Math::PointRotate(const Vector3& satellite, const Vector3& center, const
 		-ox * sin(angle) + oz * cos(angle) + center.z
 		);
 }
+

@@ -25,6 +25,9 @@ public:
 	// ベクトルを回転させる
 	static Vector3 RotateVec(const Vector3& v, const Quaternion& q);
 
+	// ベクトルのなす角を計算する(XZ平面)
+	static float ACosPlane(const Vector3& v1, const Vector3& v2);
+	
 	// ベクトルのなす角を計算する
 	static float ACos(const Vector3& v1, const Vector3& v2);
 
