@@ -111,7 +111,7 @@ Vector3 Math::TransformVec(const Vector3& v, const MATRIX mat)
 	return Vector3(x, y, z);
 }
 
-// “_‚Ì‰ñ“]i‰ñ“]‚µ‘±‚¯‚éj
+// “_‚Ì‰ñ“]iXZ•½–Ê‚ğ‰ñ“]‚µ‘±‚¯‚éj
 Vector3 Math::PointRotate(const Vector3& satellite, const Vector3& center, const float angle)
 {
 	float ox = satellite.x - center.x;
@@ -123,3 +123,4 @@ Vector3 Math::PointRotate(const Vector3& satellite, const Vector3& center, const
 		-ox * sin(angle) + oz * cos(angle) + center.z
 		);
 }
+

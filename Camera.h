@@ -21,6 +21,9 @@ private:
 	static constexpr float AddAngleY = 2.0f;	// y軸の差分を加算していくための値
 	static constexpr float DecMouseDiff = 10;	// マウスの移動量を回転に使うために、値を小さくする割合
 	static constexpr float CamRot = 720.0f;	// マウスの移動量に対するカメラの回転の分母
+	// １人称用
+	static constexpr float MaxCamHeight = 500.0f;	// カメラの注視点の最大の高さ差分
+	static constexpr float MinCamHeight = -100.0f;	// カメラの注視点の最低の高さ差分
 
 	Vector3 m_camPos;
 	Vector3 m_camTarget;

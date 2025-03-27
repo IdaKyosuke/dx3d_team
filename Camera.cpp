@@ -16,8 +16,10 @@ Camera::Camera(LoadPlayer* player) :
 	switch(m_sightMode)
 	{
 	case SightMode::First:
+		// カメラの位置をプレイヤーと同じにする
+		m_camPos = playerPos;
 		// 自身の正面が注視点になる
-		m_camTarget = Vector3(m_camPos.x * 2, m_camPos.y, m_camPos.z * 2);
+		m_camTarget = Vector3(m_camPos.x * 2, m_camPos.y + DiffY, m_camPos.z * 2);
 		break;
 
 	case SightMode::Third:
@@ -143,18 +145,32 @@ void Camera::FirstPerson(const Vector3& playerPos)
 {
 	if (Input::GetInstance()->GetMousePoint().x != Screen::Center.x)
 	{
-		// マウスを動かすとカメラの注視点が動く
+		// マウスを動かすとカメラの注視点が動く(左右)
 		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / DecMouseDiff;
-		m_camTarget = Math::PointRotate(m_camTarget, playerPos, DX_PI_F / CamRot * diffX);
+		Vector3 rotPos = Math::PointRotate(m_camTarget, playerPos, DX_PI_F / CamRot * diffX);
+		m_camTarget = Vector3(rotPos.x, m_camTarget.y, rotPos.z);
 		// カメラと注視点を一定距離に保つ
 		Vector3 pos = Vector3(playerPos + CamFrontPlaneVec() * CamDiff);
-		m_camTarget = Vector3(pos.x, playerPos.y + DiffY, pos.z);
+		m_camTarget = Vector3(pos.x, m_camTarget.y, pos.z);
 	}
 	else
 	{
 		// マウスの移動量がないときはプレイヤーと同じ動きをする
 		m_camTarget += playerPos - m_pastPlayerPos;
 	}
+	
+	// 視点の上下移動
+	if (Input::GetInstance()->GetMousePoint().y != Screen::Center.y)
+	{
+		// マウスのy座標の移動量を取得
+		float diffY = (Input::GetInstance()->GetMousePoint().y - Screen::Center.y) / DecMouseDiff;
+		m_camTarget.y += 5 * -diffY;
+		// マウスの視点の上限下限を実装
+		if (m_camTarget.y >= playerPos.y + MaxCamHeight)
+		{
+		}
+	}
+	
 	// カメラをプレイヤーと一緒に移動する
 	m_camPos = Vector3(playerPos.x, playerPos.y + DiffY, playerPos.z);
 }
