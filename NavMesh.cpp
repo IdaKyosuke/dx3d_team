@@ -38,21 +38,61 @@ void NavMesh::SetPolyLinkInfo()
 	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
 	{
 		// 最初に隣接情報をリセットする
-		for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++)
 		{
 			polyLinkInfo->linkPolyIndex[i] = -1;
 		}
 
 		// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
+		PolyLinkInfo* polyLinkInfoSub = m_polyLinkInfo;
+		MV1_REF_POLYGON* refPolySub = m_polyList.Polygons;
+		for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkInfoSub++)
+		{
+			// 自分自身を無視
+			if (i == j) continue;
 
+			// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
+			if (
+				polyLinkInfo->linkPolyIndex[0] == -1 &&
+				(refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
+				(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
+				(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1])
+			)
+			{
+				polyLinkInfo->linkPolyIndex[0] = j;
+				polyLinkInfo->linkPolyDistance[0] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+			}
+			// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
+			else if(
+				polyLinkInfo->linkPolyIndex[0] == -1 &&
+				(refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
+				(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
+				(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1])
+				)
+			{
+				polyLinkInfo->linkPolyIndex[1] = j;
+				polyLinkInfo->linkPolyDistance[1] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+			}
+			// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
+			else if (
+				polyLinkInfo->linkPolyIndex[0] == -1 &&
+				(refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
+				(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
+				(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1])
+				)
+			{
+				polyLinkInfo->linkPolyIndex[2] = j;
+				polyLinkInfo->linkPolyDistance[2] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+			}
+		}
 	}
-
 }
 
 // ポリゴン同士の連結情報の削除
 void NavMesh::RemovePolyLinkInfo()
 {
-
+	free(m_polyLinkInfo);
+	m_polyLinkInfo = nullptr;
 }
 
 // 指定の２点間を直線的に移動できるか
