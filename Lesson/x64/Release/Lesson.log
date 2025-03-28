@@ -1,36 +1,6 @@
-﻿  Actor.cpp
-  ActorCollision.cpp
-  Animation3D.cpp
-  Camera.cpp
-  Collision.cpp
-  Collision3D.cpp
-  Fade.cpp
-  GameMain.cpp
-  ImageLoader.cpp
-  Input.cpp
-  ItemFactory.cpp
-  Lerp.cpp
-  LoaderBase.cpp
-  LoadPlayer.cpp
-  Main.cpp
-  Math.cpp
-  ModelLoader.cpp
-  Node.cpp
-  PressAny.cpp
-  Quaternion.cpp
-  コンパイル中...
-  SceneGame.cpp
-  SceneManager.cpp
-  SceneTitle.cpp
-  Sphere.cpp
-  Sprite.cpp
-  Time.cpp
-  UiResult.cpp
-  UiScore.cpp
-  Vector2.cpp
-  Vector3.cpp
-  コード生成しています。
-  Previous IPDB not found, fall back to full compilation.
-  All 752 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+﻿  コード生成しています。
+  0 of 752 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    0 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
   Lesson.vcxproj -> D:\2024\BitBucket\Dx3d\x64\Release\Lesson.exe
