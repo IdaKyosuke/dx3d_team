@@ -32,7 +32,7 @@ void Collision3D::Release()
 	MV1DeleteModel(m_model);
 }
 
-// 移動予定先に足場があるかどうか
+// 指定した座標に足場があるかどうか（どのポリゴンでも関係なし）
 int Collision3D::CheckStage(const Vector3& pos)
 {
 	m_checkMoveStart = pos;
@@ -44,7 +44,35 @@ int Collision3D::CheckStage(const Vector3& pos)
 	return m_stagePoly.HitFlag;
 }
 
-// プレイヤーの足元までのレイ
+// 指定座標直下、直上のポリゴン番号を取得
+int Collision3D::CheckPolyIndex(const Vector3& pos)
+{
+	HITRESULT_LINE hitRes;	// 伸ばした線分とポリゴンの当たり判定をとる
+	// 指定の座標のY軸方向に大きく伸びる線分の２座標をセット
+	Vector3 lineUp = Vector3(pos.x, 1000000.0f, pos.z);
+	Vector3 lineDown = Vector3(pos.x, -1000000.0f, pos.z);
+
+	// ポリゴンの数だけ繰り返す
+	for (int i = 0; i < m_refPoly.PolygonNum; i++)
+	{
+		hitRes = HitCheck_Line_Triangle(
+			lineUp, lineDown,
+			m_refPoly.Vertexs[m_refPoly.Polygons->VIndex[0]].Position,
+			m_refPoly.Vertexs[m_refPoly.Polygons->VIndex[1]].Position,
+			m_refPoly.Vertexs[m_refPoly.Polygons->VIndex[2]].Position
+		);
+		// 当たり判定があったらポリゴン番号を返す
+		if (hitRes.HitFlag)
+		{
+			return i;
+		}
+	}
+
+	// 当たり判定がなかった
+	return -1;
+}
+
+// 指定座標のレイ
 MV1_COLL_RESULT_POLY Collision3D::GetHeight(const Vector3& pos, bool terning)
 {
 	if (!terning)

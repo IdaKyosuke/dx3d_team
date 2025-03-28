@@ -1,8 +1,8 @@
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\vc143.pdb
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\vc143.idb
-d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\quaternion.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\pressany.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\node.obj
+d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\navmesh.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\modelloader.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\math.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\main.obj
@@ -10,11 +10,13 @@ d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\loadplayer.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\loaderbase.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\lerp.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\itemfactory.obj
+d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\input.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\imageloader.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\gamemain.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\fade.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\collision3d.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\collision.obj
+d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\camera.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\animation3d.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\actorcollision.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\actor.obj
@@ -28,8 +30,7 @@ d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\sphere.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\scenetitle.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\scenemanager.obj
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\scenegame.obj
-d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\input.obj
-d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\camera.obj
+d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\quaternion.obj
 d:\2024井田\2024\github\dx3d_team\x64\debug\lesson.exe
 d:\2024井田\2024\github\dx3d_team\x64\debug\lesson.pdb
 d:\2024井田\2024\github\dx3d_team\lesson\x64\debug\lesson.ilk

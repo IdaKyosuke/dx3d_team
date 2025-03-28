@@ -1,2 +1,15 @@
 ﻿  Camera.cpp
-  Lesson.vcxproj -> D:\GitHub\dx3d_team\x64\Debug\Lesson.exe
+  Collision3D.cpp
+  LoadPlayer.cpp
+  NavMesh.cpp
+D:\2024井田\2024\GitHub\dx3d_team\NavMesh.h(46,10): error C2061: 構文エラー: 識別子 'Collision3D'
+  (ソース ファイル 'NavMesh.cpp' をコンパイルしています)
+  
+D:\2024井田\2024\GitHub\dx3d_team\NavMesh.cpp(4,10): error C2511: 'NavMesh::NavMesh(Collision3D *)': オーバーロードされたメンバー関数が 'NavMesh' にありません。
+      D:\2024井田\2024\GitHub\dx3d_team\NavMesh.h(23,7):
+      'NavMesh' の宣言を確認してください
+  
+D:\2024井田\2024\GitHub\dx3d_team\NavMesh.cpp(14,1): error C2059: 構文エラー: '}'
+  SceneGame.cpp
+  Sphere.cpp
+  コードを生成中...

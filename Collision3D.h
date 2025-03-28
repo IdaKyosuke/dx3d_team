@@ -36,10 +36,13 @@ protected:
 public:
 	Collision3D(const char* modelPath, const Vector3& pos);
 
-	// 移動予定先に足場があるかどうか
+	// 指定座標に足場があるかどうか
 	int CheckStage(const Vector3& pos);
 
-	// プレイヤーの足元までのレイ(構造体を返す)
+	// 指定座標直下、直上のポリゴン番号を取得
+	int CheckPolyIndex(const Vector3& pos);
+
+	// 指定座標のレイ(構造体を返す)
 	MV1_COLL_RESULT_POLY GetHeight(const Vector3& pos, bool terning);
 
 	// プレイヤーのカプセルとステージの当たり判定をとる

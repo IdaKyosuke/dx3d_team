@@ -246,5 +246,4 @@ void Camera::Draw()
 		"CamFrontVec Vector3(%.0f, %.0f, %.0f)",
 		CamFrontVec().x, CamFrontVec().y, CamFrontVec().z);
 #endif // _DEBUG
-
 }
