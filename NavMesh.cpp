@@ -25,16 +25,23 @@ void NavMesh::SetPolyLinkInfo()
 	// 全ポリゴンの中心座標を算出
 	PolyLinkInfo* polyLinkInfo = m_polyLinkInfo;
 	MV1_REF_POLYGON* refPoly = m_polyList.Polygons;
+
 	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
 	{
 		polyLinkInfo->centerPos = VScale(
 			VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
-				VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
+			VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
+				m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
 			1.0f / 3.0f
 		);
 	}
 
 	// ポリゴン同士の隣接情報を作成
+	polyLinkInfo = m_polyLinkInfo;
+	refPoly = m_polyList.Polygons;
+	PolyLinkInfo* polyLinkInfoSub;
+	MV1_REF_POLYGON* refPolySub;
+
 	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
 	{
 		// 最初に隣接情報をリセットする
@@ -44,8 +51,9 @@ void NavMesh::SetPolyLinkInfo()
 		}
 
 		// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
-		PolyLinkInfo* polyLinkInfoSub = m_polyLinkInfo;
-		MV1_REF_POLYGON* refPolySub = m_polyList.Polygons;
+		polyLinkInfoSub = m_polyLinkInfo;
+		refPolySub = m_polyList.Polygons;
+
 		for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkInfoSub++)
 		{
 			// 自分自身を無視
@@ -95,9 +103,63 @@ void NavMesh::RemovePolyLinkInfo()
 	m_polyLinkInfo = nullptr;
 }
 
-// 指定の２点間を直線的に移動できるか
+// 指定の２点間を直線的に移動できるか（連結情報を使用する）
 bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 {
+	int startPoly;
+	int goalPoly;
+	PolyLinkInfo* polyInfoStart;
+	PolyLinkInfo* polyInfoGoal;
+	//Vector3 startPos;
+	//Vector3 targetPos;
+	Vector3 polyPos[3];
+	int checkPoly[3];
+	int checkPolyPrev[3];
+	int checkPolyNum;
+	int checkPolyPrevNum;
+	int nextCheckPoly[3];
+	int nextCheckPolyPrev[3];
+	int nextCheckPolyNum;
+	int nextCheckPolyPrevNum;
+
+	// 開始座標と目標座標のYを0にして平面上の判定を行う
+	startPos.y = 0;
+	goalPos.y = 0;
+
+	// 開始座標と目標座標の真下のポリゴンを調べる
+	startPoly = CheckPolyIndex(startPos);
+	goalPoly = CheckPolyIndex(goalPos);
+
+	// ポリゴンが存在しない場合
+	if (startPoly == -1 || goalPoly == -1) return false;
+
+	// 開始座標と目標座標の直上 or 直下のポリゴンを登録
+	polyInfoStart = &m_polyLinkInfo[startPoly];
+	polyInfoGoal = &m_polyLinkInfo[goalPoly];
+
+
+	// 指定した線分上にあるかを判断するためのポリゴンを登録（直上 or 直下）
+	checkPolyNum = 1;
+	checkPoly[0] = startPoly;
+	checkPolyPrevNum = 0;
+	checkPolyPrev[0] = -1;
+
+	// 結果が出るまでループ
+	while (true)
+	{
+		// 次のループでのチェック対象のポリゴン数をリセット
+		nextCheckPolyNum = 0;
+
+		// 次のループでチェック対象から外すポリゴン数をリセット
+		nextCheckPolyPrevNum = 0;
+
+		// チェック対象のポリゴン数だけループ
+		for (int i = 0; i < checkPolyNum; i++)
+		{
+
+		}
+	}
+
 	return false;
 }
 
