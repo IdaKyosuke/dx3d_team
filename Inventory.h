@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include <list>
+#include <vector>
 
 //class Item;
 
@@ -15,9 +16,16 @@ private:
 
 	bool m_canGetItem;
 
-	std::list<Item> m_itemList;		//ÉAÉCÉeÉÄäiî[óp
+	const char* m_iconName[3] = {"goldBar_icon.png","gem.png","gem.png"};
+
+	int m_itemNum;
+
+	//std::list<Item> m_itemList;		//ÉAÉCÉeÉÄäiî[óp
+	std::vector<Item> m_itemList;
 	Sprite m_inventoryUi;
+	Sprite m_iconUi;
 	Transform m_transform;	// épê®
+	Transform m_Icontransform;	// épê®
 
 protected:
 	virtual void Load() override;
@@ -35,11 +43,11 @@ public:
 
 	void OnInventory()
 	{
-		m_haveItemCount--;
+		m_haveItemCount++;
 	}
 
 	void SetItemList(Item* item)
 	{
-		m_itemList.push_front(*item);
+		m_itemList.push_back(*item);
 	}
 };
