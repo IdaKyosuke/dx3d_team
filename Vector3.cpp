@@ -14,6 +14,12 @@ Vector3::operator VECTOR() const
 	return VECTOR(VGet(x, y, z));
 }
 
+// VECTOR_D(DxLib)‚Ö‚ÌƒLƒƒƒXƒg
+Vector3::operator VECTOR_D() const
+{
+	return VECTOR_D(VGetD(static_cast<double>(x), static_cast<double>(y), static_cast<double>(z)));
+}
+
 // ’·‚³‚ðŽæ“¾
 float Vector3::Magnitude() const
 {

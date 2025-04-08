@@ -25,6 +25,9 @@ class Collision3D;
 class NavMesh
 {
 private:
+	const float MoveSpeed = 20.0f;
+	const float Width = 10.0f;
+
 	// 経路探索で使用する情報を保存
 	Vector3 m_startPos;	// 探索開始位置
 	Vector3 m_endPos;	// 探索目標位置
@@ -59,6 +62,9 @@ public:
 
 	// 指定の２点間を直線的に移動できるか
 	bool CheckPolyMove(Vector3 startPos, Vector3 goalPos);
+
+	// 指定の２点間を直線的に移動できるか（幅指定版）
+	bool CheckPolyMove(Vector3 startPos, Vector3 goalPos, float width);
 
 	// 指定の２点間を経路探索
 	bool SetPathPlan(Vector3 startPos, Vector3 goalPos);

@@ -28,12 +28,24 @@ public:
 	// VECTOR(DxLib)へのキャスト
 	operator VECTOR() const;
 
+	// VECTOR_D(DxLib)へのキャスト
+	operator VECTOR_D() const;
+
 	// DxLib::VECTOR => Vector3
 	constexpr Vector3& operator =(const VECTOR& v)
 	{
 		x = v.x;
 		y = v.y;
 		z = v.z;
+		return *this;
+	}
+
+	// DxLib::VECTOR_D => Vector3
+	constexpr Vector3& operator =(const VECTOR_D& v)
+	{
+		x = static_cast<float>(v.x);
+		y = static_cast<float>(v.y);
+		z = static_cast<float>(v.z);
 		return *this;
 	}
 
