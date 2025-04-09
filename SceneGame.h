@@ -10,6 +10,9 @@ class ItemFactory;
 class UiScore;
 class UiResult;
 
+class Item;
+class Inventory;
+
 // ÉQÅ[ÉÄÉVÅ[Éì
 class SceneGame : public SceneBase
 {
@@ -31,6 +34,9 @@ private:
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
 
+	Item* m_item;
+	Inventory* m_inventory;
+
 	float m_resultTransitionTime;
 	int m_bgm;
 	bool m_isFinish;
@@ -46,6 +52,8 @@ public:
 		m_itemfactory(nullptr),
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
+		m_item(nullptr),
+		m_inventory(nullptr),
 		m_bgm(0),
 		m_isFinish(false){}
 

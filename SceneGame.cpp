@@ -15,6 +15,9 @@
 #include"UiResult.h"
 #include "DxLib.h"
 
+#include "Item.h"
+#include "Inventory.h"
+
 // 初期化
 void SceneGame::Initialize()
 {
@@ -43,6 +46,14 @@ void SceneGame::Initialize()
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collision3D);
 	actorLayer->AddChild(m_loadPlayer);
+
+	//インベントリ
+	m_inventory = new Inventory(m_loadPlayer);
+	uiLayer->AddChild(m_inventory);
+
+	//アイテム
+	m_item = new Item(0, Vector3(100, 50, 100), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
 
 	// スコア
 	m_uiScore = new UiScore();
