@@ -48,18 +48,11 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_loadPlayer);
 
 	//インベントリ
-	m_inventory = new Inventory();
+	m_inventory = new Inventory(m_loadPlayer);
 	uiLayer->AddChild(m_inventory);
 
 	//アイテム
-	m_item = new Item(0,Vector3(400,30,50),m_loadPlayer,m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(0, Vector3(100, 30, 10), m_loadPlayer, m_inventory);
-	actorLayer->AddChild(m_item);
-	//アイテム
-	m_item = new Item(0, Vector3(600, 30, 50), m_loadPlayer, m_inventory);
+	m_item = new Item(0, Vector3(100, 50, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
 	// スコア
@@ -74,7 +67,10 @@ void SceneGame::Initialize()
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
 
-	
+	// BGM
+	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
+	ChangeVolumeSoundMem(60, m_bgm);
+	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
 	
 }
 

@@ -1,12 +1,16 @@
 #include "ItemIcon.h"
 #include "Screen.h"
 
-ItemIcon::ItemIcon(int itemNum, int countGetItem) :
+#include "Inventory.h"
+
+ItemIcon::ItemIcon(int itemNum, int countGetItem, Inventory* inventry) :
 	m_itemNum(itemNum),
-	m_countGetItem(countGetItem)
+	m_countGetItem(countGetItem),
+	m_inventory(inventry)
 {
 	m_itemIconUi.Register(m_iconName[m_itemNum]);
-	m_transform.position = SetPos[m_countGetItem];
+
+	
 }
 
 void ItemIcon::Load()
@@ -22,6 +26,19 @@ void ItemIcon::Release()
 void ItemIcon::Update()
 {
 	m_itemIconUi.Update();
+	m_transform.position = SetPos[m_countGetItem];
+
+	if (m_inventory->DestoryItemIcon())
+	{
+		if (m_countGetItem == m_inventory->DestroyTakeItem())
+		{
+			Destroy();
+		}
+		if (m_countGetItem >= m_inventory->DestroyTakeItem())
+		{
+			m_countGetItem--;
+		}
+	}
 }
 
 void ItemIcon::Draw()

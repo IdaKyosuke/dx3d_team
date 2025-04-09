@@ -67,15 +67,5 @@ void Item::Draw()
 {
 	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	MV1DrawModel(m_model);
-
-	DrawFormatString(0, 60, GetColor(255, 255, 255),
-		"ItemPos Vector3(%.0f, %.0f, %.0f)",
-		m_itemPos.x, m_itemPos.y, m_itemPos.z
-	);
-
-	DrawFormatString(0, 150, GetColor(255, 255, 255),
-		"playerToDistance(% .0f)",
-		m_playerToDistance
-	);
 	Actor::Draw();
 }

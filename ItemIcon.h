@@ -5,6 +5,8 @@
 #include "Transform.h"
 #include "Sprite.h"
 
+class Inventory;
+
 class ItemIcon : public Node
 {
 private:
@@ -18,6 +20,8 @@ private:
 	Sprite m_itemIconUi;
 	Transform m_transform;
 
+	Inventory* m_inventory;
+
 protected:
 	virtual void Load() override;
 	virtual void Release() override;
@@ -25,5 +29,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ItemIcon(int itemNum, int countGetItem);
+	ItemIcon(int itemNum, int countGetItem,Inventory* inventory);
 };

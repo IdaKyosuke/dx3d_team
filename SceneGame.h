@@ -52,10 +52,8 @@ public:
 		m_itemfactory(nullptr),
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
-
 		m_item(nullptr),
 		m_inventory(nullptr),
-
 		m_bgm(0),
 		m_isFinish(false){}
 
