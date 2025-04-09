@@ -4,12 +4,13 @@
 #include "Input.h"
 #include "Node.h"
 #include "Actor.h"
-#include "HitBox.h"
 #include "Time.h"
 #include "Fade.h"
 #include "ImageLoader.h"
 #include"LoadPlayer.h"
-#include"Collision3D.h"
+#include"NavMesh.h"
+#include"Enemy.h"
+#include"CollisionStage.h"
 #include"ItemFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
@@ -37,19 +38,26 @@ void SceneGame::Initialize()
 
 
 	// ステージの当たり判定を作成
-	m_collision3D = new Collision3D("Resource/stage.mv1", Vector3(0, 0, 0));
-	uiLayer->AddChild(m_collision3D);
+	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collision3D);
+	m_loadPlayer = new LoadPlayer(m_collisionStage);
 	actorLayer->AddChild(m_loadPlayer);
+
+	// ナビメッシュ
+	m_navMesh = new NavMesh(m_collisionStage);
+	
+	// 敵
+	m_enemy = new Enemy(m_navMesh, Vector3(950, 60, 90), m_loadPlayer);
+	actorLayer->AddChild(m_enemy);
 
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
 
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_loadPlayer, m_uiScore);
+	m_itemfactory = new ItemFactory(m_uiScore);
 	actorLayer->AddChild(m_itemfactory);
 
 	// リザルト画面
@@ -60,7 +68,6 @@ void SceneGame::Initialize()
 	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
 	ChangeVolumeSoundMem(60, m_bgm);
 	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
-	
 }
 
 // 終了

@@ -2,7 +2,6 @@
 #include"Node.h"
 #include"Vector3.h"
 
-class LoadPlayer;
 class UiScore;
 
 class ItemFactory : public Node
@@ -32,12 +31,12 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ItemFactory(LoadPlayer* loadPlayer, UiScore* uiScore);
+	ItemFactory(UiScore* uiScore);
 
 	// 獲得されたアイテム数をカウントアップ
 	void ItemCount();
 
-	
+
 	// クリアフラグを返す
 	bool IsFinish()
 	{

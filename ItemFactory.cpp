@@ -2,7 +2,7 @@
 #include"Sphere.h"
 #include"UiScore.h"
 
-ItemFactory::ItemFactory(LoadPlayer* loadPlayer, UiScore* uiScore) :
+ItemFactory::ItemFactory(UiScore* uiScore) :
 	m_isFinish(false),
 	m_getNum(0),
 	m_uiScore(uiScore)
@@ -10,7 +10,7 @@ ItemFactory::ItemFactory(LoadPlayer* loadPlayer, UiScore* uiScore) :
 	// アイテムを生成する
 	for (int i = 0; i < ItemNum; i++)
 	{
-		AddChild(new Sphere(loadPlayer, pos[i], this));
+		AddChild(new Sphere(pos[i], this));
 	}
 
 	// 表示用スコアの設定

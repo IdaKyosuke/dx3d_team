@@ -1,40 +1,56 @@
 #include"NavMesh.h"
-#include"Collision3D.h"
+#include"CollisionStage.h"
 #include"Math.h"
 
-NavMesh::NavMesh(Collision3D* collision3D) :
-	m_collision3D(collision3D)
+NavMesh::NavMesh(CollisionStage* collisionStage) :
+	m_collisionStage(collisionStage),
+	m_startPos(Vector3(0, 0, 0)),
+	m_endPos(Vector3(0, 0, 0)),
+	m_unitArray(nullptr),
+	m_activeFirst(nullptr),
+	m_start(nullptr),
+	m_goal(nullptr),
+	m_nowPolyIndex(0),
+	m_nowPos(Vector3(0, 0, 0)),
+	m_moveDirection(Vector3(0, 0, 0)),
+	m_nowPathPlan(nullptr),
+	m_targetPathPlan(nullptr),
+	m_polyLinkInfo(nullptr)
 {
-
+	// 最初にポリゴンの連結情報を構築しておく
+	SetPolyLinkInfo();
 }
 
 // 指定座標の直下、直上のポリゴン番号を取得（ない場合は-1）
 int NavMesh::CheckPolyIndex(Vector3 pos)
 {
-	return m_collision3D->CheckPolyIndex(pos);
+	return m_collisionStage->CheckOnPolyIndex(pos, m_polyList);
 }
 
 // ポリゴン同士の連結情報を作成
 void NavMesh::SetPolyLinkInfo()
 {
 	// ステージのメッシュ情報を取得
-	m_polyList = m_collision3D->GetStageMesh();
+	m_polyList = m_collisionStage->GetStageMesh();
 
 	// メモリ領域を確保（mallocはメモリブロックを割り当てる）
-	m_polyLinkInfo = (PolyLinkInfo*)malloc(sizeof(PolyLinkInfo) * m_polyList.PolygonNum);
+	m_polyLinkInfo = static_cast<PolyLinkInfo*>(malloc(sizeof(PolyLinkInfo) * m_polyList.PolygonNum));
 
-	// 全ポリゴンの中心座標を算出
 	PolyLinkInfo* polyLinkInfo = m_polyLinkInfo;
 	MV1_REF_POLYGON* refPoly = m_polyList.Polygons;
-
-	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
+	// 全ポリゴンの中心座標を算出
+	// malloc使用時の警告を消すためのif
+	if (polyLinkInfo)
 	{
-		polyLinkInfo->centerPos = VScale(
-			VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
-			VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
-				m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
-			1.0f / 3.0f
-		);
+		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
+		{
+			polyLinkInfo->centerPos = VScale(
+				VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
+				VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
+					m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
+				1.0f / 3.0f
+			);
+		}
 	}
 
 	// ポリゴン同士の隣接情報を作成
@@ -43,55 +59,58 @@ void NavMesh::SetPolyLinkInfo()
 	PolyLinkInfo* polyLinkInfoSub;
 	MV1_REF_POLYGON* refPolySub;
 
-	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
+	if (polyLinkInfo)
 	{
-		// 最初に隣接情報をリセットする
-		for (int j = 0; j < 3; j++)
+		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
 		{
-			polyLinkInfo->linkPolyIndex[i] = -1;
-		}
-
-		// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
-		polyLinkInfoSub = m_polyLinkInfo;
-		refPolySub = m_polyList.Polygons;
-
-		for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkInfoSub++)
-		{
-			// 自分自身を無視
-			if (i == j) continue;
-
-			// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
-			if (
-				polyLinkInfo->linkPolyIndex[0] == -1 &&
-				(refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
-				(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
-				(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1])
-			)
+			// 最初に隣接情報をリセットする
+			for (int j = 0; j < 3; j++)
 			{
-				polyLinkInfo->linkPolyIndex[0] = j;
-				polyLinkInfo->linkPolyDistance[0] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+				polyLinkInfo->linkPolyIndex[i] = -1;
 			}
-			// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
-			else if(
-				polyLinkInfo->linkPolyIndex[0] == -1 &&
-				(refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
-				(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
-				(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1])
-				)
+
+			// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
+			polyLinkInfoSub = m_polyLinkInfo;
+			refPolySub = m_polyList.Polygons;
+
+			for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkInfoSub++)
 			{
-				polyLinkInfo->linkPolyIndex[1] = j;
-				polyLinkInfo->linkPolyDistance[1] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
-			}
-			// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
-			else if (
-				polyLinkInfo->linkPolyIndex[0] == -1 &&
-				(refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
-				(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
-				(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1])
+				// 自分自身を無視
+				if (i == j) continue;
+
+				// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
+				if (
+					polyLinkInfo->linkPolyIndex[0] == -1 &&
+					(refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
+					(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
+					(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1])
 				)
-			{
-				polyLinkInfo->linkPolyIndex[2] = j;
-				polyLinkInfo->linkPolyDistance[2] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+				{
+					polyLinkInfo->linkPolyIndex[0] = j;
+					polyLinkInfo->linkPolyDistance[0] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+				}
+				// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
+				else if(
+					polyLinkInfo->linkPolyIndex[0] == -1 &&
+					(refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
+					(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
+					(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1])
+					)
+				{
+					polyLinkInfo->linkPolyIndex[1] = j;
+					polyLinkInfo->linkPolyDistance[1] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+				}
+				// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
+				else if (
+					polyLinkInfo->linkPolyIndex[0] == -1 &&
+					(refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
+					(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
+					(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1])
+					)
+				{
+					polyLinkInfo->linkPolyIndex[2] = j;
+					polyLinkInfo->linkPolyDistance[2] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+				}
 			}
 		}
 	}
@@ -191,7 +210,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					}
 
 					// １つ前のループでチェック対象になったポリゴンも加えない
-					for (num == 0; num < checkPolyPrevNum; num++)
+					for (num = 0; num < checkPolyPrevNum; num++)
 					{
 						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0]) break;
 					}
@@ -232,7 +251,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					}
 
 					// １つ前のループでチェック対象になったポリゴンも加えない
-					for (num == 0; num < checkPolyPrevNum; num++)
+					for (num = 0; num < checkPolyPrevNum; num++)
 					{
 						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1]) break;
 					}
@@ -273,7 +292,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					}
 
 					// １つ前のループでチェック対象になったポリゴンも加えない
-					for (num == 0; num < checkPolyPrevNum; num++)
+					for (num = 0; num < checkPolyPrevNum; num++)
 					{
 						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2]) break;
 					}
@@ -293,7 +312,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 		// 次のチェック対象のポリゴン情報をコピー
 		for (int i = 0; i < nextCheckPolyNum; i++)
 		{
-			checkPoly[i] == nextCheckPoly[i];
+			checkPoly[i] = nextCheckPoly[i];
 		}
 
 		checkPolyNum = nextCheckPolyNum;
@@ -473,10 +492,10 @@ void NavMesh::MoveInitialize()
 }
 
 // 探索経路の移動処理
-void NavMesh::Move()
+Vector3 NavMesh::Move(const Vector3& pos)
 {
 	// 移動方向の更新、ゴールにたどり着いていたら終了
-	if (RefreshMoveDirection()) return;
+	if (RefreshMoveDirection()) return Vector3(0,0,0);
 
 	// 移動方向の座標に移動
 	m_nowPos += m_moveDirection * MoveSpeed;
@@ -486,6 +505,8 @@ void NavMesh::Move()
 
 	// 乗っているポリゴンの経路探索情報をアドレスに代入
 	m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
+
+	return m_nowPos;
 }
 
 // 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）

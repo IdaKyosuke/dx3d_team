@@ -20,7 +20,7 @@ struct PathPlanUnit
 	PathPlanUnit* activeNext;	// 経路探索対象の次のポリゴンのアドレスを格納
 };
 
-class Collision3D;
+class CollisionStage;
 
 class NavMesh
 {
@@ -46,10 +46,10 @@ private:
 	MV1_REF_POLYGONLIST m_polyList;	// ステージのポリゴン情報
 	PolyLinkInfo* m_polyLinkInfo;	// ステージモデルの全ポリゴン分の連結情報が格納された配列の先頭のアドレス
 
-	Collision3D* m_collision3D;
+	CollisionStage* m_collisionStage;
 
 public:
-	NavMesh(Collision3D* collision3D);
+	NavMesh(CollisionStage* collisionStage);
 
 	// 指定座標の直下、直上のポリゴン番号を取得（ない場合は-1）
 	int CheckPolyIndex(Vector3 pos);
@@ -76,7 +76,7 @@ public:
 	void MoveInitialize();
 
 	// 探索経路の移動処理
-	void Move();
+	Vector3 Move(const Vector3& pos);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
 	bool RefreshMoveDirection();

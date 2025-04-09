@@ -12,8 +12,8 @@ Camera::Camera(LoadPlayer* player) :
 	m_diffY(DiffY),
 	m_sightMode(SightMode::First)
 {
-	Vector3 playerPos = Vector3(m_loadPlayerNode->PlayerPos());
-	switch(m_sightMode)
+	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
+	switch (m_sightMode)
 	{
 	case SightMode::First:
 		// カメラの位置をプレイヤーと同じにする
@@ -28,7 +28,7 @@ Camera::Camera(LoadPlayer* player) :
 		break;
 	}
 	// プレイヤーの移動量
-	m_pastPlayerPos = player->PlayerPos();
+	m_pastPlayerPos = player->GetPosition();
 };
 
 // カメラの場所と焦点を設定
@@ -60,7 +60,7 @@ void Camera::SetCamPosAndTag()
 		}
 		break;
 	}
-	
+
 }
 
 // カメラの正面ベクトルを取得する(XYZ)
@@ -106,7 +106,7 @@ void Camera::MoveCam(const Vector3& playerPos)
 		ThirdPerson(playerPos);
 		break;
 	}
-	
+
 	// カメラの高さは常にプレイヤーの移動量と同じにする
 	if (m_pastPlayerPos != playerPos)
 	{
@@ -127,7 +127,7 @@ void Camera::ThirdPerson(const Vector3& playerPos)
 	{
 		// マウスを動かすと
 		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / DecMouseDiff;
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / CamRot * diffX);
+		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->GetPosition(), DX_PI_F / CamRot * diffX);
 		// プレイヤーと一定距離を保つ
 		Vector3 pos = Vector3(m_camTarget - CamFrontPlaneVec() * CamDiff);
 		m_camPos = Vector3(pos.x, playerPos.y + DiffY, pos.z);
@@ -163,7 +163,7 @@ void Camera::FirstPerson(const Vector3& playerPos)
 		// マウスの移動量がないときはプレイヤーと同じ動きをする
 		m_camTarget += playerPos - m_pastPlayerPos;
 	}
-	
+
 	// 視点の上下移動
 	if (Input::GetInstance()->GetMousePoint().y != Screen::Center.y)
 	{
@@ -176,13 +176,13 @@ void Camera::FirstPerson(const Vector3& playerPos)
 			// 上限
 			m_camTarget.y = playerPos.y + MaxCamHeight;
 		}
-		else if(m_camTarget.y <= playerPos.y + MinCamHeight)
+		else if (m_camTarget.y <= playerPos.y + MinCamHeight)
 		{
 			// 下限
 			m_camTarget.y = playerPos.y + MinCamHeight;
 		}
 	}
-	
+
 	// カメラをプレイヤーと一緒に移動する
 	m_camPos = Vector3(playerPos.x, playerPos.y + DiffY, playerPos.z);
 }
@@ -222,15 +222,15 @@ void Camera::AntiGravity(const Vector3& playerPos)
 }
 
 void Camera::Update()
-{	
+{
 	// カメラを動かす
-	MoveCam(m_loadPlayerNode->PlayerPos());
+	MoveCam(m_loadPlayerNode->GetPosition());
 }
 
 void Camera::Draw()
 {
 #ifdef _DEBUG
-	DrawFormatString(0, 0, GetColor(255, 255, 255), 
+	DrawFormatString(0, 0, GetColor(255, 255, 255),
 		"CamTarget Vector3(%.0f, %.0f, %.0f)",
 		m_camTarget.x, m_camTarget.y, m_camTarget.z);
 
@@ -246,4 +246,5 @@ void Camera::Draw()
 		"CamFrontVec Vector3(%.0f, %.0f, %.0f)",
 		CamFrontVec().x, CamFrontVec().y, CamFrontVec().z);
 #endif // _DEBUG
+
 }

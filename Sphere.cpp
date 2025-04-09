@@ -4,13 +4,12 @@
 #include"LoadPlayer.h"
 #include"ItemFactory.h"
 #include"ModelLoader.h"
+#include"BoxCollider3D.h"
 
-Sphere::Sphere(LoadPlayer* loadPlayer, const Vector3& pos, ItemFactory* itemFactory) :
-	Actor("Sphere"),
-	m_loadPlayer(loadPlayer),
+Sphere::Sphere(const Vector3& pos, ItemFactory* itemFactory) :
+	Actor3D("Sphere", pos),
 	m_itemFactory(itemFactory),
-	m_pos(pos),
-	m_rotate(Vector3(0,0,0)),
+	m_rotate(Vector3(0, 0, 0)),
 	m_froatHeight(FroatHeight),
 	m_elapsedTime(0),
 	m_changeDir(false),
@@ -19,10 +18,12 @@ Sphere::Sphere(LoadPlayer* loadPlayer, const Vector3& pos, ItemFactory* itemFact
 	// ƒ‚ƒfƒ‹‚Ì“Ç‚Ýž‚Ý
 	m_model = ModelLoader::LoadModel(PathName);
 	// ƒ‚ƒfƒ‹‚ðŽw’èêŠ‚É•`‰æ
-	MV1SetPosition(m_model, m_pos);
+	MV1SetPosition(m_model, m_transform.position);
 	MV1DrawModel(m_model);
 
-	m_startY = m_pos.y;
+	m_collider = new BoxCollider3D(Vector3(200, 200, 200));
+
+	m_startY = m_transform.position.y;
 }
 
 Sphere::~Sphere()
@@ -41,14 +42,14 @@ void Sphere::MoveSphere()
 		m_changeDir = true;
 	}
 
-	m_pos.y = Lerp::Exec(m_startY, m_startY + m_froatHeight, t);
+	m_transform.position.y = Lerp::Exec(m_startY, m_startY + m_froatHeight, t);
 
 	// —h‚ê‚éŒü‚«‚ð”½“]‚³‚¹‚é
 	if (m_changeDir)
 	{
 		m_changeDir = false;
 		m_froatHeight = -m_froatHeight;
-		m_startY = m_pos.y;
+		m_startY = m_transform.position.y;
 		m_elapsedTime = 0;
 	}
 
@@ -58,25 +59,23 @@ void Sphere::MoveSphere()
 	if (m_rotate.y >= 2.5f) m_rotate.y = 0;
 }
 
-void Sphere::CheckDistance()
-{
-	m_dist = (m_pos - m_loadPlayer->PlayerPos()).Magnitude();
-	if (m_dist <= DeleteDistance)
-	{
-		m_itemFactory->ItemCount();
-		Destroy();
-	}
-}
-
 void Sphere::Update()
 {
 	MoveSphere();
-	CheckDistance();
 }
 
 void Sphere::Draw()
 {
 	// ƒ‚ƒfƒ‹‚ðŽw’èêŠ‚É•`‰æ
-	MV1SetPosition(m_model, m_pos);
+	MV1SetPosition(m_model, m_transform.position);
 	MV1DrawModel(m_model);
+}
+
+void Sphere::OnCollision(const Actor3D* other)
+{
+	if (other->GetName() == "Player")
+	{
+		m_itemFactory->ItemCount();
+		Destroy();
+	}
 }
