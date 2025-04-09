@@ -41,6 +41,10 @@ void Inventory::Update()
 
 	if (m_gettingItem)
 	{
+		decltype(m_itemList)::iterator Item = std::next(m_itemList.begin(), countGetItem -1);
+
+		m_itemNum = Item->GetItemNum();
+
 		GetParent()->AddChild(new ItemIcon(m_itemNum, countGetItem - 1));
 
 		m_gettingItem = false;
@@ -50,11 +54,4 @@ void Inventory::Update()
 void Inventory::Draw()
 {
 	m_inventoryUi.Draw(m_transform);
-
-	
-	DrawFormatString(0, 300, GetColor(255, 255, 255),
-		"m_itemNum(%)",
-		m_itemNum
-	);
-	//DrawString(0, 230, m_iconName[1], GetColor(255, 255, 255));
 }

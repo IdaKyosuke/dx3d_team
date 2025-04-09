@@ -9,8 +9,6 @@ ItemIcon::ItemIcon(int itemNum, int countGetItem) :
 	m_transform.position = SetPos[m_countGetItem];
 }
 
-
-
 void ItemIcon::Load()
 {
 	m_itemIconUi.Load();
