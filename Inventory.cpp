@@ -6,15 +6,9 @@
 Inventory::Inventory() :
 	m_haveItemCount(0),
 	m_canGetItem(false),
-<<<<<<< HEAD
 	m_itemNum(0),
 	m_gettingItem(false),
 	m_takeItem(0)
-=======
-	m_gettingItem(false),
-	m_iconName(),
-	m_itemIcon(nullptr)
->>>>>>> origin/item
 {
 	m_transform.position = Screen::BottomCenter + Vector2(-400, -70);
 	m_inventoryUi.Register("inventoryUi.png");
@@ -47,14 +41,7 @@ void Inventory::Update()
 
 	if (m_gettingItem)
 	{
-<<<<<<< HEAD
 		GetParent()->AddChild(new ItemIcon(m_itemNum, countGetItem - 1));
-=======
-		GetParent()->AddChild(new ItemIcon(0,countGetItem));
-
-		m_gettingItem = false;
-	}
->>>>>>> origin/item
 
 		m_gettingItem = false;
 	}
@@ -64,17 +51,10 @@ void Inventory::Draw()
 {
 	m_inventoryUi.Draw(m_transform);
 
-<<<<<<< HEAD
 	
 	DrawFormatString(0, 300, GetColor(255, 255, 255),
 		"m_itemNum(%)",
 		m_itemNum
 	);
 	//DrawString(0, 230, m_iconName[1], GetColor(255, 255, 255));
-=======
-	DrawFormatString(0, 200, GetColor(255, 255, 255),
-		"m_iconName(%) ",
-		m_iconName[0]
-	);
->>>>>>> origin/item
 }
