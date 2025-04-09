@@ -15,7 +15,7 @@ private:
 	int m_itemNumber;	//アイテムを識別するための番号格納用
 	int m_model;		//アイテムのモデル
 	const char* m_itemName;
-	const char* m_iconName;
+	int m_itemNum;
 	int m_sellMoney;	//売った時の金額
 
 
@@ -36,9 +36,9 @@ private:
 	//アイテムの情報
 	 struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
-		ItemDate("Resource/Item/goldBar.mv1","GoldBar","ItemIcon/goldBar_icon.png",100),
-		ItemDate("Resource/Item/diamond.mv1","Diamond","ItemIcon/diamond_icon.png",200),
-		ItemDate("Resource/Item/potion.mv1","Potion","ItemIcon/potion_icon.png",10),
+		ItemDate("Resource/Item/iron.mv1","Iron",1,100),
+		ItemDate("Resource/Item/gem.mv1","Gem",2,200),
+		ItemDate("Resource/Item/potion.mv1","Potion",3,10),
 	};
 
 	 LoadPlayer* m_player;
@@ -60,5 +60,10 @@ public:
 		float num2 = a.y - b.y;
 		float num3 = a.z - b.z;
 		return std::sqrt(num * num + num2 * num2 + num3 * num3);
+	}
+
+	int GetItemNum()
+	{
+		return m_itemNum;
 	}
 };

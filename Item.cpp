@@ -10,6 +10,7 @@
 Item::Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* inventory) : Actor("Item"),
 	m_itemNumber(itemNumber),
 	m_itemName(),
+	m_itemNum(0),
 	m_player(player),
 	m_inventory(inventory),
 	m_canGetItem(false),
@@ -30,7 +31,7 @@ Item::Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* invento
 	//îÑÇ¡ÇΩéûÇÃã‡äzê›íË
 	m_sellMoney = itemDate[static_cast<int>(itemList)].m_sellMoney;
 
-	m_iconName = itemDate[static_cast<int>(itemList)].m_iconName;
+	m_itemNum = itemDate[static_cast<int>(itemList)].m_itemNum;
 }
 
 void Item::Release()
@@ -54,8 +55,9 @@ void Item::Update()
 	{
 		if (Input::GetInstance()->IsKeyPress(KEY_INPUT_F))
 		{
-			m_inventory->SetItemList(this);
+			m_inventory->SetItemList(*this);
 			m_inventory->OnInventory();
+			m_inventory->GettingItem();
 
 			Destroy();
 		}
@@ -77,6 +79,12 @@ void Item::Draw()
 	DrawFormatString(0, 150, GetColor(255, 255, 255),
 		"playerToDistance(% .0f)",
 		m_playerToDistance
+	);
+
+	
+	DrawFormatString(100, 300, GetColor(255, 255, 255),
+		"m_itemNum(%)",
+		m_itemNum
 	);
 
 	Actor::Draw();

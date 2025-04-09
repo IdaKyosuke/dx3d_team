@@ -4,18 +4,25 @@
 #include "Transform.h"
 #include "Sprite.h"
 #include <list>
+#include <vector>
 
 //class Item;
 
 class Inventory : public Node
 {
 private:
-	static constexpr int MaxHaveItem = 2;	//アイテムを持てる最大量
+	static constexpr int MaxHaveItem = 5;	//アイテムを持てる最大量
 	int m_haveItemCount;	//アイテム持てるかどうか
 
-	bool m_canGetItem;
+	int m_takeItem;		//今何のアイテムを持っているか
 
-	std::list<Item> m_itemList;		//アイテム格納用
+	bool m_canGetItem;
+	bool m_gettingItem;
+
+	int m_itemNum;
+
+	//アイテム格納用
+	std::vector<Item> m_itemList;
 	Sprite m_inventoryUi;
 	Transform m_transform;	// 姿勢
 
@@ -35,11 +42,16 @@ public:
 
 	void OnInventory()
 	{
-		m_haveItemCount--;
+		m_haveItemCount++;
+	}
+
+	void GettingItem()
+	{
+		m_gettingItem = true;
 	}
 
 	void SetItemList(Item* item)
 	{
-		m_itemList.push_front(*item);
+		m_itemList.push_back(*item);
 	}
 };
