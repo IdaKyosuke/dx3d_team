@@ -1,7 +1,13 @@
 #include "ItemIcon.h"
+<<<<<<< HEAD
 #include "Screen.h"
 
 ItemIcon::ItemIcon(int itemNum, int countGetItem) :
+=======
+#include "Screen.h"	
+
+ItemIcon::ItemIcon(int itemNum,int countGetItem) :
+>>>>>>> origin/item
 	m_itemNum(itemNum),
 	m_countGetItem(countGetItem)
 {
@@ -9,8 +15,11 @@ ItemIcon::ItemIcon(int itemNum, int countGetItem) :
 	m_transform.position = SetPos[m_countGetItem];
 }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/item
 void ItemIcon::Load()
 {
 	m_itemIconUi.Load();
