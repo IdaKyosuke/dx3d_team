@@ -109,6 +109,9 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 
 		if (hitRes.HitFlag) return i;
 	}
+
+	// ƒ|ƒŠƒSƒ“‚ª–³‚¢ê‡
+	return -1;
 }
 
 void CollisionStage::Draw()

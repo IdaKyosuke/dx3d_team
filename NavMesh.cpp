@@ -81,9 +81,9 @@ void NavMesh::SetPolyLinkInfo()
 				// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 				if (
 					polyLinkInfo->linkPolyIndex[0] == -1 &&
-					(refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
-					(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
-					(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1])
+					((refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
+						(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
+						(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1]))
 				)
 				{
 					polyLinkInfo->linkPolyIndex[0] = j;
@@ -91,10 +91,10 @@ void NavMesh::SetPolyLinkInfo()
 				}
 				// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
 				else if(
-					polyLinkInfo->linkPolyIndex[0] == -1 &&
-					(refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
-					(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
-					(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1])
+					polyLinkInfo->linkPolyIndex[1] == -1 &&
+					((refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
+						(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
+						(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1]))
 					)
 				{
 					polyLinkInfo->linkPolyIndex[1] = j;
@@ -102,10 +102,10 @@ void NavMesh::SetPolyLinkInfo()
 				}
 				// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
 				else if (
-					polyLinkInfo->linkPolyIndex[0] == -1 &&
-					(refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
-					(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
-					(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1])
+					polyLinkInfo->linkPolyIndex[2] == -1 &&
+					((refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
+						(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
+						(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1]))
 					)
 				{
 					polyLinkInfo->linkPolyIndex[2] = j;
@@ -177,6 +177,11 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 		// チェック対象のポリゴン数だけループ
 		for (int i = 0; i < checkPolyNum; i++)
 		{
+			// チェック対象のポリゴンの3座標を取得
+			polyPos[0] = VConvFtoD(m_polyList.Vertexs[m_polyList.Polygons[checkPoly[i]].VIndex[0]].Position);
+			polyPos[1] = VConvFtoD(m_polyList.Vertexs[m_polyList.Polygons[checkPoly[i]].VIndex[0]].Position);
+			polyPos[2] = VConvFtoD(m_polyList.Vertexs[m_polyList.Polygons[checkPoly[i]].VIndex[0]].Position);
+
 			// y座標を0にして平面判定を行う
 			polyPos[0].y = 0.0f;
 			polyPos[1].y = 0.0f;

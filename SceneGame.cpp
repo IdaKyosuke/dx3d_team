@@ -48,9 +48,11 @@ void SceneGame::Initialize()
 	// ナビメッシュ
 	m_navMesh = new NavMesh(m_collisionStage);
 	
+	/*
 	// 敵
 	m_enemy = new Enemy(m_navMesh, Vector3(950, 60, 90), m_loadPlayer);
 	actorLayer->AddChild(m_enemy);
+	*/
 
 	// スコア
 	m_uiScore = new UiScore();
