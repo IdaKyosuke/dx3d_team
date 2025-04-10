@@ -9,6 +9,10 @@ class Collision3D;
 class ItemFactory;
 class UiScore;
 class UiResult;
+class CollisionStage;
+
+class Item;
+class Inventory;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -30,6 +34,10 @@ private:
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
+	CollisionStage* m_collisionStage;
+
+	Item* m_item;
+	Inventory* m_inventory;
 
 	float m_resultTransitionTime;
 	int m_bgm;
@@ -46,6 +54,9 @@ public:
 		m_itemfactory(nullptr),
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
+		m_item(nullptr),
+		m_inventory(nullptr),
+		m_collisionStage(nullptr),
 		m_bgm(0),
 		m_isFinish(false){}
 

@@ -141,4 +141,11 @@ public:
 	{
 		return (x * v.x + y * v.y + z * v.z);
 	}
+
+
+	// ì‡êœ
+	constexpr Vector3 ChangeScale(const Vector3& v) const
+	{
+		return Vector3(x * v.x , y * v.y , z * v.z);
+	}
 };
