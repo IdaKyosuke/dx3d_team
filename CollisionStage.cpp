@@ -117,7 +117,7 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 void CollisionStage::Draw()
 {
 	MV1DrawModel(m_model);
-
+	
 #ifdef _DEBUG
 	DrawLine3D(m_getHeightStart, m_getHeightEnd, GetColor(255, 255, 0));
 

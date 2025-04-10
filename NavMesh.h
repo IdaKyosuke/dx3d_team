@@ -25,7 +25,7 @@ class CollisionStage;
 class NavMesh
 {
 private:
-	const float MoveSpeed = 20.0f;
+	const float MoveSpeed = 1.0f;
 	const float Width = 10.0f;
 
 	// 経路探索で使用する情報を保存
@@ -34,7 +34,7 @@ private:
 	PathPlanUnit* m_unitArray;	// 全ポリゴンの情報配列が格納されたメモリ領域の先頭アドレス
 	PathPlanUnit* m_activeFirst;	// ポリゴン群の最初のポリゴン情報へのアドレス
 	PathPlanUnit* m_start;	// 探索のスタート地点にあるポリゴン情報へのアドレス
-	PathPlanUnit* m_goal;	// 探索のスタート地点にあるポリゴン情報へのアドレス
+	PathPlanUnit* m_goal;	// 探索の目標地点にあるポリゴン情報へのアドレス
 
 	// 移動処理用
 	int m_nowPolyIndex;	// 現在乗っているポリゴン番号
@@ -44,7 +44,7 @@ private:
 	PathPlanUnit* m_targetPathPlan;	// 次の中間地点になる経路上のポリゴン情報へのアドレス
 
 	MV1_REF_POLYGONLIST m_polyList;	// ステージのポリゴン情報
-	PolyLinkInfo* m_polyLinkInfo;	// ステージモデルの全ポリゴン分の連結情報が格納された配列の先頭のアドレス
+	PolyLinkInfo* m_polyLink;	// ステージモデルの全ポリゴン分の連結情報が格納された配列
 
 	CollisionStage* m_collisionStage;
 
@@ -64,7 +64,7 @@ public:
 	bool CheckPolyMove(Vector3 startPos, Vector3 goalPos);
 
 	// 指定の２点間を直線的に移動できるか（幅指定版）
-	bool CheckPolyMove(Vector3 startPos, Vector3 goalPos, float width);
+	bool CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width);
 
 	// 指定の２点間を経路探索
 	bool SetPathPlan(Vector3 startPos, Vector3 goalPos);
@@ -76,8 +76,8 @@ public:
 	void MoveInitialize();
 
 	// 探索経路の移動処理
-	Vector3 Move(const Vector3& pos);
+	Vector3 Move(const Vector3& pos, const float speed);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-	bool RefreshMoveDirection();
+	bool RefreshMoveDirection(const float speed);
 };

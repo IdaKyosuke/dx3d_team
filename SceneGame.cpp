@@ -38,26 +38,24 @@ void SceneGame::Initialize()
 
 
 	// ステージの当たり判定を作成
-	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));
 	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
-	actorLayer->AddChild(m_loadPlayer);
+	actorLayer->AddChild(m_loadPlayer);	
 
 	// ナビメッシュ
 	m_navMesh = new NavMesh(m_collisionStage);
 	
-	/*
 	// 敵
-	m_enemy = new Enemy(m_navMesh, Vector3(950, 60, 90), m_loadPlayer);
+	m_enemy = new Enemy(m_navMesh, Vector3(800, 110, 10), m_loadPlayer);
 	actorLayer->AddChild(m_enemy);
-	*/
-
+	
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
-
+	
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_uiScore);
 	actorLayer->AddChild(m_itemfactory);
@@ -65,7 +63,7 @@ void SceneGame::Initialize()
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
-
+	
 	// BGM
 	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
 	ChangeVolumeSoundMem(60, m_bgm);
@@ -89,6 +87,10 @@ void SceneGame::Finalize()
 	delete m_rootNode;
 	m_rootNode = nullptr;
 
+	// navMesh情報の破棄
+	m_navMesh->RemovePathPlan();
+	m_navMesh->RemovePolyLinkInfo();
+
 	// BGM
 	DeleteSoundMem(m_bgm);
 }
@@ -98,7 +100,7 @@ SceneBase* SceneGame::Update()
 {
 	// ノードの更新
 	m_rootNode->TreeUpdate();
-
+	
 	if (m_uiResult->IsShowedPress())
 	{
 		if (Input::GetInstance()->IsAnyKeyDown())

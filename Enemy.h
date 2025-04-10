@@ -31,6 +31,8 @@ private:
 	NavMesh* m_navMesh;	// 経路探索用
 	LoadPlayer* m_player;	// プレイヤー
 
+	bool m_isSet;
+
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;

@@ -14,8 +14,7 @@ NavMesh::NavMesh(CollisionStage* collisionStage) :
 	m_nowPos(Vector3(0, 0, 0)),
 	m_moveDirection(Vector3(0, 0, 0)),
 	m_nowPathPlan(nullptr),
-	m_targetPathPlan(nullptr),
-	m_polyLinkInfo(nullptr)
+	m_targetPathPlan(nullptr)
 {
 	// 最初にポリゴンの連結情報を構築しておく
 	SetPolyLinkInfo();
@@ -33,83 +32,87 @@ void NavMesh::SetPolyLinkInfo()
 	// ステージのメッシュ情報を取得
 	m_polyList = m_collisionStage->GetStageMesh();
 
-	// メモリ領域を確保（mallocはメモリブロックを割り当てる）
-	m_polyLinkInfo = static_cast<PolyLinkInfo*>(malloc(sizeof(PolyLinkInfo) * m_polyList.PolygonNum));
+	// メモリ領域を確保
+	m_polyLink = new PolyLinkInfo [sizeof(PolyLinkInfo) * m_polyList.PolygonNum];
 
-	PolyLinkInfo* polyLinkInfo = m_polyLinkInfo;
 	MV1_REF_POLYGON* refPoly = m_polyList.Polygons;
 	// 全ポリゴンの中心座標を算出
-	// malloc使用時の警告を消すためのif
-	if (polyLinkInfo)
+	for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++)
 	{
-		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
-		{
-			polyLinkInfo->centerPos = VScale(
-				VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
-				VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
-					m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
-				1.0f / 3.0f
-			);
-		}
+		m_polyLink[i].centerPos = VScale(
+			VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
+			VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
+				m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
+			1.0f / 3.0f
+		);
 	}
 
 	// ポリゴン同士の隣接情報を作成
-	polyLinkInfo = m_polyLinkInfo;
 	refPoly = m_polyList.Polygons;
-	PolyLinkInfo* polyLinkInfoSub;
 	MV1_REF_POLYGON* refPolySub;
 
-	if (polyLinkInfo)
+	if (m_polyLink)
 	{
-		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLinkInfo++)
+		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++)
 		{
+			if (i == m_polyList.PolygonNum - 1)
+			{
+				// デバッグ用
+				i = m_polyList.PolygonNum - 1;
+			}
+
 			// 最初に隣接情報をリセットする
 			for (int j = 0; j < 3; j++)
 			{
-				polyLinkInfo->linkPolyIndex[i] = -1;
+				m_polyLink[i].linkPolyIndex[j] = -1;
 			}
 
 			// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
-			polyLinkInfoSub = m_polyLinkInfo;
 			refPolySub = m_polyList.Polygons;
 
-			for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkInfoSub++)
+			for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++)
 			{
 				// 自分自身を無視
 				if (i == j) continue;
 
+				if (j == m_polyList.PolygonNum - 2)
+				{
+					// デバッグ用
+					j = m_polyList.PolygonNum - 2;
+				}
+
 				// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 				if (
-					polyLinkInfo->linkPolyIndex[0] == -1 &&
+					m_polyLink[i].linkPolyIndex[0] == -1 &&
 					((refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
 						(refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
 						(refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1]))
 				)
 				{
-					polyLinkInfo->linkPolyIndex[0] = j;
-					polyLinkInfo->linkPolyDistance[0] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+					m_polyLink[i].linkPolyIndex[0] = j;
+					m_polyLink[i].linkPolyDistance[0] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
 				}
 				// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
 				else if(
-					polyLinkInfo->linkPolyIndex[1] == -1 &&
+					m_polyLink[i].linkPolyIndex[1] == -1 &&
 					((refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
 						(refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
 						(refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1]))
 					)
 				{
-					polyLinkInfo->linkPolyIndex[1] = j;
-					polyLinkInfo->linkPolyDistance[1] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+					m_polyLink[i].linkPolyIndex[1] = j;
+					m_polyLink[i].linkPolyDistance[1] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
 				}
 				// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
 				else if (
-					polyLinkInfo->linkPolyIndex[2] == -1 &&
+					m_polyLink[i].linkPolyIndex[2] == -1 &&
 					((refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
 						(refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
 						(refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1]))
 					)
 				{
-					polyLinkInfo->linkPolyIndex[2] = j;
-					polyLinkInfo->linkPolyDistance[2] = VSize(VSub(polyLinkInfoSub->centerPos, polyLinkInfo->centerPos));
+					m_polyLink[i].linkPolyIndex[2] = j;
+					m_polyLink[i].linkPolyDistance[2] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
 				}
 			}
 		}
@@ -119,8 +122,7 @@ void NavMesh::SetPolyLinkInfo()
 // ポリゴン同士の連結情報の削除
 void NavMesh::RemovePolyLinkInfo()
 {
-	free(m_polyLinkInfo);
-	m_polyLinkInfo = nullptr;
+	delete[] m_polyLink;
 }
 
 // 指定の２点間を直線的に移動できるか（連結情報を使用する）
@@ -155,8 +157,8 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 	if (startPoly == -1 || goalPoly == -1) return false;
 
 	// 開始座標と目標座標の直上 or 直下のポリゴンを登録
-	polyInfoStart = &m_polyLinkInfo[startPoly];
-	polyInfoGoal = &m_polyLinkInfo[goalPoly];
+	polyInfoStart = &m_polyLink[startPoly];
+	polyInfoGoal = &m_polyLink[goalPoly];
 
 
 	// 指定した線分上にあるかを判断するためのポリゴンを登録（直上 or 直下）
@@ -188,17 +190,17 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 			polyPos[2].y = 0.0f;
 
 			// ポリゴンの頂点(0, 1)に隣接するポリゴンが存在する && 辺の線分と移動開始点、終了点で形成する線分が接している
-			if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0] != -1 &&
+			if (m_polyLink[checkPoly[i]].linkPolyIndex[0] != -1 &&
 				Segment_Segment_MinLength_SquareD(firstPos, targetPos, polyPos[0], polyPos[1]) < 0.001
 				)
 			{
-				if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0] == goalPoly) return true;
+				if (m_polyLink[checkPoly[i]].linkPolyIndex[0] == goalPoly) return true;
 
 				// 辺と接しているポリゴンを次のチェック対象に追加
 				for (num = 0; num < nextCheckPolyNum; num++)
 				{
 					// すでに追加されている場合追加しない
-					if (nextCheckPoly[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0]) break;
+					if (nextCheckPoly[num] == m_polyLink[checkPoly[i]].linkPolyIndex[0]) break;
 				}
 				if (num == nextCheckPolyNum)
 				{
@@ -217,29 +219,29 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					// １つ前のループでチェック対象になったポリゴンも加えない
 					for (num = 0; num < checkPolyPrevNum; num++)
 					{
-						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0]) break;
+						if (checkPolyPrev[num] == m_polyLink[checkPoly[i]].linkPolyIndex[0]) break;
 					}
 					if (num == nextCheckPolyPrevNum)
 					{
 						// チェック対象に追加
-						nextCheckPoly[nextCheckPolyNum] = m_polyLinkInfo[checkPoly[i]].linkPolyIndex[0];
+						nextCheckPoly[nextCheckPolyNum] = m_polyLink[checkPoly[i]].linkPolyIndex[0];
 						nextCheckPolyNum++;
 					}
 				}
 			}
 
 			// ポリゴンの頂点(1, 2)に隣接するポリゴンが存在する && 辺の線分と移動開始点、終了点で形成する線分が接している
-			if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1] != -1 &&
+			if (m_polyLink[checkPoly[i]].linkPolyIndex[1] != -1 &&
 				Segment_Segment_MinLength_SquareD(firstPos, targetPos, polyPos[1], polyPos[2]) < 0.001
 				)
 			{
-				if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1] == goalPoly) return true;
+				if (m_polyLink[checkPoly[i]].linkPolyIndex[1] == goalPoly) return true;
 
 				// 辺と接しているポリゴンを次のチェック対象に追加
 				for (num = 0; num < nextCheckPolyNum; num++)
 				{
 					// すでに追加されている場合追加しない
-					if (nextCheckPoly[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1]) break;
+					if (nextCheckPoly[num] == m_polyLink[checkPoly[i]].linkPolyIndex[1]) break;
 				}
 				if (num == nextCheckPolyNum)
 				{
@@ -258,29 +260,29 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					// １つ前のループでチェック対象になったポリゴンも加えない
 					for (num = 0; num < checkPolyPrevNum; num++)
 					{
-						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1]) break;
+						if (checkPolyPrev[num] == m_polyLink[checkPoly[i]].linkPolyIndex[1]) break;
 					}
 					if (num == nextCheckPolyPrevNum)
 					{
 						// チェック対象に追加
-						nextCheckPoly[nextCheckPolyNum] = m_polyLinkInfo[checkPoly[i]].linkPolyIndex[1];
+						nextCheckPoly[nextCheckPolyNum] = m_polyLink[checkPoly[i]].linkPolyIndex[1];
 						nextCheckPolyNum++;
 					}
 				}
 			}
 
 			// ポリゴンの頂点(2, 0)に隣接するポリゴンが存在する && 辺の線分と移動開始点、終了点で形成する線分が接している
-			if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2] != -1 &&
+			if (m_polyLink[checkPoly[i]].linkPolyIndex[2] != -1 &&
 				Segment_Segment_MinLength_SquareD(firstPos, targetPos, polyPos[2], polyPos[0]) < 0.001
 				)
 			{
-				if (m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2] == goalPoly) return true;
+				if (m_polyLink[checkPoly[i]].linkPolyIndex[2] == goalPoly) return true;
 
 				// 辺と接しているポリゴンを次のチェック対象に追加
 				for (num = 0; num < nextCheckPolyNum; num++)
 				{
 					// すでに追加されている場合追加しない
-					if (nextCheckPoly[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2]) break;
+					if (nextCheckPoly[num] == m_polyLink[checkPoly[i]].linkPolyIndex[2]) break;
 				}
 				if (num == nextCheckPolyNum)
 				{
@@ -299,12 +301,12 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 					// １つ前のループでチェック対象になったポリゴンも加えない
 					for (num = 0; num < checkPolyPrevNum; num++)
 					{
-						if (checkPolyPrev[num] == m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2]) break;
+						if (checkPolyPrev[num] == m_polyLink[checkPoly[i]].linkPolyIndex[2]) break;
 					}
 					if (num == nextCheckPolyPrevNum)
 					{
 						// チェック対象に追加
-						nextCheckPoly[nextCheckPolyNum] = m_polyLinkInfo[checkPoly[i]].linkPolyIndex[2];
+						nextCheckPoly[nextCheckPolyNum] = m_polyLink[checkPoly[i]].linkPolyIndex[2];
 						nextCheckPolyNum++;
 					}
 				}
@@ -335,7 +337,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 }
 
 // 指定の２点間を直線的に移動できるか（幅指定版）
-bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos, float width)
+bool NavMesh::CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width)
 {
 	Vector3 direction;
 	Vector3 sideDirection;
@@ -355,7 +357,7 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos, float width)
 	sideDirection = Math::Normalized(sideDirection);
 
 	// 開始座標と目標座標を垂直方向にwidthの半分だけずらして確認
-	tempVec /= 2;
+	tempVec = sideDirection / (width / 2);
 	if (!CheckPolyMove(startPos + tempVec, goalPos + tempVec)) return false;
 	if (!CheckPolyMove(startPos - tempVec, goalPos - tempVec)) return false;
 
@@ -376,18 +378,20 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	m_startPos = startPos;
 	m_endPos = goalPos;
 
+	// 現在地を設定
+	m_nowPos = startPos;
+
 	// 経路探索用のメモリ確保
-	m_unitArray = (PathPlanUnit*)malloc(sizeof(PathPlanUnit) * m_polyList.PolygonNum);
+	m_unitArray = new PathPlanUnit[sizeof(PathPlanUnit) * m_polyList.PolygonNum];
 
 	// 経路探索用のポリゴンの初期化
-	pathUnit = m_unitArray;
-	for (int i = 0; i < m_polyList.PolygonNum; i++, pathUnit++)
+	for (int i = 0; i < m_polyList.PolygonNum; i++)
 	{
-		pathUnit->polyIndex = i;
-		pathUnit->totalDistance = 0;
-		pathUnit->prevPolyIndex = -1;
-		pathUnit->nextPolyIndex = -1;
-		pathUnit->activeNext = nullptr;
+		m_unitArray[i].polyIndex = i;
+		m_unitArray[i].totalDistance = 0;
+		m_unitArray[i].prevPolyIndex = -1;
+		m_unitArray[i].nextPolyIndex = -1;
+		m_unitArray[i].activeNext = nullptr;
 	}
 
 	// スタート地点のポリゴン番号を取得 -> 経路探索用の構造体のアドレスを保存
@@ -411,18 +415,19 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 		// 探索対象のポリゴンを処理
 		pathUnit = m_activeFirst;
 		m_activeFirst = nullptr;
-		for (; pathUnit; pathUnit = pathUnit->activeNext)
+		for (; pathUnit != nullptr; pathUnit = pathUnit->activeNext)
 		{
 			// ポリゴンの辺の数分繰り返す
 			for (int i = 0; i < 3; i++)
 			{
 				// 隣接するポリゴンがないとき
-				if (m_polyLinkInfo[pathUnit->polyIndex].linkPolyIndex[i] == -1) continue;
+				if (m_polyLink[pathUnit->polyIndex].linkPolyIndex[i] == -1) continue;
 
 				// 隣接するポリゴンが経路探索処理が行われている && より距離の長い経路  もしくは　スタート地点のポリゴンの時
-				pathUnit_sub = &m_unitArray[m_polyLinkInfo[pathUnit->polyIndex].linkPolyIndex[i]];
-				if (pathUnit_sub->prevPolyIndex != -1 &&
-					pathUnit_sub->totalDistance <= pathUnit->totalDistance + m_polyLinkInfo[pathUnit->polyIndex].linkPolyDistance[i] ||
+				pathUnit_sub = &m_unitArray[m_polyLink[pathUnit->polyIndex].linkPolyIndex[i]];
+				if (
+					(pathUnit_sub->prevPolyIndex != -1 &&
+					pathUnit_sub->totalDistance <= pathUnit->totalDistance + m_polyLink[pathUnit->polyIndex].linkPolyDistance[i]) ||
 					pathUnit_sub->polyIndex == m_start->polyIndex
 					)
 				{
@@ -439,15 +444,15 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 				pathUnit_sub->prevPolyIndex = pathUnit->polyIndex;
 
 				// 隣接するポリゴンにここまでの距離を代入
-				pathUnit_sub->totalDistance = pathUnit->totalDistance + m_polyLinkInfo[pathUnit->polyIndex].linkPolyDistance[i];
+				pathUnit_sub->totalDistance = pathUnit->totalDistance + m_polyLink[pathUnit->polyIndex].linkPolyDistance[i];
 
 				// 次のループの探索対象を追加
-				for (pathUnit_sub2 = m_activeFirst; pathUnit_sub2; pathUnit_sub2 = pathUnit_sub2->activeNext)
+				for (pathUnit_sub2 = m_activeFirst; pathUnit_sub2 != nullptr; pathUnit_sub2 = pathUnit_sub2->activeNext)
 				{
 					// すでに追加されていたら追加しない
 					if (pathUnit_sub2 == pathUnit_sub) break;
 				}
-				if (!pathUnit_sub2)
+				if (pathUnit_sub2 == nullptr)
 				{
 					pathUnit_sub->activeNext = m_activeFirst;
 					m_activeFirst = pathUnit_sub;
@@ -464,7 +469,7 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	do
 	{
 		pathUnit_sub = pathUnit;
-		pathUnit = &m_unitArray[pathUnit_sub->polyIndex];
+		pathUnit = &m_unitArray[pathUnit_sub->prevPolyIndex];
 		pathUnit->nextPolyIndex = pathUnit_sub->polyIndex;
 	} while (pathUnit != m_start);
 
@@ -476,8 +481,7 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 void NavMesh::RemovePathPlan()
 {
 	// 経路探索の為に確保したメモリ領域を解放
-	free(m_unitArray);
-	m_unitArray = nullptr;
+	delete[] m_unitArray;
 }
 
 // 探索経路の移動処理の初期化
@@ -486,8 +490,10 @@ void NavMesh::MoveInitialize()
 	// 移動開始時に乗っているポリゴンをスタート地点に設定
 	m_nowPolyIndex = m_start->polyIndex;
 
-	// 移動開始時の座標をポリゴンの中心座標に設定
-	m_nowPos = m_polyLinkInfo[m_nowPolyIndex].centerPos;
+	/*
+	// 移動開始時点の座標はスタート地点にあるポリゴンの中心座標
+	m_nowPos = m_polyLink[m_nowPolyIndex].centerPos;
+	*/
 
 	// 移動開始時の経路探索情報をスタート地点のポリゴン情報にする
 	m_nowPathPlan = m_start;
@@ -497,25 +503,29 @@ void NavMesh::MoveInitialize()
 }
 
 // 探索経路の移動処理
-Vector3 NavMesh::Move(const Vector3& pos)
+Vector3 NavMesh::Move(const Vector3& pos, const float speed)
 {
+	// y座標だけ保存
+	int y = pos.y;
+
 	// 移動方向の更新、ゴールにたどり着いていたら終了
-	if (RefreshMoveDirection()) return Vector3(0,0,0);
+	if (!RefreshMoveDirection(speed))
+	{
+		// 移動方向の座標に移動
+		m_nowPos += m_moveDirection * speed;
 
-	// 移動方向の座標に移動
-	m_nowPos += m_moveDirection * MoveSpeed;
+		// 現在の座標で乗っているポリゴンを検索
+		m_nowPolyIndex = CheckPolyIndex(m_nowPos);
 
-	// 現在の座標で乗っているポリゴンを検索
-	m_nowPolyIndex = CheckPolyIndex(m_nowPos);
+		// 乗っているポリゴンの経路探索情報をアドレスに代入
+		m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
+	}
 
-	// 乗っているポリゴンの経路探索情報をアドレスに代入
-	m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
-
-	return m_nowPos;
+	return Vector3(m_nowPos.x, y, m_nowPos.z);
 }
 
 // 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-bool NavMesh::RefreshMoveDirection()
+bool NavMesh::RefreshMoveDirection(const float speed)
 {
 	PathPlanUnit* tempPathUnit;
 
@@ -527,7 +537,7 @@ bool NavMesh::RefreshMoveDirection()
 		m_moveDirection.y = 0.0f;
 
 		// 目標座標までの距離が移動速度以下なら到達したとする
-		if (m_moveDirection.Magnitude() <= MoveSpeed)
+		if (m_moveDirection.Magnitude() <= speed)
 		{
 			return true;
 		}
@@ -546,7 +556,7 @@ bool NavMesh::RefreshMoveDirection()
 			tempPathUnit = &m_unitArray[m_targetPathPlan->nextPolyIndex];
 
 			// 経路上の次のポリゴンの中心座標に直線移動できないとき、ループから抜ける
-			if (CheckPolyMove(m_nowPos, m_polyLinkInfo[tempPathUnit->polyIndex].centerPos, Width)) break;
+			if (!CheckPolyMoveWidth(m_nowPos, m_polyLink[tempPathUnit->polyIndex].centerPos, Width)) break;
 
 			// チェック対象を経路上の更に１つ先のポリゴンに変更
 			m_targetPathPlan = tempPathUnit;
@@ -557,7 +567,7 @@ bool NavMesh::RefreshMoveDirection()
 	}
 
 	// 移動方向を決定する（移動方向は現在の座標から中間地点のポリゴンの中心座標に向かう）
-	m_moveDirection = m_polyLinkInfo[m_targetPathPlan->polyIndex].centerPos - m_nowPos;
+	m_moveDirection = m_polyLink[m_targetPathPlan->polyIndex].centerPos - m_nowPos;
 	m_moveDirection.y = 0;
 	m_moveDirection = Math::Normalized(m_moveDirection);
 
