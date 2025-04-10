@@ -12,7 +12,7 @@ Camera::Camera(LoadPlayer* player) :
 	m_diffY(DiffY),
 	m_sightMode(SightMode::First)
 {
-	Vector3 playerPos = Vector3(m_loadPlayerNode->PlayerPos());
+	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
 	switch(m_sightMode)
 	{
 	case SightMode::First:
@@ -28,7 +28,7 @@ Camera::Camera(LoadPlayer* player) :
 		break;
 	}
 	// プレイヤーの移動量
-	m_pastPlayerPos = player->PlayerPos();
+	m_pastPlayerPos = player->GetPosition();
 };
 
 // カメラの場所と焦点を設定
@@ -127,7 +127,7 @@ void Camera::ThirdPerson(const Vector3& playerPos)
 	{
 		// マウスを動かすと
 		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / DecMouseDiff;
-		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->PlayerPos(), DX_PI_F / CamRot * diffX);
+		m_camPos = Math::PointRotate(m_camPos, m_loadPlayerNode->GetPosition(), DX_PI_F / CamRot * diffX);
 		// プレイヤーと一定距離を保つ
 		Vector3 pos = Vector3(m_camTarget - CamFrontPlaneVec() * CamDiff);
 		m_camPos = Vector3(pos.x, playerPos.y + DiffY, pos.z);
@@ -224,7 +224,7 @@ void Camera::AntiGravity(const Vector3& playerPos)
 void Camera::Update()
 {	
 	// カメラを動かす
-	MoveCam(m_loadPlayerNode->PlayerPos());
+	MoveCam(m_loadPlayerNode->GetPosition());
 }
 
 void Camera::Draw()

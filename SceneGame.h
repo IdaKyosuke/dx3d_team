@@ -1,6 +1,5 @@
 #pragma once
 #include "SceneBase.h"
-#include <list>
 
 class Node;
 class LoadPlayer;
@@ -9,6 +8,7 @@ class Collision3D;
 class ItemFactory;
 class UiScore;
 class UiResult;
+class CollisionStage;
 
 class Item;
 class Inventory;
@@ -17,28 +17,24 @@ class Inventory;
 class SceneGame : public SceneBase
 {
 private:
-	const std::list<const char*> ImagePreload =
-	{
-		"bullet.png",
-		"bomb_loop.png",
-		"diamond.png"
-	};
+
 
 	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
 
 	Node* m_rootNode;
+
 	LoadPlayer* m_loadPlayer;
 	Camera* m_cam;
 	Collision3D* m_collision3D;
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
+	CollisionStage* m_collisionStage;
 
 	Item* m_item;
 	Inventory* m_inventory;
 
 	float m_resultTransitionTime;
-	int m_bgm;
 	bool m_isFinish;
 
 public:
@@ -54,7 +50,7 @@ public:
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
-		m_bgm(0),
+		m_collisionStage(nullptr),
 		m_isFinish(false){}
 
 	virtual void Initialize() override;		// 初期化

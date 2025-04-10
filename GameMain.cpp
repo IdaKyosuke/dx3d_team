@@ -2,11 +2,13 @@
 #include "GameConfig.h"
 #include "Screen.h"
 #include "SceneManager.h"
+#include "SceneMenu.h"
 #include "SceneTitle.h"
 #include "SceneGame.h"
 #include "Input.h"
 #include "Time.h"
 #include "ActorCollision.h"
+#include "ActorCollision3D.h"
 #include "Fade.h"
 #include "ImageLoader.h"
 #include "DxLib.h"
@@ -45,7 +47,7 @@ void GameMain::Run()
 
 	// シーン起動
 	//m_sceneManager = new SceneManager(new SceneTitle());
-	m_sceneManager = new SceneManager(new SceneGame());
+	m_sceneManager = new SceneManager(new SceneMenu());
 
 	// スクリーン作成
 	m_screen = MakeScreen(Screen::Width, Screen::Height);
@@ -69,7 +71,7 @@ void GameMain::Run()
 		m_sceneManager->Update();
 
 		// 衝突判定
-		ActorCollision::GetInstance()->Update();
+		ActorCollision3D::GetInstance()->Update();
 
 		// 自作スクリーンに描画
 		SetDrawScreen(m_screen);
@@ -82,7 +84,7 @@ void GameMain::Run()
 
 #ifdef _DEBUG
 		// 衝突形状の描画
-		ActorCollision::GetInstance()->Draw();
+		ActorCollision3D::GetInstance()->Draw();
 
 		// 画像ローダー
 		ImageLoader::GetInstance()->Draw();
