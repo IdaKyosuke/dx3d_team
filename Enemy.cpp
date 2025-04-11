@@ -16,6 +16,7 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 
 void Enemy::Update()
 {
+	/*
 	if (!m_isSet)
 	{
 		// 自身とプレイヤー間の経路探索を行う
@@ -33,7 +34,7 @@ void Enemy::Update()
 	}
 
 	// 移動
-	if (m_transform.position == m_navMesh->Move(this->GetPosition(), MoveSpeed))
+	if (m_isSet && m_transform.position == m_navMesh->Move(this->GetPosition(), MoveSpeed))
 	{
 		// 到達
 		m_isSet = false;
@@ -44,7 +45,7 @@ void Enemy::Update()
 	{
 		m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed);
 	}
-	/*
+	*/
 	// 自身とプレイヤー間の経路探索を行う
 	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
@@ -55,7 +56,6 @@ void Enemy::Update()
 
 	// 今回の探索情報を削除
 	m_navMesh->RemovePathPlan();
-	*/
 }
 
 void Enemy::Draw()

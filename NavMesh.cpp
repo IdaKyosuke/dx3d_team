@@ -42,7 +42,7 @@ void NavMesh::SetPolyLinkInfo()
 		m_polyLink[i].centerPos = VScale(
 			VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
 			VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
-				m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
+				 m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
 			1.0f / 3.0f
 		);
 	}
@@ -55,12 +55,6 @@ void NavMesh::SetPolyLinkInfo()
 	{
 		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++)
 		{
-			if (i == m_polyList.PolygonNum - 1)
-			{
-				// デバッグ用
-				i = m_polyList.PolygonNum - 1;
-			}
-
 			// 最初に隣接情報をリセットする
 			for (int j = 0; j < 3; j++)
 			{
@@ -509,17 +503,16 @@ Vector3 NavMesh::Move(const Vector3& pos, const float speed)
 	int y = pos.y;
 
 	// 移動方向の更新、ゴールにたどり着いていたら終了
-	if (!RefreshMoveDirection(speed))
-	{
-		// 移動方向の座標に移動
-		m_nowPos += m_moveDirection * speed;
+	if (RefreshMoveDirection(speed)) return Vector3(m_nowPos.x, y, m_nowPos.z);
 
-		// 現在の座標で乗っているポリゴンを検索
-		m_nowPolyIndex = CheckPolyIndex(m_nowPos);
+	// 移動方向の座標に移動
+	m_nowPos += m_moveDirection * speed;
 
-		// 乗っているポリゴンの経路探索情報をアドレスに代入
-		m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
-	}
+	// 現在の座標で乗っているポリゴンを検索
+	m_nowPolyIndex = CheckPolyIndex(m_nowPos);
+
+	// 乗っているポリゴンの経路探索情報をアドレスに代入
+	m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
 
 	return Vector3(m_nowPos.x, y, m_nowPos.z);
 }

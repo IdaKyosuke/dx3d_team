@@ -26,7 +26,7 @@ class NavMesh
 {
 private:
 	const float MoveSpeed = 1.0f;
-	const float Width = 10.0f;
+	const float Width = 1.0f;
 
 	// 経路探索で使用する情報を保存
 	Vector3 m_startPos;	// 探索開始位置

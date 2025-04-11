@@ -92,7 +92,7 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 
 	// 指定座標のY軸方向に大きく伸びる線分をセット
 	linePos1 = Vector3(pos.x, 100000.0f, pos.z);
-	linePos1 = Vector3(pos.x, -100000.0f, pos.z);
+	linePos2 = Vector3(pos.x, -100000.0f, pos.z);
 
 	// ステージモデルのポリゴン数だけ繰り返す
 	refPoly = polyList.Polygons;

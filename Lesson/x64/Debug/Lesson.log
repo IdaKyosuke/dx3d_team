@@ -1,2 +1,3 @@
-﻿  Enemy.cpp
+﻿  NavMesh.cpp
+D:\2024井田\2024\GitHub\dx3d_team\NavMesh.cpp(503,8): warning C4244: '初期化中': 'const float' から 'int' への変換です。データが失われる可能性があります。
   Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Debug\Lesson.exe

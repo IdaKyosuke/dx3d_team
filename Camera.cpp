@@ -10,7 +10,8 @@ Camera::Camera(LoadPlayer* player) :
 	m_loadPlayerNode(player),
 	m_pastTerning(false),
 	m_diffY(DiffY),
-	m_sightMode(SightMode::Third)
+	m_sightMode(SightMode::Third),
+	m_isLocked(true)
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
 	switch (m_sightMode)
@@ -115,7 +116,10 @@ void Camera::MoveCam(const Vector3& playerPos)
 	m_pastPlayerPos = playerPos;
 
 	// カメラのスクリーン座標を中心に戻す
-	Input::GetInstance()->SetMousePoint();
+	if (m_isLocked)
+	{
+		Input::GetInstance()->SetMousePoint();
+	}
 }
 
 
@@ -225,6 +229,11 @@ void Camera::Update()
 {
 	// カメラを動かす
 	MoveCam(m_loadPlayerNode->GetPosition());
+
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
+	{
+		m_isLocked = !m_isLocked;
+	}
 }
 
 void Camera::Draw()
