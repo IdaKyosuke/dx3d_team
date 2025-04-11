@@ -77,6 +77,7 @@ void Inventory::Update()
 
 	m_takeItem = m_takeItem % MaxHaveItem;
 
+	//持っていないアイテムとかを選択できないようにしたりなど
 	if (m_takeItem < 0)
 	{
 		if (countGetItem == 0)
@@ -96,8 +97,6 @@ void Inventory::Update()
 
 	if (m_haveItemCount > 0)
 	{
-		
-
 		//アイテムを捨てる
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
 		{

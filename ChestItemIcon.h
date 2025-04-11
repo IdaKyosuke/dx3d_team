@@ -3,14 +3,14 @@
 #include "Transform.h"
 #include "Sprite.h"
 
-class Inventory;
+class Chest;
 
-class ItemIcon : public Node
+class ChestItemIcon : public Node
 {
 private:
 	static constexpr Vector2 SetPos[5] = { Vector2(60,890),Vector2(150,890),Vector2(240,890),Vector2(330,890),Vector2(420,890) };
 
-	const char* m_iconName[3] = { "iron_icon.png","gem_icon.png","potion_icon.png"};
+	const char* m_iconName[3] = { "iron_icon.png","gem_icon.png","potion_icon.png" };
 
 	int m_itemNum;
 	int m_countGetItem;
@@ -18,7 +18,7 @@ private:
 	Sprite m_itemIconUi;
 	Transform m_transform;
 
-	Inventory* m_inventory;
+	Chest* m_chest;
 
 protected:
 	virtual void Load() override;
@@ -27,5 +27,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ItemIcon(int itemNum, int countGetItem,Inventory* inventory);
+	ChestItemIcon(int itemNum, int countGetItem, Chest* chest);
 };

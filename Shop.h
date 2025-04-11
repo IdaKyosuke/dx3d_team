@@ -12,7 +12,6 @@ private:
 	Transform m_transform;
 
 	Inventory* m_inventory;
-	
 
 protected:
 	virtual void Load() override;

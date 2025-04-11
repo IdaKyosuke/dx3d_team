@@ -4,6 +4,8 @@
 #include "Input.h"
 #include "Screen.h"
 #include "PressAny.h"
+#include "MenuInventory.h"
+#include "Chest.h"
 
 #include"Inventory.h"
 
@@ -18,30 +20,33 @@ void SceneMenu::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-
+	/*
 	// タイトルロゴ
 	m_rootNode->AddChild(new Actor(
 		"Logo",
 		"game_title.png",
 		Screen::TopCenter + Vector2(0, Screen::Height / 3)
 	));
+	*/
 
 	// Press Any Button
 	m_rootNode->AddChild(new PressAny());
 
-	/*
-	// ステージの当たり判定を作成
-	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
-	uiLayer->AddChild(m_collisionStage);
+	//チェストとインベントリ
+	m_menuInventory = new MenuInventory(m_chest);
+	m_chest = new Chest(m_menuInventory);
+	uiLayer->AddChild(m_chest);
 
-	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collisionStage);
-	actorLayer->AddChild(m_loadPlayer);
+	m_menuInventory = new MenuInventory(m_chest);
+	uiLayer->AddChild(m_menuInventory);
 
-	//インベントリ
-	m_inventory = new Inventory(m_loadPlayer);
-	uiLayer->AddChild(m_inventory);
-	*/
+	auto getItemCount = std::distance(m_inventory->TakeItMenu().begin(), m_inventory->TakeItMenu().end());
+
+	if (getItemCount >= 0)
+	{
+	//持って帰ったアイテムをスワップしてる
+	m_menuInventory->BroughtItMenu(m_inventory->TakeItMenu());
+	}
 }
 
 void SceneMenu::Finalize()
@@ -57,7 +62,7 @@ SceneBase* SceneMenu::Update()
 	// ノードの更新
 	m_rootNode->TreeUpdate();
 
-	if (Input::GetInstance()->IsAnyKeyDown())
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
 		return new SceneGame();
 	}

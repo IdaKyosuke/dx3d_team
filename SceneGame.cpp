@@ -102,7 +102,7 @@ SceneBase* SceneGame::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneMenu();
+		return new SceneMenu(m_inventory);
 	}
 
 	return this;

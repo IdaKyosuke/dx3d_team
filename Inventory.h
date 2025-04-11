@@ -13,16 +13,16 @@ class Inventory : public Node
 private:
 	static constexpr int MaxHaveItem = 5;	//アイテムを持てる最大量
 	static constexpr Vector2 TakeItemUiPos[MaxHaveItem] = {Vector2(60,890),Vector2(150,890), Vector2(240,890), Vector2(330,890), Vector2(420,890), };
-	int m_haveItemCount;	//アイテム持てるかどうか
+	int m_haveItemCount;	//アイテムを持ってる数
 
-	int m_takeItem;		//今何のアイテムを持っているか
+	int m_takeItem;			//今何のアイテムを持っているか
 	int m_destroyTakeItem;	//捨てたときどこのアイテムを持っていたか
 
 	bool m_canGetItem;			//アイテムを拾えるか
 	bool m_gettingItem;			//アイテムを拾ったか
 	bool m_destroyItemIcon;		//アイコンを消すか
 
-	int m_itemNum;
+	int m_itemNum;		//アイテムの番号格納用
 
 	//アイテム格納用
 	std::vector<Item> m_itemList;
@@ -70,5 +70,10 @@ public:
 	int DestroyTakeItem()
 	{
 		return m_destroyTakeItem;
+	}
+
+	std::vector<Item> TakeItMenu()
+	{
+		return m_itemList;
 	}
 };

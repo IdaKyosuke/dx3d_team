@@ -2,15 +2,28 @@
 #include "SceneBase.h"
 
 class Node;
+class MenuInventory;
+class Chest;
+
+class Inventory;
 
 class SceneMenu : public SceneBase
 {
 private:
 	Node* m_rootNode;
 
+	MenuInventory* m_menuInventory;
+	Chest* m_chest;
+
+	Inventory* m_inventory;
+
 public:
-	SceneMenu() :
-	m_rootNode(nullptr){}
+	SceneMenu(Inventory* inventoy = nullptr) :
+		m_rootNode(nullptr),
+		m_menuInventory(nullptr),
+		m_chest(nullptr),
+	
+		m_inventory(inventoy){};
 
 	virtual void Initialize() override;		// èâä˙âª
 	virtual void Finalize() override;		// èIóπ
