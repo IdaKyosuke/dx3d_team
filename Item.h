@@ -1,15 +1,24 @@
 #pragma once
 #include "ItemDate.h"
+<<<<<<< HEAD
 #include "Actor.h" 
 #include "Vector3.h"
 #include <list>
 
 #include <cmath>
+=======
+#include "Actor3D.h" 
+#include "Vector3.h"
+>>>>>>> collision
 
 class LoadPlayer;
 class Inventory;
 
+<<<<<<< HEAD
 class Item : public Actor
+=======
+class Item : public Actor3D
+>>>>>>> collision
 {
 private:
 	int m_itemNumber;	//ƒAƒCƒeƒ€‚ğ¯•Ê‚·‚é‚½‚ß‚Ì”Ô†Ši”[—p
@@ -17,10 +26,17 @@ private:
 	const char* m_itemName;
 	int m_sellMoney;	//”„‚Á‚½‚Ì‹àŠz
 
+<<<<<<< HEAD
 
 	bool m_canGetItem;
 
 
+=======
+	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//E‚¦‚é”ÍˆÍ
+
+	bool m_canGetItem;
+
+>>>>>>> collision
 	Vector3 m_itemPos;
 
 	enum class ItemNameList
@@ -53,6 +69,7 @@ protected:
 public:
 	Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* inventory);
 
+<<<<<<< HEAD
 	float Distance(Vector3 a, Vector3 b)
 	{
 		float num = a.x - b.x;
@@ -61,8 +78,15 @@ public:
 		return std::sqrt(num * num + num2 * num2 + num3 * num3);
 	}
 
+=======
+>>>>>>> collision
 	int GetItemNum()
 	{
 		return m_itemNumber;
 	}
+<<<<<<< HEAD
+=======
+
+	virtual void OnCollision(const Actor3D* other);
+>>>>>>> collision
 };

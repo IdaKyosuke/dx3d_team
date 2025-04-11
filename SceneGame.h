@@ -9,6 +9,10 @@ class Collision3D;
 class ItemFactory;
 class UiScore;
 class UiResult;
+class CollisionStage;
+
+class Item;
+class Inventory;
 
 class Item;
 class Inventory;
@@ -33,6 +37,10 @@ private:
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
+	CollisionStage* m_collisionStage;
+
+	Item* m_item;
+	Inventory* m_inventory;
 
 	Item* m_item;
 	Inventory* m_inventory;
@@ -54,6 +62,10 @@ public:
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
+<<<<<<< HEAD
+=======
+		m_collisionStage(nullptr),
+>>>>>>> collision
 		m_bgm(0),
 		m_isFinish(false){}
 

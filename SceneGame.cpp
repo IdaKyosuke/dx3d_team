@@ -17,6 +17,11 @@
 
 #include "Item.h"
 #include "Inventory.h"
+<<<<<<< HEAD
+=======
+#include"CollisionStage.h"
+
+>>>>>>> collision
 
 // 初期化
 void SceneGame::Initialize()
@@ -38,13 +43,12 @@ void SceneGame::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
-
 	// ステージの当たり判定を作成
-	m_collision3D = new Collision3D("Resource/stage.mv1", Vector3(0, 0, 0));
-	uiLayer->AddChild(m_collision3D);
+	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collision3D);
+	m_loadPlayer = new LoadPlayer(m_collisionStage);
 	actorLayer->AddChild(m_loadPlayer);
 
 	//インベントリ
@@ -55,6 +59,18 @@ void SceneGame::Initialize()
 	m_item = new Item(0, Vector3(100, 50, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
+<<<<<<< HEAD
+=======
+	//アイテム
+	m_item = new Item(1, Vector3(400, 50, 100), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(2, Vector3(100, 50, 400), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
+
+
+>>>>>>> collision
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
@@ -67,10 +83,7 @@ void SceneGame::Initialize()
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
 
-	// BGM
-	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
-	ChangeVolumeSoundMem(60, m_bgm);
-	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
+	
 	
 }
 
