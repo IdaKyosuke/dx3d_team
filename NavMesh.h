@@ -26,7 +26,7 @@ class NavMesh
 {
 private:
 	const float MoveSpeed = 1.0f;
-	const float Width = 1.0f;
+	const float Width = 0.0f;
 
 	// Œo˜H’Tõ‚Åg—p‚·‚éî•ñ‚ğ•Û‘¶
 	Vector3 m_startPos;	// ’TõŠJnˆÊ’u
@@ -73,7 +73,7 @@ public:
 	void RemovePathPlan();
 
 	// ’TõŒo˜H‚ÌˆÚ“®ˆ—‚Ì‰Šú‰»
-	void MoveInitialize();
+	void MoveInitialize(const Vector3& pos);
 
 	// ’TõŒo˜H‚ÌˆÚ“®ˆ—
 	Vector3 Move(const Vector3& pos, const float speed);

@@ -16,6 +16,7 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 
 void Enemy::Update()
 {
+	
 	/*
 	if (!m_isSet)
 	{
@@ -34,23 +35,26 @@ void Enemy::Update()
 	}
 
 	// ˆÚ“®
-	if (m_isSet && m_transform.position == m_navMesh->Move(this->GetPosition(), MoveSpeed))
+	if (m_isSet)
 	{
-		// “ž’B
-		m_isSet = false;
-		// ¡‰ñ‚Ì’Tõî•ñ‚ðíœ
-		m_navMesh->RemovePathPlan();
-	}
-	else
-	{
-		m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed);
+		if (m_transform.position == m_navMesh->Move(this->GetPosition(), MoveSpeed))
+		{
+			// “ž’B
+			m_isSet = false;
+			// ¡‰ñ‚Ì’Tõî•ñ‚ðíœ
+			m_navMesh->RemovePathPlan();
+		}
+		else
+		{
+			m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed);
+		}
 	}
 	*/
 	// Ž©g‚ÆƒvƒŒƒCƒ„[ŠÔ‚ÌŒo˜H’Tõ‚ðs‚¤
 	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
 	// ˆÚ“®€”õ
-	m_navMesh->MoveInitialize();
+	m_navMesh->MoveInitialize(this->GetPosition());
 
 	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed);
 

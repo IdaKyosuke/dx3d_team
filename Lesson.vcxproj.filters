@@ -281,13 +281,13 @@
     <ClInclude Include="ActorCollision3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionStage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="BoxCollider3D.h">
       <Filter>ヘッダー ファイル\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Collider3D.h">
+      <Filter>ヘッダー ファイル\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionStage.h">
       <Filter>ヘッダー ファイル\Collision</Filter>
     </ClInclude>
   </ItemGroup>
