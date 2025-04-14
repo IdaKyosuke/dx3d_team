@@ -8,6 +8,7 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 {
 	// ステージの読み込み
 	m_model = MV1LoadModel(modelPath);
+
 	MV1SetPosition(m_model, Vector3(0, 0, 0));
 	// モデル全体のコリジョン情報を構築
 	MV1SetupCollInfo(m_model, -1, 8, 8, 8);

@@ -24,7 +24,7 @@ void Enemy::Update()
 		if (m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition()))
 		{
 			// ˆÚ“®€”õ
-			m_navMesh->MoveInitialize();
+			m_navMesh->MoveInitialize(this->GetPosition());
 
 			m_isSet = true;
 		}

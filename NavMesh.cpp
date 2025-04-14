@@ -57,18 +57,18 @@ void NavMesh::SetPolyLinkInfo()
 	refPoly = m_polyList.Polygons;
 	if (polyLink)
 	{
-		for (int i = 0; i < m_polyList.PolygonNum; i++, refPoly++, polyLink++)
+		for (int i = 0; i < m_polyList.PolygonNum; i++, polyLink++, refPoly++)
 		{
 			// 最初に隣接情報をリセットする
 			for (int j = 0; j < 3; j++)
 			{
-				m_polyLink[i].linkPolyIndex[j] = -1;
+				polyLink->linkPolyIndex[j] = -1;
 			}
 
 			// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
 			refPolySub = m_polyList.Polygons;
 			polyLinkSub = m_polyLink;
-			for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkSub++)
+			for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, polyLinkSub)
 			{
 				// 自分自身を無視
 				if (i == j) continue;
@@ -76,35 +76,35 @@ void NavMesh::SetPolyLinkInfo()
 				// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 				if (
 					m_polyLink[i].linkPolyIndex[0] == -1 &&
-						((m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[0] && m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[2]) ||
-						 (m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[1] && m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[0]) ||
-						 (m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[2] && m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[1]))
+						((refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
+						 (refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
+						 (refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1]))
 				)
 				{
-					m_polyLink[i].linkPolyIndex[0] = j;
-					m_polyLink[i].linkPolyDistance[0] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
+					polyLink->linkPolyIndex[0] = j;
+					polyLink->linkPolyDistance[0] = VSize(VSub(polyLinkSub->centerPos, polyLink->centerPos));
 				}
 				// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
-				if(
+				else if(
 					m_polyLink[i].linkPolyIndex[1] == -1 &&
-						((m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[0] && m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[2]) ||
-						 (m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[1] && m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[0]) ||
-						 (m_polyList.Polygons[i].VIndex[1] == m_polyList.Polygons[j].VIndex[2] && m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[1]))
+						((refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
+						 (refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
+						 (refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1]))
 					)
 				{
-					m_polyLink[i].linkPolyIndex[1] = j;
-					m_polyLink[i].linkPolyDistance[1] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
+					polyLink->linkPolyIndex[1] = j;
+					polyLink->linkPolyDistance[1] = VSize(VSub(polyLinkSub->centerPos, polyLink->centerPos));
 				}
 				// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
-				if (
+				else if (
 					m_polyLink[i].linkPolyIndex[2] == -1 &&
-						((m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[0] && m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[2]) ||
-						 (m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[1] && m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[0]) ||
-						 (m_polyList.Polygons[i].VIndex[2] == m_polyList.Polygons[j].VIndex[2] && m_polyList.Polygons[i].VIndex[0] == m_polyList.Polygons[j].VIndex[1]))
+						((refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
+						 (refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
+						 (refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1]))
 					)
 				{
-					m_polyLink[i].linkPolyIndex[2] = j;
-					m_polyLink[i].linkPolyDistance[2] = VSize(VSub(m_polyLink[j].centerPos, m_polyLink[i].centerPos));
+					polyLink->linkPolyIndex[2] = j;
+					polyLink->linkPolyDistance[2] = VSize(VSub(polyLinkSub->centerPos, polyLink->centerPos));
 				}
 			}
 		}
