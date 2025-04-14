@@ -105,8 +105,8 @@ void Inventory::Update()
 			Vector3 dropPos = m_player->GetPosition();
 
 			//捨てたオブジェクトを生成
-			decltype(m_itemList)::iterator takeItem = std::next(m_itemList.begin(), (m_takeItem));
-			GetParent()->AddChild(new Item(takeItem->GetItemNum(), dropPos, m_player, this));
+			decltype(m_itemList)::iterator takeItem = std::next(m_itemList.begin(),m_takeItem);
+			GetParent()->AddChild(new Item(takeItem->GetItemNum(), dropPos, this));
 
 			//捨てたアイテムが何番目のアイテムか
 			m_destroyTakeItem = m_takeItem;

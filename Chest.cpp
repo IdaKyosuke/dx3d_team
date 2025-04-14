@@ -17,7 +17,7 @@ Chest::Chest(MenuInventory* menuInventory) :
 	m_menuInventory(menuInventory)
 {
 	m_transform.position = Screen::Center + Vector2(0, 170);
-	m_chestUi.Register("chest_Ui.png");
+	m_chestUi.Register("chest_ui.png");
 	m_takeItemUi.Register("take_item.png");
 }
 
@@ -72,13 +72,21 @@ void Chest::Update()
 	if (m_isChest)
 	{
 		//アイテム選択
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_A))
 		{
 			m_takeItem--;
 		}
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_E))
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
 		{
 			m_takeItem++;
+		}
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_S))
+		{
+			m_takeItem += 10;
+		}
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_W))
+		{
+			m_takeItem -= 10;
 		}
 		//チェストからインベントリへ変更
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
@@ -90,11 +98,10 @@ void Chest::Update()
 
 	m_takeItem = m_takeItem % MaxHaveItem;
 
-	
 	//持っていないアイテムとかを選択できないようにしたりなど
-	if (m_takeItem < 0)
+	if (m_takeItem <= 0)
 	{
-		if (countGetItem == 0)
+		if (countGetItem <= 0)
 		{
 			m_takeItem = 0;
 		}
@@ -114,7 +121,7 @@ void Chest::Update()
 			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
 			{
 				m_haveItemCount--;
-
+				 
 				//捨てたアイテムが何番目のアイテムか
 				m_destroyTakeItem = m_takeItem;
 
@@ -137,8 +144,6 @@ void Chest::Update()
 	{
 		m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem,0);
 	}
-
-		
 }
 	
 

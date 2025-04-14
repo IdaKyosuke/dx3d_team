@@ -46,8 +46,8 @@ void GameMain::Run()
 	SetSysCommandOffFlag(true);	// Alt or F10キーで一時停止する機能をオフ
 
 	// シーン起動
-	//m_sceneManager = new SceneManager(new SceneTitle());
-	m_sceneManager = new SceneManager(new SceneMenu());
+	m_sceneManager = new SceneManager(new SceneTitle());
+	//m_sceneManager = new SceneManager(new SceneMenu());
 	//m_sceneManager = new SceneManager(new SceneGame());
 
 	// スクリーン作成

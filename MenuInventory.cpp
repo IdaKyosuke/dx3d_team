@@ -6,6 +6,8 @@
 #include "Input.h"
 #include "Chest.h"
 
+#include "Item.h"
+
 MenuInventory::MenuInventory(Chest* chest) :
 	m_haveItemCount(0),
 	m_itemNum(0),
@@ -13,11 +15,15 @@ MenuInventory::MenuInventory(Chest* chest) :
 	m_takeItem(0),
 	m_destroyItemIcon(false),
 	m_isIventory(true),
-	m_chest(chest)
+	m_chest(chest),
+
+	m_inum()
 {
 	m_transform.position = Screen::BottomCenter + Vector2(0, -70);
 	m_menuInventoryUi.Register("inventoryUi.png");
 	m_takeItemUi.Register("take_item.png");
+
+	
 }
 
 void MenuInventory::Load()
@@ -42,30 +48,29 @@ void MenuInventory::Update()
 		m_destroyItemIcon = false;
 	}
 
-	//アイテムを収納できるか
-	if (m_haveItemCount >= MaxHaveItem)
-	{
-
-	}
-	else
-	{
-
-	}
-
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
 	auto countGetItem = std::distance(m_itemList.begin(), m_itemList.end());
+	m_haveItemCount = countGetItem;
 
-	if (m_haveItemCount > 0)
+
+	for (int i = 0; i <= m_haveItemCount; i++)
 	{
-	
-		for (int i = 0; i <= m_haveItemCount; i++)
-		{
-			decltype(m_itemList)::iterator getItem = std::next(m_itemList.begin(), i);
-			m_itemNum = getItem->GetItemNum();
+		const Item& m_item = Item(m_inum[i]);
 
-			GetParent()->AddChild(new MenuItemIcon(m_itemNum, i,this));
+		m_itemList.push_back(m_item);
+	}
+
+	if(haveitem)
+	{
+		for (int i = 0; i <= m_haveItemCount - 1; i++)
+		{
+			//decltype(m_itemList)::iterator getItem = std::next(m_itemList.begin(), i);
+			//m_itemNum = getItem->GetItemNum();
+
+			GetParent()->AddChild(new MenuItemIcon(m_inum[i], i, this));
 		}
+		haveitem = false;
 	}
 
 	if (m_isIventory)
@@ -109,17 +114,17 @@ void MenuInventory::Update()
 	
 	m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem,0);
 
-
 	//アイテムをチェストに格納する
 	if (m_haveItemCount > 0)
 	{
-		//アイテムを捨てる
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
 		{
 			m_haveItemCount--;
 
-			//捨てたアイテムが何番目のアイテムか
+			//格納したアイテムが何番目のアイテムか
 			m_destroyTakeItem = m_takeItem;
+
+			m_chest->Change(m_inum[m_takeItem]);
 
 			m_destroyItemIcon = true;
 

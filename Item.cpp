@@ -7,10 +7,9 @@
 #include "DxLib.h"
 #include <cmath>
 
-Item::Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* inventory) : Actor3D("Item", spownPos),
+Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory) : Actor3D("Item", spownPos),
 	m_itemNumber(itemNumber),
 	m_itemName(),
-	m_player(player),
 	m_inventory(inventory),
 	m_canGetItem(false),
 	m_playerToDistance(0)
@@ -22,6 +21,7 @@ Item::Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* invento
 	m_collider = new BoxCollider3D(CanGetRange, Vector3(0,0,0));
 
 	ItemNameList itemList = static_cast<ItemNameList>(m_itemNumber);
+
 	//アイテムのモデルのロード
 	m_model = MV1LoadModel(itemDate[static_cast<int>(itemList)].m_modelName);
 

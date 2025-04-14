@@ -24,6 +24,8 @@ private:
 	int m_itemNum;		//アイテムの番号格納用
 	bool m_destroyItemIcon;		//アイコンを消すか
 
+	int m_inum[MaxHaveItem];
+
 	std::vector<Item> m_itemList;
 
 	Sprite m_menuInventoryUi;
@@ -32,6 +34,8 @@ private:
 	Transform m_takeItemTransform;	// 姿勢
 
 	Chest* m_chest;
+
+	bool haveitem = m_itemList.empty();
 
 protected:
 	virtual void Load() override;
@@ -57,8 +61,22 @@ public:
 		m_isIventory = true;
 	}
 
-	void BroughtItMenu(std::vector<Item> item)
+	/*
+	void BroughtItMenu(Item* item)
 	{
-		m_itemList.swap(item);
+		m_itemList.push_back(*item);
+	}
+
+	*/
+	void BroughtItMenu(int num,int hoge)
+	{
+		m_inum[hoge] = num;
+	}
+
+	void Change(int itemNum)
+	{
+		Item m_item = Item(itemNum);
+
+		m_itemList.push_back(m_item);
 	}
 };

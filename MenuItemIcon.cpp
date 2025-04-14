@@ -24,7 +24,6 @@ void MenuItemIcon::Release()
 void MenuItemIcon::Update()
 {
 	m_itemIconUi.Update();
-	m_transform.position = SetPos[m_countGetItem];
 
 	if (m_menuInventory->DestoryItemIcon())
 	{
@@ -37,6 +36,8 @@ void MenuItemIcon::Update()
 			m_countGetItem--;
 		}
 	}
+
+	m_transform.position = SetPos + Vector2(90 * m_countGetItem, 0);
 }
 
 void MenuItemIcon::Draw()

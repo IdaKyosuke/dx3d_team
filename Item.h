@@ -37,7 +37,6 @@ private:
 		ItemDate("Resource/Item/potion.mv1","Potion",10),
 	};
 
-	 LoadPlayer* m_player;
 	 Inventory* m_inventory;
 
 	 float m_playerToDistance;	//ƒvƒŒƒCƒ„[‚Æ‚Ì‹——£
@@ -48,9 +47,9 @@ protected:
 	virtual void Draw();
 
 public:
-	Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* inventory);
+	Item(int itemNumber,Vector3 spownPos = Vector3(0,0,0), Inventory* inventory = nullptr);
 
-	int GetItemNum()
+	int GetItemNum() const
 	{
 		return m_itemNumber;
 	}

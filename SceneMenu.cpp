@@ -3,11 +3,12 @@
 #include "DxLib.h"
 #include "Input.h"
 #include "Screen.h"
-#include "PressAny.h"
 #include "MenuInventory.h"
 #include "Chest.h"
 
 #include"Inventory.h"
+#include "LoadPlayer.h"
+#include "CollisionStage.h"
 
 void SceneMenu::Initialize()
 {
@@ -29,9 +30,6 @@ void SceneMenu::Initialize()
 	));
 	*/
 
-	// Press Any Button
-	m_rootNode->AddChild(new PressAny());
-
 	//チェストとインベントリ
 	m_menuInventory = new MenuInventory(m_chest);
 	m_chest = new Chest(m_menuInventory);
@@ -40,13 +38,22 @@ void SceneMenu::Initialize()
 	m_menuInventory = new MenuInventory(m_chest);
 	uiLayer->AddChild(m_menuInventory);
 
-	auto getItemCount = std::distance(m_inventory->TakeItMenu().begin(), m_inventory->TakeItMenu().end());
 
-	if (getItemCount >= 0)
+	if (!m_inventory->TakeItMenu().empty())
 	{
-	//持って帰ったアイテムをスワップしてる
-	m_menuInventory->BroughtItMenu(m_inventory->TakeItMenu());
+		for (int i = 0; i <= m_inventory->TakeItMenu().size() - 1; i++)
+		{
+			int getItemNum = std::next(m_inventory->TakeItMenu().begin(),i)->GetItemNum();
+
+			//持って帰ったアイテムをスワップする
+			m_menuInventory->BroughtItMenu(getItemNum,i);
+		}
 	}
+
+	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+	m_loadPlayer = new LoadPlayer(m_collisionStage);
+	//m_inventory = new Inventory(m_loadPlayer);
+
 }
 
 void SceneMenu::Finalize()

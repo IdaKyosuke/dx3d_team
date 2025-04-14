@@ -58,4 +58,11 @@ public:
 	{
 		m_isChest = true;
 	}
+
+	void Change(int itemNum)
+	{
+		Item m_item = Item(itemNum);
+
+		m_itemList.push_back(m_item);
+	}
 };
