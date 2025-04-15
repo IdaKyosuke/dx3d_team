@@ -11,12 +11,15 @@ class LoadPlayer;
 class Inventory : public Node
 {
 private:
-	static constexpr int MaxHaveItem = 5;	//アイテムを持てる最大量
-	static constexpr Vector2 TakeItemUiPos[MaxHaveItem] = {Vector2(60,890),Vector2(150,890), Vector2(240,890), Vector2(330,890), Vector2(420,890), };
+	static constexpr int MaxHaveItem = 3;	//アイテムを持てる最大量
+	static constexpr float MaxHaveWeight = 50;
+	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
 	int m_haveItemCount;	//アイテムを持ってる数
 
 	int m_takeItem;			//今何のアイテムを持っているか
 	int m_destroyTakeItem;	//捨てたときどこのアイテムを持っていたか
+
+	float m_canHaveWeight;	//どれぐらいの重さまで持てるか
 
 	bool m_canGetItem;			//アイテムを拾えるか
 	bool m_gettingItem;			//アイテムを拾ったか

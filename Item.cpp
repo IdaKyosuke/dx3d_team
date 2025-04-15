@@ -32,6 +32,8 @@ Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory) : Actor3D("Item
 	m_itemName = itemDate[static_cast<int>(itemList)].m_itemName;
 	//売った時の金額設定
 	m_sellMoney = itemDate[static_cast<int>(itemList)].m_sellMoney;
+	//アイテムの重さ設定
+	m_itemWeight = itemDate[static_cast<int>(itemList)].m_weight;
 }
 
 void Item::Release()

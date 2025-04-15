@@ -13,6 +13,7 @@ private:
 	int m_model;		//アイテムのモデル
 	const char* m_itemName;
 	int m_sellMoney;	//売った時の金額
+	float m_itemWeight;	//アイテムの重さ
 
 	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//拾える範囲
 
@@ -30,16 +31,16 @@ private:
 	};
 
 	//アイテムの情報
-	 struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
+	struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
-		ItemDate("Resource/Item/iron.mv1","Iron",100),
-		ItemDate("Resource/Item/gem.mv1","Gem",200),
-		ItemDate("Resource/Item/potion.mv1","Potion",10),
+		ItemDate("Resource/Item/iron.mv1","Iron",100,30),
+		ItemDate("Resource/Item/gem.mv1","Gem",200,30),
+		ItemDate("Resource/Item/potion.mv1","Potion",10,20),
 	};
 
-	 Inventory* m_inventory;
+	Inventory* m_inventory;
 
-	 float m_playerToDistance;	//プレイヤーとの距離
+	float m_playerToDistance;	//プレイヤーとの距離
 
 protected:
 	virtual void Release();
@@ -47,11 +48,21 @@ protected:
 	virtual void Draw();
 
 public:
-	Item(int itemNumber,Vector3 spownPos = Vector3(0,0,0), Inventory* inventory = nullptr);
+	Item(int itemNumber, Vector3 spownPos = Vector3(0, 0, 0), Inventory* inventory = nullptr);
 
 	int GetItemNum() const
 	{
 		return m_itemNumber;
+	}
+
+	float GetItemWeight()
+	{
+		return m_itemWeight;
+	}
+
+	int GetSellMoney()
+	{
+		return m_sellMoney;
 	}
 
 	virtual void OnCollision(const Actor3D* other);

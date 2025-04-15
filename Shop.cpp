@@ -1,13 +1,14 @@
 #include "Shop.h"
 #include "Inventory.h"
+#include "Chest.h"
 
-Shop::Shop(Inventory* inventry) : 
-	m_inventory(inventry)
+Shop::Shop(Chest* chest) :
+	m_chest(chest)
 {
 	//Ui‚Ì“o˜^
-	m_shopUi.Register("");
+	m_shopUi.Register("shop_ui.png");
 
-	m_transform.position = Vector3(0, 0, 0);
+	m_shopTransform.position = Vector2(750, 260);
 }
 
 void Shop::Load()
@@ -23,9 +24,11 @@ void Shop::Release()
 void Shop::Update()
 {
 	m_shopUi.Update();
+
+	m_chest->GetItemList().begin()->GetSellMoney();
 }
 
 void Shop::Draw()
 {
-	m_shopUi.Draw(m_transform);
+	m_shopUi.Draw(m_shopTransform);
 }

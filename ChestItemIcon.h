@@ -8,7 +8,7 @@ class Chest;
 class ChestItemIcon : public Node
 {
 private:
-	static constexpr Vector2 SetPos[5] = { Vector2(60,890),Vector2(150,890),Vector2(240,890),Vector2(330,890),Vector2(420,890) };
+	static constexpr Vector2 SetPos = Vector2(235, 560);
 
 	const char* m_iconName[3] = { "iron_icon.png","gem_icon.png","potion_icon.png" };
 

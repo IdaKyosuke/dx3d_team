@@ -3,15 +3,14 @@
 #include "Sprite.h"
 #include "Transform.h"
 
-class Chest;
+class Inventory;
 
-class Shop : public Node
+class EnhanceShop : public Node
 {
 private:
-	Sprite m_shopUi;
-	Transform m_shopTransform;
+	Sprite m_enhanceShopUi;
+	Transform m_enhanceShopTransform;
 
-	Chest* m_chest;
 
 protected:
 	virtual void Load() override;
@@ -20,5 +19,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Shop(Chest* chest);
+	EnhanceShop();
 };

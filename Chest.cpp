@@ -14,7 +14,8 @@ Chest::Chest(MenuInventory* menuInventory) :
 	m_destroyItemIcon(false),
 	m_canStorageItem(true),
 	m_isChest(false),
-	m_menuInventory(menuInventory)
+	m_menuInventory(menuInventory),
+	m_storagingItem(false)
 {
 	m_transform.position = Screen::Center + Vector2(0, 170);
 	m_chestUi.Register("chest_ui.png");
@@ -43,6 +44,8 @@ void Chest::Update()
 		m_destroyItemIcon = false;
 	}
 
+	m_haveItemCount = static_cast<int>(std::distance(m_itemList.begin(), m_itemList.end()));
+
 	//アイテムを収納できるか
 	if (m_haveItemCount >= MaxHaveItem)
 	{
@@ -55,18 +58,12 @@ void Chest::Update()
 
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
-	auto countGetItem = std::distance(m_itemList.begin(), m_itemList.end());
-
-	if (m_haveItemCount > 0)
+	if (m_storagingItem)
 	{
+		GetParent()->AddChild(new ChestItemIcon(std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemNum(),
+			m_haveItemCount - 1, this));
 
-		for (int i = 0; i <= m_haveItemCount; i++)
-		{
-			decltype(m_itemList)::iterator getItem = std::next(m_itemList.begin(), i);
-			m_itemNum = getItem->GetItemNum();
-
-			GetParent()->AddChild(new ChestItemIcon(m_itemNum, i, this));
-		}
+		m_storagingItem = false;
 	}
 
 	if (m_isChest)
@@ -76,63 +73,68 @@ void Chest::Update()
 		{
 			m_takeItem--;
 		}
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
+		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
 		{
 			m_takeItem++;
 		}
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_S))
+		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_S))
 		{
 			m_takeItem += 10;
 		}
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_W))
+		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_W))
 		{
 			m_takeItem -= 10;
 		}
+
 		//チェストからインベントリへ変更
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
 		{
 			m_isChest = false;
-			m_menuInventory->ChangeTakeInventory();
+
+			m_menuInventory->SetIsInventory(true);
+		}
+		
+		//アイテムをインベントリに入れる
+		if (m_haveItemCount > 0)
+		{
+			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
+			{
+				m_haveItemCount--;
+
+				m_menuInventory->Change(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
+
+				m_menuInventory->GettingItem();
+
+				//捨てたアイテムが何番目のアイテムか
+				m_destroyTakeItem = m_takeItem;
+
+				m_destroyItemIcon = true;
+				//vectorの中から捨てたアイテムのデータを消す
+				m_itemList.erase(m_itemList.begin() + m_takeItem);
+			}
 		}
 	}
 
 	m_takeItem = m_takeItem % MaxHaveItem;
 
 	//持っていないアイテムとかを選択できないようにしたりなど
-	if (m_takeItem <= 0)
+	if (m_takeItem < 0)
 	{
-		if (countGetItem <= 0)
+		if (m_haveItemCount == 0)
 		{
 			m_takeItem = 0;
 		}
 		else
 		{
-			m_takeItem = static_cast<int>(countGetItem - 1);
+			m_takeItem = m_haveItemCount - 1;
 		}
-		if (m_takeItem > countGetItem - 1)
-		{
-			m_takeItem = 0;
-		}
-
-		//アイテムをチェストに格納する
-		if (m_haveItemCount > 0)
-			{
-				//アイテムを捨てる			
-			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
-			{
-				m_haveItemCount--;
-				 
-				//捨てたアイテムが何番目のアイテムか
-				m_destroyTakeItem = m_takeItem;
-
-				m_destroyItemIcon = true;
-										//vectorの中から捨てたアイテムのデータを消す
-				m_itemList.erase(m_itemList.begin() + m_takeItem);
-			}
-		}
-
+	}
+	if (m_takeItem > m_haveItemCount - 1)
+	{
+		m_takeItem = 0;
 	}
 
+	//調整
 	int verticalCount = m_takeItem / 10;
 	if (m_takeItem >= 10)
 	{
@@ -142,10 +144,9 @@ void Chest::Update()
 	}
 	else
 	{
-		m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem,0);
+		m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem, 0);
 	}
 }
-	
 
 void Chest::Draw()
 {

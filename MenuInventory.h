@@ -13,18 +13,16 @@ private:
 	static constexpr int MaxHaveItem = 5;
 	static constexpr Vector2 TakeItemUiPos = Vector2(460,890);
 
-
 	int m_haveItemCount;	//アイテムを持ってる数
 	int m_takeItem;			//今何番目のアイテムを持っているか
 
 	int m_destroyTakeItem;	//捨てたときどこのアイテムを持っていたか
+	bool m_gettingItem;		//アイテムをチェストからインベントリを持ってきたか
 
 	bool m_isIventory;		//インベントリを触ってるとき
 
 	int m_itemNum;		//アイテムの番号格納用
 	bool m_destroyItemIcon;		//アイコンを消すか
-
-	int m_inum[MaxHaveItem];
 
 	std::vector<Item> m_itemList;
 
@@ -56,23 +54,21 @@ public:
 		return m_destroyTakeItem;
 	}
 
-	void ChangeTakeInventory()
+	bool GetTakeInventory()
 	{
-		m_isIventory = true;
+		return m_isIventory;
 	}
 
-	/*
-	void BroughtItMenu(Item* item)
+	void SetIsInventory(bool nowTake)
 	{
-		m_itemList.push_back(*item);
+		m_isIventory = nowTake;
 	}
 
-	*/
-	void BroughtItMenu(int num,int hoge)
+	void GettingItem() 
 	{
-		m_inum[hoge] = num;
+		m_gettingItem = true;
 	}
-
+	
 	void Change(int itemNum)
 	{
 		Item m_item = Item(itemNum);

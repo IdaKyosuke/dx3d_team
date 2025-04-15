@@ -5,10 +5,10 @@
 #include "Screen.h"
 #include "MenuInventory.h"
 #include "Chest.h"
+#include "Shop.h"
+#include "ShopButton.h"
 
 #include"Inventory.h"
-#include "LoadPlayer.h"
-#include "CollisionStage.h"
 
 void SceneMenu::Initialize()
 {
@@ -21,14 +21,6 @@ void SceneMenu::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-	/*
-	// タイトルロゴ
-	m_rootNode->AddChild(new Actor(
-		"Logo",
-		"game_title.png",
-		Screen::TopCenter + Vector2(0, Screen::Height / 3)
-	));
-	*/
 
 	//チェストとインベントリ
 	m_menuInventory = new MenuInventory(m_chest);
@@ -38,22 +30,21 @@ void SceneMenu::Initialize()
 	m_menuInventory = new MenuInventory(m_chest);
 	uiLayer->AddChild(m_menuInventory);
 
+	m_shop = new Shop();
+	uiLayer->AddChild(m_shop);
+
+	//ショップ切り替えボタン
+	m_shopButton = new ShopButton();
+	uiLayer->AddChild(m_shopButton);
 
 	if (!m_inventory->TakeItMenu().empty())
 	{
 		for (int i = 0; i <= m_inventory->TakeItMenu().size() - 1; i++)
 		{
-			int getItemNum = std::next(m_inventory->TakeItMenu().begin(),i)->GetItemNum();
-
-			//持って帰ったアイテムをスワップする
-			m_menuInventory->BroughtItMenu(getItemNum,i);
+			//持って帰ったアイテムを格納する
+			m_menuInventory->Change(std::next(m_inventory->TakeItMenu().begin(), i)->GetItemNum());
 		}
 	}
-
-	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
-	m_loadPlayer = new LoadPlayer(m_collisionStage);
-	//m_inventory = new Inventory(m_loadPlayer);
-
 }
 
 void SceneMenu::Finalize()

@@ -11,7 +11,6 @@ class Chest : public Node
 {
 private:
 	static constexpr int MaxHaveItem = 30;
-
 	static constexpr Vector2 TakeItemUiPos = Vector2(235, 560);
 
 	int m_haveItemCount;	//アイテムを持ってる数
@@ -20,6 +19,7 @@ private:
 	int m_destroyTakeItem;		//捨てたときどこのアイテムを持っていたか
 
 	bool m_canStorageItem;		//アイテムを収納できるか
+	bool m_storagingItem;		//アイテムを収納した時
 
 	bool m_isChest;		//チェストを触っているとき
 
@@ -54,9 +54,24 @@ public:
 		return m_destroyTakeItem;
 	}
 
-	void ChageTakeChest()
+	bool GetTakeChest()
 	{
-		m_isChest = true;
+		return	m_isChest;
+	}
+
+	bool GetCanStorageItem()
+	{
+		return m_canStorageItem;
+	}
+
+	void SetIsInventory(bool nowTake)
+	{
+		m_isChest = nowTake;
+	}
+
+	void  StringingChest()
+	{
+		m_storagingItem = true;
 	}
 
 	void Change(int itemNum)
@@ -64,5 +79,10 @@ public:
 		Item m_item = Item(itemNum);
 
 		m_itemList.push_back(m_item);
+	}
+
+	std::vector<Item> GetItemList()
+	{
+		return m_itemList;
 	}
 };
