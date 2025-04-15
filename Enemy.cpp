@@ -1,13 +1,16 @@
-<<<<<<< HEAD
 #include "Enemy.h"
 #include "Time.h"
 #include "Math.h"
 #include "Animation3D.h"
 #include "Collision3D.h"
+#include"BoxCollider3D.h"
+#include"LoadPlayer.h"
+#include"Quaternion.h"
+#include"NavMesh.h"
 #include "Input.h"
 #include "Lerp.h"
-#include "Quaternion.h"
 #include <math.h>
+
 
 // アニメーションリスト
 const char* Enemy::AnimList[RoopAnimNum] =
@@ -17,13 +20,15 @@ const char* Enemy::AnimList[RoopAnimNum] =
 	"Zombie/ZombieAttack.mv1",
 };
 
-Enemy::Enemy(Collision3D* collision3D) :
-	Actor("Enemy"),
+Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
+	Actor3D("Enemy", pos),
 	m_model(MV1LoadModel("Resource/Zombie/Zombie.mv1")),
 	m_animIndex(0),
-	m_nowAnim(RoopAnim::Idle),
-	m_nextAnim(RoopAnim::Idle),
-	m_collision3D(collision3D)
+	m_nowAnim(Anim::Idle),
+	m_nextAnim(Anim::Idle),
+	m_navMesh(navMesh),
+	m_player(loadPlayer),
+	m_isSet(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < RoopAnimNum; i++)
@@ -45,7 +50,9 @@ Enemy::Enemy(Collision3D* collision3D) :
 	m_lightHandle = CreateDirLightHandle(Vector3(0, 100.0f, 0));
 
 	// 最初のアニメーションを指定
-	m_attachAnimList[static_cast<int>(RoopAnim::Idle)]->FadeIn();
+	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
+
+	m_collider = new BoxCollider3D(Vector3(200, 200, 200));
 }
 
 // アニメーションを切り替える(Lerp)
@@ -60,7 +67,7 @@ void Enemy::ChangeAnimLerp()
 }
 
 // アニメーションを切り替える(即座)
-void Enemy::ChangeAnimQuick(const RoopAnim nextAnim)
+void Enemy::ChangeAnimQuick(const Anim nextAnim)
 {
 	m_attachAnimList[static_cast<int>(m_nowAnim)]->ChangeOut();
 	m_attachAnimList[static_cast<int>(nextAnim)]->ChangeIn();
@@ -88,46 +95,29 @@ void Enemy::Finalize()
 	DeleteLightHandle(m_lightHandle);
 	// プレイヤーのモデルを削除
 	MV1DeleteModel(m_model);
-=======
-#include"Enemy.h"
-#include"LoadPlayer.h"
-#include"BoxCollider3D.h"
-#include"Quaternion.h"
-#include"NavMesh.h"
-
-Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
-	Actor3D("Enemy", pos),
-	m_navMesh(navMesh),
-	m_model(MV1LoadModel("Resource/item.mv1")),
-	m_player(loadPlayer),
-	m_isSet(false)
-{
-	m_collider = new BoxCollider3D(Vector3(200, 200, 200));
->>>>>>> navMesh
 }
 
 void Enemy::Update()
 {
-<<<<<<< HEAD
 	// 1フレーム前の位置を更新
 	m_enemyPastPos = m_enemyPos;
 
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_1))
 	{
-		m_nextAnim = RoopAnim::Idle;
+		m_nextAnim = Anim::Idle;
 	}
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_2))
 	{
-		m_nextAnim = RoopAnim::Walk;
+		m_nextAnim = Anim::Run;
 	}
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_3))
 	{
-		m_nextAnim = RoopAnim::Attack;
+		m_nextAnim = Anim::Attack;
 	}
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();
-=======
+
 	// 自身とプレイヤー間の経路探索を行う
 	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
@@ -138,16 +128,12 @@ void Enemy::Update()
 
 	// 今回の探索情報を削除
 	m_navMesh->RemovePathPlan();
->>>>>>> navMesh
 }
 
 void Enemy::Draw()
 {
-<<<<<<< HEAD
 	// アニメーション再生
 	PlayAnim();
-}
-=======
 	Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
 
 	// モデルの描画
@@ -163,4 +149,3 @@ void Enemy::OnCollision(const Actor3D* other)
 {
 
 }
->>>>>>> navMesh

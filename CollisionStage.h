@@ -57,9 +57,6 @@ public:
 	{
 		return m_refPoly;
 	}
-<<<<<<< HEAD
-=======
-
 	// メッシュモデルを取得
 	int GetMeshModel()
 	{
@@ -68,5 +65,4 @@ public:
 
 	// 指定の座標の直下、若しくは直上にあるポリゴンの番号を取得する
 	int CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLIST& polyList);
->>>>>>> navMesh
 };

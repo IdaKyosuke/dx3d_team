@@ -5,13 +5,9 @@
 class Node;
 class LoadPlayer;
 class Enemy;
-<<<<<<< HEAD
 class Collision3D;
-=======
 class NavMesh;
 class Camera;
-class CollisionStage;
->>>>>>> navMesh
 class ItemFactory;
 class UiScore;
 class UiResult;
@@ -35,24 +31,19 @@ private:
 	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
 	Enemy* m_enemy;
-<<<<<<< HEAD
 	Collision3D* m_collision3D;
-=======
 	NavMesh* m_navMesh;
 	Camera* m_cam;
 	CollisionStage* m_collisionStage;
->>>>>>> navMesh
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
-	CollisionStage* m_collisionStage;
 
 	Item* m_item;
 	Inventory* m_inventory;
 
 
 	float m_resultTransitionTime;
-	int m_bgm;
 	bool m_isFinish;
 
 public:
@@ -61,11 +52,8 @@ public:
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_enemy(nullptr),
-<<<<<<< HEAD
-=======
 		m_navMesh(nullptr),
 		m_cam(nullptr),
->>>>>>> navMesh
 		m_resultTransitionTime(ResultTransitionTime),
 		m_collisionStage(nullptr),
 		m_itemfactory(nullptr),
@@ -73,8 +61,6 @@ public:
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
-		m_collisionStage(nullptr),
-		m_bgm(0),
 		m_isFinish(false) {
 	}
 

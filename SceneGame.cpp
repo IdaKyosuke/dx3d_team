@@ -8,14 +8,9 @@
 #include "Fade.h"
 #include "ImageLoader.h"
 #include"LoadPlayer.h"
-<<<<<<< HEAD
 #include "Enemy.h"
-#include"Collision3D.h"
-=======
 #include"NavMesh.h"
-#include"Enemy.h"
 #include"CollisionStage.h"
->>>>>>> navMesh
 #include"ItemFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
@@ -23,8 +18,6 @@
 
 #include "Item.h"
 #include "Inventory.h"
-#include"CollisionStage.h"
-
 
 // 初期化
 void SceneGame::Initialize()
@@ -47,21 +40,14 @@ void SceneGame::Initialize()
 	m_rootNode->AddChild(uiLayer);
 
 	// ステージの当たり判定を作成
-<<<<<<< HEAD
-	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
-=======
 	m_collisionStage = new CollisionStage("Resource/PathPlanning.mqo", Vector3(0, 0, 0));
->>>>>>> navMesh
+
 	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
-<<<<<<< HEAD
-	actorLayer->AddChild(m_loadPlayer);
 
-	// 敵
-	m_enemy = new Enemy(m_collision3D);
-	actorLayer->AddChild(m_enemy);
+	actorLayer->AddChild(m_loadPlayer);
 
 	//インベントリ
 	m_inventory = new Inventory(m_loadPlayer);
@@ -79,10 +65,6 @@ void SceneGame::Initialize()
 	m_item = new Item(2, Vector3(100, 50, 400), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
-
-=======
-	actorLayer->AddChild(m_loadPlayer);	
-
 	// ナビメッシュ
 	m_navMesh = new NavMesh(m_collisionStage);
 	
@@ -90,7 +72,6 @@ void SceneGame::Initialize()
 	m_enemy = new Enemy(m_navMesh, Vector3(800, 110, 10), m_loadPlayer);
 	actorLayer->AddChild(m_enemy);
 	
->>>>>>> navMesh
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
@@ -102,17 +83,6 @@ void SceneGame::Initialize()
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
-<<<<<<< HEAD
-
-	
-	
-=======
-	
-	// BGM
-	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
-	ChangeVolumeSoundMem(60, m_bgm);
-	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
->>>>>>> navMesh
 }
 
 // 終了
@@ -135,9 +105,6 @@ void SceneGame::Finalize()
 	// navMesh情報の破棄
 	m_navMesh->RemovePathPlan();
 	m_navMesh->RemovePolyLinkInfo();
-
-	// BGM
-	DeleteSoundMem(m_bgm);
 }
 
 // 更新

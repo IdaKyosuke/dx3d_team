@@ -59,19 +59,6 @@ void Sphere::MoveSphere()
 	if (m_rotate.y >= 2.5f) m_rotate.y = 0;
 }
 
-<<<<<<< HEAD
-void Sphere::CheckDistance()
-{
-	m_dist = (m_pos - m_loadPlayer->GetPosition()).Magnitude();
-	if (m_dist <= DeleteDistance)
-	{
-		m_itemFactory->ItemCount();
-		Destroy();
-	}
-}
-
-=======
->>>>>>> navMesh
 void Sphere::Update()
 {
 	MoveSphere();

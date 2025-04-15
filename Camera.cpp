@@ -14,11 +14,8 @@ Camera::Camera(LoadPlayer* player) :
 	m_isLocked(true)
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
-<<<<<<< HEAD
+
 	switch(m_sightMode)
-=======
-	switch (m_sightMode)
->>>>>>> navMesh
 	{
 	case SightMode::First:
 		// カメラの位置をプレイヤーと同じにする
@@ -233,14 +230,11 @@ void Camera::Update()
 {
 	// カメラを動かす
 	MoveCam(m_loadPlayerNode->GetPosition());
-<<<<<<< HEAD
-=======
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
 		m_isLocked = !m_isLocked;
 	}
->>>>>>> navMesh
 }
 
 void Camera::Draw()
