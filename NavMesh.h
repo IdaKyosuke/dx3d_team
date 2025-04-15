@@ -25,9 +25,6 @@ class CollisionStage;
 class NavMesh
 {
 private:
-	const float MoveSpeed = 1.0f;
-	const float Width = 0.0f;
-
 	// 経路探索で使用する情報を保存
 	Vector3 m_startPos;	// 探索開始位置
 	Vector3 m_endPos;	// 探索目標位置
@@ -76,8 +73,8 @@ public:
 	void MoveInitialize(const Vector3& pos);
 
 	// 探索経路の移動処理
-	Vector3 Move(const Vector3& pos, const float speed);
+	Vector3 Move(const Vector3& pos, const float speed, const float width);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-	bool RefreshMoveDirection(const float speed);
+	bool RefreshMoveDirection(const float speed, const float width);
 };

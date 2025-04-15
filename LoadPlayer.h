@@ -50,7 +50,7 @@ private:
 	static constexpr float DurationTime = 1.0f;
 	static constexpr float JumpPower = 4.0f;	// 初速度
 	static constexpr float Gravity = 9.8f;		// 重力加速度
-	static constexpr Vector3 SpawnPos = Vector3(-1000, 100, 500);	// ステージにスポーンする場所
+	static constexpr Vector3 SpawnPos = Vector3(1000, 1000, 1000);	// ステージにスポーンする場所
 	static constexpr float RestartHeight = 3000.0f;	// リスポーンする高さの絶対値
 	static constexpr float FloatHeight = 50.0f;		// 無重力状態の高さ
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
