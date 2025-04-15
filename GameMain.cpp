@@ -6,7 +6,10 @@
 #include "SceneGame.h"
 #include "Input.h"
 #include "Time.h"
+<<<<<<< HEAD
 #include "ActorCollision.h"
+=======
+>>>>>>> navMesh
 #include "ActorCollision3D.h"
 #include "Fade.h"
 #include "ImageLoader.h"

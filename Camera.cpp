@@ -10,10 +10,15 @@ Camera::Camera(LoadPlayer* player) :
 	m_loadPlayerNode(player),
 	m_pastTerning(false),
 	m_diffY(DiffY),
-	m_sightMode(SightMode::First)
+	m_sightMode(SightMode::Third),
+	m_isLocked(true)
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
+<<<<<<< HEAD
 	switch(m_sightMode)
+=======
+	switch (m_sightMode)
+>>>>>>> navMesh
 	{
 	case SightMode::First:
 		// カメラの位置をプレイヤーと同じにする
@@ -60,7 +65,7 @@ void Camera::SetCamPosAndTag()
 		}
 		break;
 	}
-	
+
 }
 
 // カメラの正面ベクトルを取得する(XYZ)
@@ -106,7 +111,7 @@ void Camera::MoveCam(const Vector3& playerPos)
 		ThirdPerson(playerPos);
 		break;
 	}
-	
+
 	// カメラの高さは常にプレイヤーの移動量と同じにする
 	if (m_pastPlayerPos != playerPos)
 	{
@@ -115,7 +120,10 @@ void Camera::MoveCam(const Vector3& playerPos)
 	m_pastPlayerPos = playerPos;
 
 	// カメラのスクリーン座標を中心に戻す
-	Input::GetInstance()->SetMousePoint();
+	if (m_isLocked)
+	{
+		Input::GetInstance()->SetMousePoint();
+	}
 }
 
 
@@ -163,7 +171,7 @@ void Camera::FirstPerson(const Vector3& playerPos)
 		// マウスの移動量がないときはプレイヤーと同じ動きをする
 		m_camTarget += playerPos - m_pastPlayerPos;
 	}
-	
+
 	// 視点の上下移動
 	if (Input::GetInstance()->GetMousePoint().y != Screen::Center.y)
 	{
@@ -176,13 +184,13 @@ void Camera::FirstPerson(const Vector3& playerPos)
 			// 上限
 			m_camTarget.y = playerPos.y + MaxCamHeight;
 		}
-		else if(m_camTarget.y <= playerPos.y + MinCamHeight)
+		else if (m_camTarget.y <= playerPos.y + MinCamHeight)
 		{
 			// 下限
 			m_camTarget.y = playerPos.y + MinCamHeight;
 		}
 	}
-	
+
 	// カメラをプレイヤーと一緒に移動する
 	m_camPos = Vector3(playerPos.x, playerPos.y + DiffY, playerPos.z);
 }
@@ -222,15 +230,23 @@ void Camera::AntiGravity(const Vector3& playerPos)
 }
 
 void Camera::Update()
-{	
+{
 	// カメラを動かす
 	MoveCam(m_loadPlayerNode->GetPosition());
+<<<<<<< HEAD
+=======
+
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
+	{
+		m_isLocked = !m_isLocked;
+	}
+>>>>>>> navMesh
 }
 
 void Camera::Draw()
 {
 #ifdef _DEBUG
-	DrawFormatString(0, 0, GetColor(255, 255, 255), 
+	DrawFormatString(0, 0, GetColor(255, 255, 255),
 		"CamTarget Vector3(%.0f, %.0f, %.0f)",
 		m_camTarget.x, m_camTarget.y, m_camTarget.z);
 

@@ -34,6 +34,8 @@ private:
 	float m_diffY;		// カメラ角度を少しずつ変えるよう
 	SightMode m_sightMode;	// 今の視点モード
 
+	bool m_isLocked;
+
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;

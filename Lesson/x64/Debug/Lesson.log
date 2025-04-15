@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Actor.cpp
   Actor3D.cpp
   ActorCollision.cpp
@@ -39,3 +40,10 @@
   Vector3.cpp
   コードを生成中...
   Lesson.vcxproj -> D:\2024\BitBucket\Dx3d\x64\Debug\Lesson.exe
+=======
+﻿  Enemy.cpp
+  NavMesh.cpp
+  SceneGame.cpp
+  コードを生成中...
+  Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Debug\Lesson.exe
+>>>>>>> navMesh

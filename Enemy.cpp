@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "Enemy.h"
 #include "Time.h"
 #include "Math.h"
@@ -87,10 +88,27 @@ void Enemy::Finalize()
 	DeleteLightHandle(m_lightHandle);
 	// プレイヤーのモデルを削除
 	MV1DeleteModel(m_model);
+=======
+#include"Enemy.h"
+#include"LoadPlayer.h"
+#include"BoxCollider3D.h"
+#include"Quaternion.h"
+#include"NavMesh.h"
+
+Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
+	Actor3D("Enemy", pos),
+	m_navMesh(navMesh),
+	m_model(MV1LoadModel("Resource/item.mv1")),
+	m_player(loadPlayer),
+	m_isSet(false)
+{
+	m_collider = new BoxCollider3D(Vector3(200, 200, 200));
+>>>>>>> navMesh
 }
 
 void Enemy::Update()
 {
+<<<<<<< HEAD
 	// 1フレーム前の位置を更新
 	m_enemyPastPos = m_enemyPos;
 
@@ -109,10 +127,40 @@ void Enemy::Update()
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();
+=======
+	// 自身とプレイヤー間の経路探索を行う
+	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
+
+	// 移動準備
+	m_navMesh->MoveInitialize(this->GetPosition());
+
+	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, 20.0f);
+
+	// 今回の探索情報を削除
+	m_navMesh->RemovePathPlan();
+>>>>>>> navMesh
 }
 
 void Enemy::Draw()
 {
+<<<<<<< HEAD
 	// アニメーション再生
 	PlayAnim();
 }
+=======
+	Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
+
+	// モデルの描画
+	MV1DrawModel(m_model);
+
+	DrawFormatString(0, 40, GetColor(255, 255, 255),
+		"EnemyPos Vector3(%.0f, %.0f, %.0f)",
+		this->GetPosition().x, this->GetPosition().y, this->GetPosition().z
+	);
+}
+
+void Enemy::OnCollision(const Actor3D* other)
+{
+
+}
+>>>>>>> navMesh

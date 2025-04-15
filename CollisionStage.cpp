@@ -8,12 +8,23 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 {
 	// ステージの読み込み
 	m_model = MV1LoadModel(modelPath);
+<<<<<<< HEAD
 	MV1SetPosition(m_model, Vector3(0, 0, 0));
 	// モデル全体のコリジョン情報を構築
 	MV1SetupCollInfo(m_model, -1, 8, 8, 8);
 
 	MV1SetupReferenceMesh(m_model, -1, true);
 	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
+=======
+
+	MV1SetPosition(m_model, Vector3(0, 0, 0));
+	// モデル全体のコリジョン情報を構築
+	MV1SetupCollInfo(m_model, -1, 8, 8, 8);
+	/*
+	MV1SetupReferenceMesh(m_model, -1, true);
+	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
+	*/
+>>>>>>> navMesh
 
 	// レイの設定
 	m_checkMoveStart = Vector3(0, 0, 0);
@@ -82,6 +93,7 @@ int CollisionStage::CapsuleCollider(const Vector3& pos, bool terning)
 
 }
 
+<<<<<<< HEAD
 void CollisionStage::Draw()
 {
 	MV1DrawModel(m_model);
@@ -89,6 +101,47 @@ void CollisionStage::Draw()
 #ifdef _DEBUG
 	DrawLine3D(m_getHeightStart, m_getHeightEnd, GetColor(255, 255, 0));
 
+=======
+// 指定の座標の直下、若しくは直上にあるポリゴンの番号を取得する
+int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLIST& polyList)
+{
+	Vector3 linePos1;
+	Vector3 linePos2;
+	HITRESULT_LINE hitRes;
+	MV1_REF_POLYGON* refPoly;
+
+	// 指定座標のY軸方向に大きく伸びる線分をセット
+	linePos1 = Vector3(pos.x, 100000.0f, pos.z);
+	linePos2 = Vector3(pos.x, -100000.0f, pos.z);
+
+	// ステージモデルのポリゴン数だけ繰り返す
+	refPoly = polyList.Polygons;
+	for (int i = 0; i < polyList.PolygonNum; i++, refPoly++)
+	{
+		// 線分と接するポリゴンを返す
+		hitRes = HitCheck_Line_Triangle(
+			linePos1,
+			linePos2,
+			polyList.Vertexs[refPoly->VIndex[0]].Position,
+			polyList.Vertexs[refPoly->VIndex[1]].Position,
+			polyList.Vertexs[refPoly->VIndex[2]].Position
+			);
+
+		if (hitRes.HitFlag) return i;
+	}
+
+	// ポリゴンが無い場合
+	return -1;
+}
+
+void CollisionStage::Draw()
+{
+	MV1DrawModel(m_model);
+	
+#ifdef _DEBUG
+	DrawLine3D(m_getHeightStart, m_getHeightEnd, GetColor(255, 255, 0));
+	/*
+>>>>>>> navMesh
 	// ポリゴンの数だけ繰り返し
 	for (int i = 0; i < m_refPoly.PolygonNum; i++)
 	{
@@ -109,6 +162,10 @@ void CollisionStage::Draw()
 			GetColor(255, 255, 0));
 	}
 
+<<<<<<< HEAD
+=======
+	*/
+>>>>>>> navMesh
 	DrawCapsule3D(m_cap1, m_cap2, Radius, 8, GetColor(255, 255, 0), GetColor(255, 255, 0), FALSE);
 
 	// 当たったかどうかを表示する

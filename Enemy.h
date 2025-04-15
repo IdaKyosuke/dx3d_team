@@ -1,4 +1,5 @@
 #pragma once
+<<<<<<< HEAD
 #include "Actor.h"
 #include "Vector3.h"
 #include "DxLib.h"
@@ -17,10 +18,30 @@ public:
 		Walk,
 		Attack,
 
+=======
+#include"Actor3D.h"
+#include"Vector3.h"
+#include"DxLib.h"
+#include<vector>
+
+class Animation3D;
+class NavMesh;
+class LoadPlayer;
+
+class Enemy : public Actor3D
+{
+public:
+	enum class Anim
+	{
+		Idle,
+		Run,
+		Attack,
+>>>>>>> navMesh
 		Length,
 	};
 
 private:
+<<<<<<< HEAD
 	std::vector<Animation3D*> m_attachAnimList;
 
 	static constexpr int RoopAnimNum = static_cast<int>(RoopAnim::Length);	// アニメーションの数
@@ -45,10 +66,25 @@ private:
 	RoopAnim m_nowAnim;
 	RoopAnim m_nextAnim;
 
+=======
+	//std::vector<Animation3D*> m_attacjAnimList;	// アニメーションリスト
+	//static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
+
+	static constexpr float MoveSpeed = 5.0f;	// 移動速度
+	//static const char* AnimList[AnimNum];	// アニメーションを指定する用
+
+	int m_model;
+	int m_animIndex;	// 再生中のアニメーション
+	NavMesh* m_navMesh;	// 経路探索用
+	LoadPlayer* m_player;	// プレイヤー
+
+	bool m_isSet;
+>>>>>>> navMesh
 
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;
+<<<<<<< HEAD
 
 public:
 	Enemy(Collision3D* collision3D);
@@ -71,3 +107,10 @@ public:
 		return m_enemyPos;
 	}
 };
+=======
+	virtual void OnCollision(const Actor3D* other) override;
+
+public:
+	Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer);
+};
+>>>>>>> navMesh

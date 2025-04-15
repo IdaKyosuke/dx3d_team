@@ -110,11 +110,12 @@ void LoadPlayer::PlayAnim()
 
 	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	MV1DrawModel(m_model);
-
-	DrawFormatString(0, 40, GetColor(255, 255, 255),
+	
+	DrawFormatString(0, 60, GetColor(255, 255, 255),
 		"PlayerPos Vector3(%.0f, %.0f, %.0f)",
 		m_transform.position.x, m_transform.position.y, m_transform.position.z
 	);
+	
 }
 
 // ƒ‚ƒfƒ‹ŠÖŒW‚ğíœ

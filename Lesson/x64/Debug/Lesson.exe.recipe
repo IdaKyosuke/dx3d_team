@@ -2,7 +2,11 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+<<<<<<< HEAD
       <FullPath>D:\2024\BitBucket\Dx3d\x64\Debug\Lesson.exe</FullPath>
+=======
+      <FullPath>D:\2024井田\2024\GitHub\dx3d_team\x64\Debug\Lesson.exe</FullPath>
+>>>>>>> navMesh
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />

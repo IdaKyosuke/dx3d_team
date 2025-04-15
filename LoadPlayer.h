@@ -50,14 +50,17 @@ private:
 	static constexpr float DurationTime = 1.0f;
 	static constexpr float JumpPower = 4.0f;	// 初速度
 	static constexpr float Gravity = 9.8f;		// 重力加速度
+<<<<<<< HEAD
 	static constexpr Vector3 SpawnPos = Vector3(950, 60, 90);	// ステージにスポーンする場所
+=======
+	static constexpr Vector3 SpawnPos = Vector3(1000, 1000, 1000);	// ステージにスポーンする場所
+>>>>>>> navMesh
 	static constexpr float RestartHeight = 3000.0f;	// リスポーンする高さの絶対値
 	static constexpr float FloatHeight = 50.0f;		// 無重力状態の高さ
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
 	static constexpr Vector3 ColSize = Vector3(70, 180, 70);	// コライダーのサイズ
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
-
 
 	static const char* AnimList[RoopAnimNum];
 
@@ -100,6 +103,7 @@ private:
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;
+	virtual void OnCollision(const Actor3D* other) override;
 
 public:
 	LoadPlayer(CollisionStage* collisionStage);

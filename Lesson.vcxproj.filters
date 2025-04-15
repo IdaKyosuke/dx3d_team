@@ -129,6 +129,7 @@
     <ClCompile Include="UiResult.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="Enemy.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
@@ -143,13 +144,29 @@
     </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>ソース ファイル</Filter>
+=======
+    <ClCompile Include="NavMesh.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorCollision3D.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+>>>>>>> navMesh
     </ClCompile>
     <ClCompile Include="CollisionStage.cpp">
       <Filter>ソース ファイル\Collision</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="ActorCollision3D.cpp">
       <Filter>ソース ファイル\Collision</Filter>
     </ClCompile>
+=======
+>>>>>>> navMesh
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Screen.h">
@@ -275,15 +292,24 @@
     <ClInclude Include="UiResult.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="Enemy.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>ヘッダー ファイル</Filter>
+=======
+    <ClInclude Include="NavMesh.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+>>>>>>> navMesh
     </ClInclude>
     <ClInclude Include="Actor3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ItemIcon.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -295,6 +321,10 @@
     </ClInclude>
     <ClInclude Include="ActorCollision3D.h">
       <Filter>ヘッダー ファイル\Collision</Filter>
+=======
+    <ClInclude Include="ActorCollision3D.h">
+      <Filter>ヘッダー ファイル</Filter>
+>>>>>>> navMesh
     </ClInclude>
     <ClInclude Include="BoxCollider3D.h">
       <Filter>ヘッダー ファイル\Collision</Filter>
@@ -302,8 +332,13 @@
     <ClInclude Include="Collider3D.h">
       <Filter>ヘッダー ファイル\Collision</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="ItemDate.h">
       <Filter>ヘッダー ファイル</Filter>
+=======
+    <ClInclude Include="CollisionStage.h">
+      <Filter>ヘッダー ファイル\Collision</Filter>
+>>>>>>> navMesh
     </ClInclude>
   </ItemGroup>
 </Project>

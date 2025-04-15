@@ -4,13 +4,18 @@
 #include "Input.h"
 #include "Node.h"
 #include "Actor.h"
-#include "HitBox.h"
 #include "Time.h"
 #include "Fade.h"
 #include "ImageLoader.h"
 #include"LoadPlayer.h"
+<<<<<<< HEAD
 #include "Enemy.h"
 #include"Collision3D.h"
+=======
+#include"NavMesh.h"
+#include"Enemy.h"
+#include"CollisionStage.h"
+>>>>>>> navMesh
 #include"ItemFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
@@ -42,11 +47,16 @@ void SceneGame::Initialize()
 	m_rootNode->AddChild(uiLayer);
 
 	// ステージの当たり判定を作成
+<<<<<<< HEAD
 	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+=======
+	m_collisionStage = new CollisionStage("Resource/PathPlanning.mqo", Vector3(0, 0, 0));
+>>>>>>> navMesh
 	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
+<<<<<<< HEAD
 	actorLayer->AddChild(m_loadPlayer);
 
 	// 敵
@@ -70,20 +80,39 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 
 
+=======
+	actorLayer->AddChild(m_loadPlayer);	
+
+	// ナビメッシュ
+	m_navMesh = new NavMesh(m_collisionStage);
+	
+	// 敵
+	m_enemy = new Enemy(m_navMesh, Vector3(800, 110, 10), m_loadPlayer);
+	actorLayer->AddChild(m_enemy);
+	
+>>>>>>> navMesh
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
-
+	
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_loadPlayer, m_uiScore);
+	m_itemfactory = new ItemFactory(m_uiScore);
 	actorLayer->AddChild(m_itemfactory);
 
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
+<<<<<<< HEAD
 
 	
 	
+=======
+	
+	// BGM
+	m_bgm = LoadSoundMem("Resource/sound/game_bgm.mp3");
+	ChangeVolumeSoundMem(60, m_bgm);
+	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
+>>>>>>> navMesh
 }
 
 // 終了
@@ -103,6 +132,10 @@ void SceneGame::Finalize()
 	delete m_rootNode;
 	m_rootNode = nullptr;
 
+	// navMesh情報の破棄
+	m_navMesh->RemovePathPlan();
+	m_navMesh->RemovePolyLinkInfo();
+
 	// BGM
 	DeleteSoundMem(m_bgm);
 }
@@ -112,7 +145,7 @@ SceneBase* SceneGame::Update()
 {
 	// ノードの更新
 	m_rootNode->TreeUpdate();
-
+	
 	if (m_uiResult->IsShowedPress())
 	{
 		if (Input::GetInstance()->IsAnyKeyDown())
