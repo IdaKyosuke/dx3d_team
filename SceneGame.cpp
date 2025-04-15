@@ -9,6 +9,7 @@
 #include "Fade.h"
 #include "ImageLoader.h"
 #include"LoadPlayer.h"
+#include "Enemy.h"
 #include"Collision3D.h"
 #include"ItemFactory.h"
 #include"UiScore.h"
@@ -17,11 +18,8 @@
 
 #include "Item.h"
 #include "Inventory.h"
-<<<<<<< HEAD
-=======
 #include"CollisionStage.h"
 
->>>>>>> collision
 
 // 初期化
 void SceneGame::Initialize()
@@ -51,6 +49,10 @@ void SceneGame::Initialize()
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
 	actorLayer->AddChild(m_loadPlayer);
 
+	// 敵
+	m_enemy = new Enemy(m_collision3D);
+	actorLayer->AddChild(m_enemy);
+
 	//インベントリ
 	m_inventory = new Inventory(m_loadPlayer);
 	uiLayer->AddChild(m_inventory);
@@ -59,8 +61,6 @@ void SceneGame::Initialize()
 	m_item = new Item(0, Vector3(100, 50, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
-<<<<<<< HEAD
-=======
 	//アイテム
 	m_item = new Item(1, Vector3(400, 50, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
@@ -70,7 +70,6 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 
 
->>>>>>> collision
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);

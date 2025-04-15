@@ -1,24 +1,15 @@
 #pragma once
 #include "ItemDate.h"
-<<<<<<< HEAD
 #include "Actor.h" 
 #include "Vector3.h"
 #include <list>
-
 #include <cmath>
-=======
 #include "Actor3D.h" 
-#include "Vector3.h"
->>>>>>> collision
 
 class LoadPlayer;
 class Inventory;
 
-<<<<<<< HEAD
-class Item : public Actor
-=======
 class Item : public Actor3D
->>>>>>> collision
 {
 private:
 	int m_itemNumber;	//アイテムを識別するための番号格納用
@@ -26,17 +17,13 @@ private:
 	const char* m_itemName;
 	int m_sellMoney;	//売った時の金額
 
-<<<<<<< HEAD
-
-	bool m_canGetItem;
 
 
-=======
+
 	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//拾える範囲
 
 	bool m_canGetItem;
 
->>>>>>> collision
 	Vector3 m_itemPos;
 
 	enum class ItemNameList
@@ -62,14 +49,13 @@ private:
 	 float m_playerToDistance;	//プレイヤーとの距離
 
 protected:
-	virtual void Release();
-	virtual void Update();
-	virtual void Draw();
+	virtual void Release() override;
+	virtual void Update() override;
+	virtual void Draw() override;
 
 public:
 	Item(int itemNumber,Vector3 spownPos,LoadPlayer* player,Inventory* inventory);
 
-<<<<<<< HEAD
 	float Distance(Vector3 a, Vector3 b)
 	{
 		float num = a.x - b.x;
@@ -78,15 +64,10 @@ public:
 		return std::sqrt(num * num + num2 * num2 + num3 * num3);
 	}
 
-=======
->>>>>>> collision
 	int GetItemNum()
 	{
 		return m_itemNumber;
 	}
-<<<<<<< HEAD
-=======
 
 	virtual void OnCollision(const Actor3D* other);
->>>>>>> collision
 };

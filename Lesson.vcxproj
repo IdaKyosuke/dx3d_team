@@ -140,16 +140,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Actor3D.cpp" />
     <ClCompile Include="ActorCollision.cpp" />
+    <ClCompile Include="ActorCollision3D.cpp" />
     <ClCompile Include="Animation3D.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision3D.cpp" />
+    <ClCompile Include="CollisionStage.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemFactory.cpp" />
+    <ClCompile Include="ItemIcon.cpp" />
     <ClCompile Include="Lerp.cpp" />
     <ClCompile Include="LoaderBase.cpp" />
     <ClCompile Include="LoadPlayer.cpp" />
@@ -172,22 +179,32 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Actor3D.h" />
     <ClInclude Include="ActorCollision.h" />
+    <ClInclude Include="ActorCollision3D.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Animation3D.h" />
     <ClInclude Include="BoxCollider2D.h" />
+    <ClInclude Include="BoxCollider3D.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CircleCollider2D.h" />
     <ClInclude Include="Collider.h" />
+    <ClInclude Include="Collider3D.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="Collision3D.h" />
+    <ClInclude Include="CollisionStage.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameMain.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="Item.h" />
+    <ClInclude Include="ItemDate.h" />
     <ClInclude Include="ItemFactory.h" />
+    <ClInclude Include="ItemIcon.h" />
     <ClInclude Include="Lerp.h" />
     <ClInclude Include="LoadData.h" />
     <ClInclude Include="LoaderBase.h" />

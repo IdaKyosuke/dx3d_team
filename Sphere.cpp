@@ -60,7 +60,7 @@ void Sphere::MoveSphere()
 
 void Sphere::CheckDistance()
 {
-	m_dist = (m_pos - m_loadPlayer->PlayerPos()).Magnitude();
+	m_dist = (m_pos - m_loadPlayer->GetPosition()).Magnitude();
 	if (m_dist <= DeleteDistance)
 	{
 		m_itemFactory->ItemCount();

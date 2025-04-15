@@ -100,7 +100,6 @@ private:
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;
-	virtual void OnCollision(const Actor3D* other) override;
 
 public:
 	LoadPlayer(CollisionStage* collisionStage);
@@ -134,4 +133,5 @@ public:
 	{
 		return m_isTerning;
 	}
+	virtual void OnCollision(const Actor3D* other) override;
 };

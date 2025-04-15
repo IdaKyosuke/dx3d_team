@@ -4,7 +4,7 @@
 
 class Node;
 class LoadPlayer;
-class Camera;
+class Enemy;
 class Collision3D;
 class ItemFactory;
 class UiScore;
@@ -14,8 +14,6 @@ class CollisionStage;
 class Item;
 class Inventory;
 
-class Item;
-class Inventory;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -32,7 +30,7 @@ private:
 
 	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
-	Camera* m_cam;
+	Enemy* m_enemy;
 	Collision3D* m_collision3D;
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
@@ -42,8 +40,6 @@ private:
 	Item* m_item;
 	Inventory* m_inventory;
 
-	Item* m_item;
-	Inventory* m_inventory;
 
 	float m_resultTransitionTime;
 	int m_bgm;
@@ -54,7 +50,7 @@ public:
 	SceneGame() :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
-		m_cam(nullptr),
+		m_enemy(nullptr),
 		m_resultTransitionTime(ResultTransitionTime),
 		m_collision3D(nullptr),
 		m_itemfactory(nullptr),
@@ -62,10 +58,7 @@ public:
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
-<<<<<<< HEAD
-=======
 		m_collisionStage(nullptr),
->>>>>>> collision
 		m_bgm(0),
 		m_isFinish(false){}
 
