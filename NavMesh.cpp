@@ -1,6 +1,7 @@
 #include"NavMesh.h"
 #include"CollisionStage.h"
 #include"Math.h"
+#include"Vector3.h"
 
 NavMesh::NavMesh(CollisionStage* collisionStage) :
 	m_collisionStage(collisionStage),
@@ -31,12 +32,12 @@ void NavMesh::SetPolyLinkInfo()
 {
 	PolyLinkInfo* plInfo;
 	PolyLinkInfo* plInfoSub;
-	MV1_REF_POLYGON *refPoly;
-	MV1_REF_POLYGON *refPolySub;
+	MV1_REF_POLYGON* refPoly;
+	MV1_REF_POLYGON* refPolySub;
 
 	int model = m_collisionStage->GetMeshModel();
 
-	MV1SetupReferenceMesh(model, -1, true);
+	//MV1SetupReferenceMesh(model, -1, true);
 	m_polyList = MV1GetReferenceMesh(model, -1, true);
 
 	// ステージのメッシュ情報を取得
@@ -52,8 +53,8 @@ void NavMesh::SetPolyLinkInfo()
 	{
 		plInfo->centerPos = VScale(
 			VAdd(m_polyList.Vertexs[refPoly->VIndex[0]].Position,
-			VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position, 
-				 m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
+				VAdd(m_polyList.Vertexs[refPoly->VIndex[1]].Position,
+					m_polyList.Vertexs[refPoly->VIndex[2]].Position)),
 			1.0f / 3.0f
 		);
 	}
@@ -77,17 +78,34 @@ void NavMesh::SetPolyLinkInfo()
 		int count = 0;
 #endif // _DEBUG
 
+		// 隣接情報を追加しようとしているポリゴンの頂点座標
+		Vector3 vertexPos[3] = { Vector3(0, 0, 0) };
+		for (int j = 0; j < 3; j++)
+		{
+			// 対応したインデックスの要素に座標をコピー
+			vertexPos[j] = m_polyList.Vertexs[refPoly->VIndex[j]].Position;
+		}
+
 		for (int j = 0; j < m_polyList.PolygonNum; j++, refPolySub++, plInfoSub++)
 		{
 			// 自分自身を無視
 			if (i == j) continue;
 
+			Vector3 subVertexPos[3] = { Vector3(0, 0, 0) };
+
+			// この周で隣り合っているか調べるポリゴンの頂点座標
+			for (int k = 0; k < 3; k++)
+			{
+				subVertexPos[k] = m_polyList.Vertexs[refPolySub->VIndex[k]].Position;
+			}
+
 			// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 			if (
 				plInfo->linkPolyIndex[0] == -1 &&
-				((refPoly->VIndex[0] == refPolySub->VIndex[0] && refPoly->VIndex[1] == refPolySub->VIndex[2]) ||
-				 (refPoly->VIndex[0] == refPolySub->VIndex[1] && refPoly->VIndex[1] == refPolySub->VIndex[0]) ||
-				 (refPoly->VIndex[0] == refPolySub->VIndex[2] && refPoly->VIndex[1] == refPolySub->VIndex[1])))
+					((vertexPos[0] == subVertexPos[0] && vertexPos[1] == subVertexPos[2]) || 
+					 (vertexPos[0] == subVertexPos[1] && vertexPos[1] == subVertexPos[0]) || 
+					 (vertexPos[0] == subVertexPos[2] && vertexPos[1] == subVertexPos[1]))
+				)
 			{
 				plInfo->linkPolyIndex[0] = j;
 				plInfo->linkPolyDistance[0] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
@@ -96,11 +114,12 @@ void NavMesh::SetPolyLinkInfo()
 #endif // _DEBUG
 			}
 			// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
-			else if(
-					plInfo->linkPolyIndex[1] == -1 &&
-					((refPoly->VIndex[1] == refPolySub->VIndex[0] && refPoly->VIndex[2] == refPolySub->VIndex[2]) ||
-					 (refPoly->VIndex[1] == refPolySub->VIndex[1] && refPoly->VIndex[2] == refPolySub->VIndex[0]) ||
-					 (refPoly->VIndex[1] == refPolySub->VIndex[2] && refPoly->VIndex[2] == refPolySub->VIndex[1])))
+			else if (
+				plInfo->linkPolyIndex[1] == -1 &&
+					((vertexPos[1] == subVertexPos[0] && vertexPos[2] == subVertexPos[2]) ||
+					 (vertexPos[1] == subVertexPos[1] && vertexPos[2] == subVertexPos[0]) ||
+					 (vertexPos[1] == subVertexPos[2] && vertexPos[2] == subVertexPos[1]))
+				)
 			{
 				plInfo->linkPolyIndex[1] = j;
 				plInfo->linkPolyDistance[1] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
@@ -110,10 +129,11 @@ void NavMesh::SetPolyLinkInfo()
 			}
 			// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
 			else if (
-					plInfo->linkPolyIndex[2] == -1 &&
-					((refPoly->VIndex[2] == refPolySub->VIndex[0] && refPoly->VIndex[0] == refPolySub->VIndex[2]) ||
-					 (refPoly->VIndex[2] == refPolySub->VIndex[1] && refPoly->VIndex[0] == refPolySub->VIndex[0]) ||
-					 (refPoly->VIndex[2] == refPolySub->VIndex[2] && refPoly->VIndex[0] == refPolySub->VIndex[1])))
+				plInfo->linkPolyIndex[2] == -1 &&
+					((vertexPos[2] == subVertexPos[0] && vertexPos[0] == subVertexPos[2]) ||
+					 (vertexPos[2] == subVertexPos[1] && vertexPos[0] == subVertexPos[0]) ||
+					 (vertexPos[2] == subVertexPos[2] && vertexPos[0] == subVertexPos[1]))
+				)
 			{
 				plInfo->linkPolyIndex[2] = j;
 				plInfo->linkPolyDistance[2] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
@@ -121,11 +141,11 @@ void NavMesh::SetPolyLinkInfo()
 				count++;
 #endif // _DEBUG
 			}
-		}
 #ifdef _DEBUG
-		if (count >= 2)
-		{
-			count = 2;
+			if (count >= 2)
+			{
+				count = 2;
+			}
 		}
 #endif // _DEBUG
 	}
@@ -146,13 +166,13 @@ bool NavMesh::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 	PolyLinkInfo* polyInfoGoal;
 	Vector3 firstPos;
 	Vector3 targetPos;
-	Vector3 polyPos[3];
-	int checkPoly[3];
-	int checkPolyPrev[3];
+	Vector3 polyPos[3] = { Vector3(0, 0, 0) };
+	int checkPoly[3] = { 0 };
+	int checkPolyPrev[3] = { 0 };
 	int checkPolyNum;
 	int checkPolyPrevNum;
-	int nextCheckPoly[3];
-	int nextCheckPolyPrev[3];
+	int nextCheckPoly[3] = { 0 };
+	int nextCheckPolyPrev[3] = { 0 };
 	int nextCheckPolyNum;
 	int nextCheckPolyPrevNum;
 	int num;

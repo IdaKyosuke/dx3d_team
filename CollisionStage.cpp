@@ -12,9 +12,9 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 	MV1SetPosition(m_model, Vector3(0, 0, 0));
 	// モデル全体のコリジョン情報を構築
 	MV1SetupCollInfo(m_model, -1, 8, 8, 8);
-	/*
 	MV1SetupReferenceMesh(m_model, -1, true);
 	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
+	/*
 	*/
 
 	// レイの設定
@@ -122,7 +122,6 @@ void CollisionStage::Draw()
 	
 #ifdef _DEBUG
 	DrawLine3D(m_getHeightStart, m_getHeightEnd, GetColor(255, 255, 0));
-	/*
 	// ポリゴンの数だけ繰り返し
 	for (int i = 0; i < m_refPoly.PolygonNum; i++)
 	{
@@ -142,6 +141,7 @@ void CollisionStage::Draw()
 			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[0]].Position,
 			GetColor(255, 255, 0));
 	}
+	/*
 	*/
 	DrawCapsule3D(m_cap1, m_cap2, Radius, 8, GetColor(255, 255, 0), GetColor(255, 255, 0), FALSE);
 
