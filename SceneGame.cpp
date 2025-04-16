@@ -18,6 +18,9 @@
 #include"CollisionStage.h"
 #include "DxLib.h"
 
+#include "Chest.h"
+#include "KeepChest.h"
+
 #include "Item.h"
 
 
@@ -59,7 +62,6 @@ void SceneGame::Initialize()
 	m_item = new Item(2, Vector3(100, 50, 400),m_inventory);
 	actorLayer->AddChild(m_item);
 
-
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
@@ -71,7 +73,20 @@ void SceneGame::Initialize()
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
+
+	m_keepChest = new KeepChest;
 	
+	//チェストとインベントリ
+	if (!m_chestItem.empty())
+	{
+
+		int haveItemCount = static_cast<int>(m_chestItem.size());
+
+		for (int i = 0; i <= haveItemCount - 1; i++)
+		{
+			m_keepChest->SetItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
+		}
+	}
 }
 
 // 終了
@@ -101,7 +116,7 @@ SceneBase* SceneGame::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneMenu(m_inventory);
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory);
 	}
 
 	return this;

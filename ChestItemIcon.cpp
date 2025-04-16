@@ -36,7 +36,18 @@ void ChestItemIcon::Update()
 		}
 	}
 
-	m_transform.position = SetPos + Vector2(90 * m_countGetItem,90 * m_countGetItem % 10);
+	//Т▓Ро
+	int verticalCount = m_countGetItem / 10;
+	if (m_countGetItem >= 10)
+	{
+		int takeItem = m_countGetItem % 10;
+
+		m_transform.position = SetPos + Vector2(90 * takeItem, 90 * verticalCount);
+	}
+	else
+	{
+		m_transform.position = SetPos + Vector2(90 * m_countGetItem, 0);
+	}
 }
 
 void ChestItemIcon::Draw()

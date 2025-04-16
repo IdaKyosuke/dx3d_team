@@ -4,13 +4,11 @@
 #include "SceneBase.h"
 #include "Vector2.h"
 
-class ShopButton : public Actor
+class EnhanceButton : public Actor
 {
 private:
-	static constexpr Vector2 Position = Vector2(125, 180);
+	static constexpr Vector2 Position = Vector2(125, 280);
 	static constexpr Vector2 Size = Vector2(200, 100);
-
-	
 
 	bool m_shopOrEnhance;
 	int m_shopEnhanceNum;
@@ -27,7 +25,7 @@ protected:
 	virtual void Draw() override;	//•`‰æ
 
 public:
-	ShopButton();
+	EnhanceButton();
 
 	bool GetCheckOnClick()
 	{

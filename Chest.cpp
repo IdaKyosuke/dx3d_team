@@ -6,7 +6,7 @@
 #include "LoadPlayer.h"
 #include "Input.h"
 
-Chest::Chest(MenuInventory* menuInventory) :
+Chest::Chest() :
 	m_haveItemCount(0),
 	m_itemNum(0),
 	m_destroyTakeItem(0),
@@ -14,7 +14,6 @@ Chest::Chest(MenuInventory* menuInventory) :
 	m_destroyItemIcon(false),
 	m_canStorageItem(true),
 	m_isChest(false),
-	m_menuInventory(menuInventory),
 	m_storagingItem(false)
 {
 	m_transform.position = Screen::Center + Vector2(0, 170);
@@ -44,7 +43,7 @@ void Chest::Update()
 		m_destroyItemIcon = false;
 	}
 
-	m_haveItemCount = static_cast<int>(std::distance(m_itemList.begin(), m_itemList.end()));
+	m_haveItemCount = static_cast<int>(m_itemList.size());
 
 	//アイテムを収納できるか
 	if (m_haveItemCount >= MaxHaveItem)
@@ -66,6 +65,7 @@ void Chest::Update()
 		m_storagingItem = false;
 	}
 
+
 	if (m_isChest)
 	{
 		//アイテム選択
@@ -85,15 +85,14 @@ void Chest::Update()
 		{
 			m_takeItem -= 10;
 		}
-
+		/*
 		//チェストからインベントリへ変更
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
 		{
 			m_isChest = false;
-
-			m_menuInventory->SetIsInventory(true);
 		}
-		
+		*/
+		/*
 		//アイテムをインベントリに入れる
 		if (m_haveItemCount > 0)
 		{
@@ -113,6 +112,7 @@ void Chest::Update()
 				m_itemList.erase(m_itemList.begin() + m_takeItem);
 			}
 		}
+		*/
 	}
 
 	m_takeItem = m_takeItem % MaxHaveItem;
@@ -152,4 +152,10 @@ void Chest::Draw()
 {
 	m_chestUi.Draw(m_transform);
 	m_takeItemUi.Draw(m_takeItemTransform);
+}
+
+void Chest::CreateIcon(int ItemNum)
+{
+	GetParent()->AddChild(new ChestItemIcon(std::next(m_itemList.begin(), ItemNum)->GetItemNum(),
+		ItemNum, this));
 }

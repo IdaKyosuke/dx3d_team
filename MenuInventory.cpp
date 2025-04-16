@@ -39,12 +39,7 @@ void MenuInventory::Update()
 {
 	m_menuInventoryUi.Update();
 	m_takeItemUi.Update();
-
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_L))
-	{
-		int hoge = 1;
-	}
-	
+		
 	if (m_destroyItemIcon)
 	{
 		m_destroyItemIcon = false;
@@ -96,8 +91,6 @@ void MenuInventory::Update()
 		{
 			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
 			{
-				m_haveItemCount--;
-
 				//格納したアイテムが何番目のアイテムか
 				m_destroyTakeItem = m_takeItem;
 
@@ -110,6 +103,15 @@ void MenuInventory::Update()
 				//vectorの中から捨てたアイテムのデータを消す
 				m_itemList.erase(m_itemList.begin() + m_takeItem);
 			}
+		}
+	}
+	else
+	{
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
+		{
+			m_isIventory = true;
+
+			m_chest->SetIsInventory(false);
 		}
 	}
 

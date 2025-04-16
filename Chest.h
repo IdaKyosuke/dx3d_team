@@ -5,8 +5,6 @@
 #include "Transform.h"
 #include <vector>
 
-class MenuInventory;
-
 class Chest : public Node
 {
 private:
@@ -33,8 +31,6 @@ private:
 	Transform m_transform;
 	Transform m_takeItemTransform;	// épê®
 
-	MenuInventory* m_menuInventory;
-
 protected:
 	virtual void Load() override;
 	virtual void Release() override;
@@ -42,7 +38,7 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Chest(MenuInventory* menuInvenrtory);
+	Chest();
 
 	bool DestoryItemIcon()
 	{
@@ -84,5 +80,20 @@ public:
 	std::vector<Item> GetItemList()
 	{
 		return m_itemList;
+	}
+
+	int GetTakeItem()
+	{
+		return m_takeItem;
+	}
+
+	void CreateIcon(int itemNum);
+
+	void LostItem(int itemNum)
+	{
+		m_itemList.erase(m_itemList.begin() + itemNum);
+
+		m_destroyTakeItem = m_takeItem;
+		m_destroyItemIcon = true;
 	}
 };

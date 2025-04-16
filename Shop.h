@@ -4,14 +4,24 @@
 #include "Transform.h"
 
 class Chest;
+class Wallet;
+class SellButton;
+class ShopButton;
 
 class Shop : public Node
 {
 private:
+	static constexpr Vector2 ShopUiPos = Vector2(750, 260);
+
+	bool m_isSellItem;
+
 	Sprite m_shopUi;
 	Transform m_shopTransform;
 
 	Chest* m_chest;
+	Wallet* m_wallet;
+	SellButton* m_sellButton;
+	ShopButton* m_shopButton;
 
 protected:
 	virtual void Load() override;
@@ -20,5 +30,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Shop(Chest* chest);
+	Shop(Chest* chest, Wallet* wallet,SellButton* sellButton,ShopButton* shopButton);
 };

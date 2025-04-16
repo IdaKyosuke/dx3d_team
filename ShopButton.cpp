@@ -3,9 +3,11 @@
 #include "DxLib.h"
 
 ShopButton::ShopButton() :
-	Actor("ShopButton", "change_button_ui.png", Position),
+	Actor("ShopButton", "shop_button_ui.png", Position),
 	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&ShopButton::OnClick, this)),
-	m_checkOnClick(false)
+	m_checkOnClick(false),
+	m_shopOrEnhance(false),
+	m_shopEnhanceNum()
 {
 }
 

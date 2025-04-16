@@ -1,5 +1,7 @@
 #pragma once
 #include "SceneBase.h"
+#include "Item.h"
+#include <vector>
 
 class Node;
 class LoadPlayer;
@@ -9,9 +11,11 @@ class ItemFactory;
 class UiScore;
 class UiResult;
 class CollisionStage;
-
-class Item;
 class Inventory;
+class Chest;
+
+class KeepChest;
+class Item;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -30,16 +34,20 @@ private:
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
 	CollisionStage* m_collisionStage;
-
-	Item* m_item;
 	Inventory* m_inventory;
+	Chest* m_chest;
+
+	KeepChest* m_keepChest;
+	Item* m_item;
+
+	std::vector<Item> m_chestItem;
 
 	float m_resultTransitionTime;
 	bool m_isFinish;
 
 public:
 	// コンストラクタ
-	SceneGame() :
+	SceneGame(std::vector<Item> itemList) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -51,6 +59,11 @@ public:
 		m_item(nullptr),
 		m_inventory(nullptr),
 		m_collisionStage(nullptr),
+		m_chest(nullptr),
+
+		m_keepChest(nullptr),
+		m_chestItem(itemList),
+
 		m_isFinish(false){}
 
 	virtual void Initialize() override;		// 初期化

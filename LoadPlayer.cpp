@@ -128,7 +128,6 @@ void LoadPlayer::Finalize()
 
 void LoadPlayer::Update()
 {
-	/*
 	// 落下死, 天井到達 -> リスポーン or press "r" => リスタート
 	if (m_transform.position.y <= -RestartHeight ||
 		m_transform.position.y >= RestartHeight ||
@@ -139,6 +138,7 @@ void LoadPlayer::Update()
 		m_isTerning = false;
 	}
 
+	/*
 	// 移動状態の切り替え
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
 	{

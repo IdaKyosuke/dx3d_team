@@ -83,7 +83,7 @@ void Inventory::Update()
 	if (m_haveItemCount > 0)
 	{
 		//ƒAƒCƒeƒ€‚ðŽÌ‚Ä‚é
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_G))
 		{
 			m_haveItemCount--;
 

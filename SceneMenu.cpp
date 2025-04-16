@@ -7,6 +7,10 @@
 #include "Chest.h"
 #include "Shop.h"
 #include "ShopButton.h"
+#include "Wallet.h"
+#include "SellButton.h"
+#include "EnhanceShopButton.h"
+#include "EnhanceShop.h"
 
 #include"Inventory.h"
 
@@ -22,20 +26,36 @@ void SceneMenu::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
-	//チェストとインベントリ
-	m_menuInventory = new MenuInventory(m_chest);
-	m_chest = new Chest(m_menuInventory);
+	//チェスト
+	m_chest = new Chest();
 	uiLayer->AddChild(m_chest);
-
+	//メニューのインベントリ
 	m_menuInventory = new MenuInventory(m_chest);
 	uiLayer->AddChild(m_menuInventory);
-
-	m_shop = new Shop();
-	uiLayer->AddChild(m_shop);
+	
+	//売るボタン
+	m_sellButton = new SellButton();
+	uiLayer->AddChild(m_sellButton);
 
 	//ショップ切り替えボタン
 	m_shopButton = new ShopButton();
 	uiLayer->AddChild(m_shopButton);
+	//強化ショップ切り替えボタン
+	m_enhanceShopButton = new EnhanceShopButton();
+	uiLayer->AddChild(m_enhanceShopButton);
+
+	//財布
+	m_wallet = new Wallet();
+	uiLayer->AddChild(m_wallet);
+
+	//ショップ
+	m_shop = new Shop(m_chest,m_wallet,m_sellButton, m_shopButton);
+	uiLayer->AddChild(m_shop);
+	
+	//強化ストア
+	m_enhanceShop = new EnhanceShop(m_chest);
+	uiLayer->AddChild(m_enhanceShop);
+	
 
 	if (!m_inventory->TakeItMenu().empty())
 	{
@@ -45,6 +65,17 @@ void SceneMenu::Initialize()
 			m_menuInventory->Change(std::next(m_inventory->TakeItMenu().begin(), i)->GetItemNum());
 		}
 	}
+
+	if (!m_chestItem.empty())
+	{
+		for (int i = 0; i <= m_chestItem.size() - 1; i++)
+		{
+			//チェストに保管していたアイテム
+			m_chest->Change(std::next(m_chestItem.begin(), i)->GetItemNum());
+			m_chest->CreateIcon(i);
+		}
+	}
+
 }
 
 void SceneMenu::Finalize()
@@ -62,7 +93,7 @@ SceneBase* SceneMenu::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneGame();
+		return new SceneGame(m_chest->GetItemList());
 	}
 
 	return this;
