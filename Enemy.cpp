@@ -147,15 +147,18 @@ void Enemy::Draw()
 {
 	// アニメーション再生
 	PlayAnim();
+
 	Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
 
 	// モデルの描画
 	MV1DrawModel(m_model);
 
+#ifdef _DEBUG
 	DrawFormatString(0, 40, GetColor(255, 255, 255),
 		"EnemyPos Vector3(%.0f, %.0f, %.0f)",
 		this->GetPosition().x, this->GetPosition().y, this->GetPosition().z
 	);
+#endif // DEBUG
 }
 
 void Enemy::OnCollision(const Actor3D* other)
