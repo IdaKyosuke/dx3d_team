@@ -13,9 +13,10 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 	// モデル全体のコリジョン情報を構築
 	MV1SetupCollInfo(m_model, -1, 8, 8, 8);
 	MV1SetupReferenceMesh(m_model, -1, true);
+#ifdef _DEBUG
 	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
-	/*
-	*/
+#endif // _DEBUG
+
 
 	// レイの設定
 	m_checkMoveStart = Vector3(0, 0, 0);

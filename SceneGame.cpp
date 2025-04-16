@@ -69,7 +69,7 @@ void SceneGame::Initialize()
 	m_navMesh = new NavMesh(m_collisionStage);
 	
 	// ìG
-	m_enemy = new Enemy(m_navMesh, Vector3(800, 110, 10), m_loadPlayer);
+	m_enemy = new Enemy(m_navMesh, Vector3(800, 0, 10), m_loadPlayer);
 	actorLayer->AddChild(m_enemy);
 	
 	// ÉXÉRÉA

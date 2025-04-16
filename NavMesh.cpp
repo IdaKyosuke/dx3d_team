@@ -37,11 +37,7 @@ void NavMesh::SetPolyLinkInfo()
 
 	int model = m_collisionStage->GetMeshModel();
 
-	//MV1SetupReferenceMesh(model, -1, true);
 	m_polyList = MV1GetReferenceMesh(model, -1, true);
-
-	// ステージのメッシュ情報を取得
-	//m_polyList = m_collisionStage->GetStageMesh();
 
 	// メモリ領域を確保
 	m_polyLink = new PolyLinkInfo[sizeof(PolyLinkInfo) * m_polyList.PolygonNum];
@@ -74,9 +70,6 @@ void NavMesh::SetPolyLinkInfo()
 		// 隣接するポリゴンを探すためにポリゴンの数だけ繰り返す
 		refPolySub = m_polyList.Polygons;
 		plInfoSub = m_polyLink;
-#ifdef _DEBUG
-		int count = 0;
-#endif // _DEBUG
 
 		// 隣接情報を追加しようとしているポリゴンの頂点座標
 		Vector3 vertexPos[3] = { Vector3(0, 0, 0) };
@@ -102,52 +95,37 @@ void NavMesh::SetPolyLinkInfo()
 			// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 			if (
 				plInfo->linkPolyIndex[0] == -1 &&
-					((vertexPos[0] == subVertexPos[0] && vertexPos[1] == subVertexPos[2]) || 
-					 (vertexPos[0] == subVertexPos[1] && vertexPos[1] == subVertexPos[0]) || 
-					 (vertexPos[0] == subVertexPos[2] && vertexPos[1] == subVertexPos[1]))
+				((vertexPos[0] == subVertexPos[0] && vertexPos[1] == subVertexPos[2]) ||
+					(vertexPos[0] == subVertexPos[1] && vertexPos[1] == subVertexPos[0]) ||
+					(vertexPos[0] == subVertexPos[2] && vertexPos[1] == subVertexPos[1]))
 				)
 			{
 				plInfo->linkPolyIndex[0] = j;
 				plInfo->linkPolyDistance[0] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
-#ifdef _DEBUG
-				count++;
-#endif // _DEBUG
 			}
 			// ポリゴン頂点番号(1,2)で形成される辺と隣接していたら隣接情報に追加
 			else if (
 				plInfo->linkPolyIndex[1] == -1 &&
-					((vertexPos[1] == subVertexPos[0] && vertexPos[2] == subVertexPos[2]) ||
-					 (vertexPos[1] == subVertexPos[1] && vertexPos[2] == subVertexPos[0]) ||
-					 (vertexPos[1] == subVertexPos[2] && vertexPos[2] == subVertexPos[1]))
+				((vertexPos[1] == subVertexPos[0] && vertexPos[2] == subVertexPos[2]) ||
+					(vertexPos[1] == subVertexPos[1] && vertexPos[2] == subVertexPos[0]) ||
+					(vertexPos[1] == subVertexPos[2] && vertexPos[2] == subVertexPos[1]))
 				)
 			{
 				plInfo->linkPolyIndex[1] = j;
 				plInfo->linkPolyDistance[1] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
-#ifdef _DEBUG
-				count++;
-#endif // _DEBUG
 			}
 			// ポリゴン頂点番号(2,0)で形成される辺と隣接していたら隣接情報に追加
 			else if (
 				plInfo->linkPolyIndex[2] == -1 &&
-					((vertexPos[2] == subVertexPos[0] && vertexPos[0] == subVertexPos[2]) ||
-					 (vertexPos[2] == subVertexPos[1] && vertexPos[0] == subVertexPos[0]) ||
-					 (vertexPos[2] == subVertexPos[2] && vertexPos[0] == subVertexPos[1]))
+				((vertexPos[2] == subVertexPos[0] && vertexPos[0] == subVertexPos[2]) ||
+					(vertexPos[2] == subVertexPos[1] && vertexPos[0] == subVertexPos[0]) ||
+					(vertexPos[2] == subVertexPos[2] && vertexPos[0] == subVertexPos[1]))
 				)
 			{
 				plInfo->linkPolyIndex[2] = j;
 				plInfo->linkPolyDistance[2] = VSize(VSub(plInfoSub->centerPos, plInfo->centerPos));
-#ifdef _DEBUG
-				count++;
-#endif // _DEBUG
-			}
-#ifdef _DEBUG
-			if (count >= 2)
-			{
-				count = 2;
 			}
 		}
-#endif // _DEBUG
 	}
 }
 

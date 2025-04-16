@@ -28,6 +28,7 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_nextAnim(Anim::Idle),
 	m_navMesh(navMesh),
 	m_player(loadPlayer),
+	m_moveDirection(Vector3(0,0,0)),
 	m_isSet(false)
 {
 	// アニメーションクラスをリスト化する
@@ -37,22 +38,16 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 		AddChild(m_attachAnimList[i]);
 	}
 
-	// 敵の位置(x, y, z)
-	m_enemyPos = SpawnPos;
-
 	// モデルを指定場所に描画
-	MV1SetPosition(m_model, SpawnPos);
+	MV1SetPosition(m_model, pos);
 
 	// アニメーション用の位置
 	m_enemyPastPos = m_enemyPos;
 
-	// ディレクショナルライトを作成
-	m_lightHandle = CreateDirLightHandle(Vector3(0, 100.0f, 0));
-
 	// 最初のアニメーションを指定
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
-	m_collider = new BoxCollider3D(Vector3(200, 200, 200));
+	m_collider = new BoxCollider3D(Vector3(100, 200, 100), Vector3(0,100,0));
 }
 
 // アニメーションを切り替える(Lerp)
@@ -91,33 +86,49 @@ void Enemy::PlayAnim()
 // モデル関係を削除
 void Enemy::Finalize()
 {
-	// ライトハンドルを削除
-	DeleteLightHandle(m_lightHandle);
-	// プレイヤーのモデルを削除
+	// モデルを削除
 	MV1DeleteModel(m_model);
 }
 
 void Enemy::Update()
 {
-	// 1フレーム前の位置を更新
-	m_enemyPastPos = m_enemyPos;
+	EnemyMove();
 
-	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_1))
+	if (!m_moveDirection.IsZero())
 	{
-		m_nextAnim = Anim::Idle;
+		float afterAngle = 0;
+
+		Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
+
+		m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
 	}
-	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_2))
-	{
-		m_nextAnim = Anim::Run;
-	}
+
+	// アニメーションの管理
+	/*
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_3))
 	{
 		m_nextAnim = Anim::Attack;
+	}
+	*/
+
+	if (this->GetPosition() != m_enemyPastPos)
+	{
+		m_nextAnim = Anim::Run;
+	}
+	else
+	{
+		m_nextAnim = Anim::Idle;
 	}
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();
 
+	m_enemyPastPos = this->GetPosition();
+}
+
+// 敵の移動
+void Enemy::EnemyMove()
+{
 	// 自身とプレイヤー間の経路探索を行う
 	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
@@ -128,6 +139,8 @@ void Enemy::Update()
 
 	// 今回の探索情報を削除
 	m_navMesh->RemovePathPlan();
+
+	m_moveDirection = m_transform.position - m_enemyPastPos;
 }
 
 void Enemy::Draw()

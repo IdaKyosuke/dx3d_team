@@ -263,21 +263,10 @@ void LoadPlayer::NormalMove()
 	// ƒvƒŒƒCƒ„[‚Ì‰ñ“]‚ÅŒ»Ý‚ÌŒü‚«‚Æ‰ñ“]—\’è‚ÌŒü‚«‚Ì•„†‚ªˆá‚¤‚Æ‚«‚É•„†‚ð‡‚í‚¹‚éi180 ` -180‚Å‚µ‚©Žæ‚ê‚È‚¢‚½‚ßj
 	if (!m_moveDirection.IsZero())
 	{
-		float afterAngle = atan2f(m_moveDirection.z, m_moveDirection.x);
-		// Œ»Ý‚ÌŠp“x‚Ìâ‘Î’l‚ª•„†‚ð•Ï‚¦‚½Œã‚Ì”‚Ìâ‘Î’l‚æ‚è¬‚³‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢(0 => 180)
-		if (std::abs(m_transform.angle.y) > Math::GetSign(Math::Pi / 2))
-		{
-			if (Math::GetSign(m_transform.angle.y) < Math::GetSign(afterAngle))
-			{
-				// - => +
-				m_transform.angle.y += Math::DegtoRad(Math::Pi * 2);
-			}
-			else if (Math::GetSign(m_transform.angle.y) > Math::GetSign(afterAngle))
-			{
-				// + => -
-				m_transform.angle.y -= Math::DegtoRad(Math::Pi * 2);
-			}
-		}
+		float afterAngle = 0;
+
+		Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
+
 		m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
 	}
 

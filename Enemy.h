@@ -23,25 +23,19 @@ private:
 	std::vector<Animation3D*> m_attachAnimList;
 
 	static constexpr int RoopAnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
-
 	static constexpr float MoveSpeed = 5.0f;	// 移動速度
-
-	static constexpr Vector3 SpawnPos = Vector3(0, 20, 0);	// ステージにスポーンする場所
-
 	static const char* AnimList[RoopAnimNum];
-
 	int m_model;	// 敵のモデル
-
 	int m_animIndex;	// 再生中のアニメーション
-
-	int m_lightHandle;	// 光源を作成する
-
 	Vector3 m_enemyPos;
 	Vector3 m_enemyPastPos;
 
 	// アニメーション切り替え用
 	Anim m_nowAnim;
 	Anim m_nextAnim;
+
+	// モデルの回転用
+	Vector3 m_moveDirection;
 
 	//static const char* AnimList[AnimNum];	// アニメーションを指定する用
 	NavMesh* m_navMesh;	// 経路探索用
@@ -68,6 +62,9 @@ public:
 
 	// モデル関係を削除
 	void Finalize();
+
+	// 敵の移動
+	void EnemyMove();
 
 	// 敵の位置を返す
 	Vector3 EnemyPos()

@@ -124,3 +124,22 @@ Vector3 Math::PointRotate(const Vector3& satellite, const Vector3& center, const
 		);
 }
 
+
+void Math::MatchAngleSign(float& afterAngle, const Vector3& moveDir, Vector3& transformAngle)
+{
+	afterAngle = atan2f(moveDir.z, moveDir.x);
+	// Œ»Ý‚ÌŠp“x‚Ìâ‘Î’l‚ª•„†‚ð•Ï‚¦‚½Œã‚Ì”‚Ìâ‘Î’l‚æ‚è¬‚³‚©‚Á‚½‚ç‰½‚à‚µ‚È‚¢(0 => 180)
+	if (std::abs(transformAngle.y) > Math::GetSign(Math::Pi / 2))
+	{
+		if (Math::GetSign(transformAngle.y) < Math::GetSign(afterAngle))
+		{
+			// - => +
+			transformAngle.y += Math::DegtoRad(Math::Pi * 2);
+		}
+		else if (Math::GetSign(transformAngle.y) > Math::GetSign(afterAngle))
+		{
+			// + => -
+			transformAngle.y -= Math::DegtoRad(Math::Pi * 2);
+		}
+	}
+}

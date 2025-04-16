@@ -47,5 +47,6 @@ public:
 		return (v > 0) - (v < 0);
 	}
 
-
+	// ‰ñ“]‚ÅŒ»Ý‚ÌŒü‚«‚Æ‰ñ“]—\’è‚ÌŒü‚«‚Ì•„†‚ªˆá‚¤‚Æ‚«‚É•„†‚ð‡‚í‚¹‚éi180 ` -180‚Å‚µ‚©Žæ‚ê‚È‚¢‚½‚ßj
+	static void MatchAngleSign(float& afterAngle, const Vector3& moveDir, Vector3& transformAngle);
 };
