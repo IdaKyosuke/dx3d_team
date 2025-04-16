@@ -38,7 +38,7 @@ private:
 	//ƒAƒCƒeƒ€‚Ìî•ñ
 	 struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
-		ItemDate("Resource/Item/iron.mv1","Iron",100),
+		ItemDate("Resource/Item/gold.mv1","Iron",100),
 		ItemDate("Resource/Item/gem.mv1","Gem",200),
 		ItemDate("Resource/Item/potion.mv1","Potion",10),
 	};
