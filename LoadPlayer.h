@@ -11,8 +11,8 @@ class CollisionStage;
 class LoadPlayer : public Actor3D
 {
 public:
-	// ループするアニメーション
-	enum class RoopAnim
+	// アニメーション
+	enum class Anim
 	{
 		Idle,
 		Walk,
@@ -26,23 +26,10 @@ public:
 		Length,
 	};
 
-	// ループしないアニメーション
-	enum class NoRoopAnim
-	{
-
-	};
-
-	// 現在の移動モード
-	enum MoveMode
-	{
-		Normal,
-		ZeroGravity,
-	};
-
 private:
 	std::vector<Animation3D*> m_attachAnimList;
 
-	static constexpr int RoopAnimNum = static_cast<int>(RoopAnim::Length);	// アニメーションの数
+	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
 
 	static constexpr float WalkSpeed = 8.0f;	// 歩く速度
 	static constexpr float RunSpeed = 12.0f;	// 走る速度
@@ -51,14 +38,12 @@ private:
 	static constexpr float JumpPower = 4.0f;	// 初速度
 	static constexpr float Gravity = 9.8f;		// 重力加速度
 	static constexpr Vector3 SpawnPos = Vector3(850, 100, 850);	// ステージにスポーンする場所
-	static constexpr float RestartHeight = 3000.0f;	// リスポーンする高さの絶対値
-	static constexpr float FloatHeight = 50.0f;		// 無重力状態の高さ
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
 	static constexpr Vector3 ColSize = Vector3(70, 180, 70);	// コライダーのサイズ
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
 
-	static const char* AnimList[RoopAnimNum];
+	static const char* AnimList[AnimNum];
 
 	int m_model;	// プレイヤーのモデル(mv1)
 
@@ -67,8 +52,9 @@ private:
 	int m_lightHandle;	// 光源を作成する
 	bool m_isJump;
 	bool m_isJumping;
-	bool m_isFall;
+	bool m_isFall;	// 現在落下しているか
 	bool m_isFloating;
+	float m_fallStartY;	// 落下し始めの高さ
 
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
@@ -79,16 +65,18 @@ private:
 
 
 	// アニメーション切り替え用
-	RoopAnim m_nowAnim;
-	RoopAnim m_nextAnim;
-
-
-	// 移動モード切り替え用
-	MoveMode m_moveMode;
+	Anim m_nowAnim;
+	Anim m_nextAnim;
 
 	bool m_moving;	// 移動アニメーションが再生中か
 	float m_elapsedTime;	// 経過時間保持
 	float m_fallTime;		// 自由落下を加速させる用
+
+	// プレイヤーの体力に関する変数
+	int m_hp;	// プレイヤーの体力
+	float m_duration;	// 時間経過をカウントする用
+	static constexpr float m_time = 1.0f;	// 無敵時間
+
 	// プレイヤーのジャンプ処理
 	void Jumping();		// 自分でジャンプする処理
 
@@ -107,7 +95,7 @@ public:
 	void ChangeAnimLerp();
 
 	// アニメーションを切り替える(即座)
-	void ChangeAnimQuick(const RoopAnim nextAnim);
+	void ChangeAnimQuick(const Anim nextAnim);
 
 	// アニメーションを再生する
 	void PlayAnim();
@@ -117,6 +105,23 @@ public:
 
 	// プレイヤーの通常移動
 	void NormalMove();
+
+
+	// 無敵時間
+	void InvincibleTime();
+
+	// 落下した高さを計算する
+	void CountFallHeight();
+
+	// プレイヤーの体力を減らす処理
+	void DecreaseHP(int damage)
+	{
+		m_hp -= damage;
+		if (m_hp <= 0)
+		{
+			m_hp = 0;
+		}
+	}
 
 	bool IsJump()
 	{

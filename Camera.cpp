@@ -213,14 +213,6 @@ void Camera::Draw()
 	DrawFormatString(0, 20, GetColor(255, 255, 255),
 		"CamPos Vector3(%.0f, %.0f, %.0f)",
 		m_camPos.x, m_camPos.y, m_camPos.z);
-
-	DrawFormatString(0, 120, GetColor(255, 255, 255),
-		"CamAngle :%.0f",
-		Math::ACos(CamFrontVec(), CamFrontPlaneVec()));
-
-	DrawFormatString(0, 140, GetColor(255, 255, 255),
-		"CamFrontVec Vector3(%.0f, %.0f, %.0f)",
-		CamFrontVec().x, CamFrontVec().y, CamFrontVec().z);
 #endif // _DEBUG
 
 }

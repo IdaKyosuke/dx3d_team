@@ -92,6 +92,19 @@ void NavMesh::SetPolyLinkInfo()
 				subVertexPos[k] = m_polyList.Vertexs[refPolySub->VIndex[k]].Position;
 			}
 
+			// 法線からポリゴンの向きを計算
+			Vector3 v1 = subVertexPos[1] - subVertexPos[0];
+			Vector3 v2 = subVertexPos[2] - subVertexPos[0];
+
+			// 外積
+			Vector3 outv = v1.CrossP(v2);
+			outv = Math::Normalized(outv);
+
+			if (outv.y <= 0.5)
+			{
+				continue;
+			}
+
 			// ポリゴン頂点番号(0,1)で形成される辺と隣接していたら隣接情報に追加
 			if (
 				plInfo->linkPolyIndex[0] == -1 &&
