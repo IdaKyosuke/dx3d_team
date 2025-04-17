@@ -54,15 +54,27 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_inventory);
 
 	//アイテム
-	m_item = new Item(0, Vector3(100, 50, 100), m_loadPlayer, m_inventory);
+	m_item = new Item(0, Vector3(100, 0, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
 	//アイテム
-	m_item = new Item(1, Vector3(400, 50, 100), m_loadPlayer, m_inventory);
+	m_item = new Item(1, Vector3(400, 0, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
 	//アイテム
-	m_item = new Item(2, Vector3(100, 50, 400), m_loadPlayer, m_inventory);
+	m_item = new Item(2, Vector3(100, 0, 400), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
+
+	// アイテム
+	m_item = new Item(3, Vector3(400, 0, 400), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
+
+	// アイテム
+	m_item = new Item(4, Vector3(700, 0, 400), m_loadPlayer, m_inventory);
+	actorLayer->AddChild(m_item);
+
+	// アイテム
+	m_item = new Item(5, Vector3(700, 0, 700), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
 
 	// ナビメッシュ

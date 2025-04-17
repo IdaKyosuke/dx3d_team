@@ -31,6 +31,9 @@ private:
 		GoldBar,
 		Diamond,
 		Potion,
+		Bag,
+		Watch,
+		Coin,
 
 		Length,
 	};
@@ -39,8 +42,11 @@ private:
 	 struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
 		ItemDate("Resource/Item/gold.mv1","Iron",100),
-		ItemDate("Resource/Item/gem.mv1","Gem",200),
+		ItemDate("Resource/Item/diamond.mv1","Gem",200),
 		ItemDate("Resource/Item/potion.mv1","Potion",10),
+		ItemDate("Resource/Item/bag.mv1","Bag",20),
+		ItemDate("Resource/Item/watch.mv1","Watch",150),
+		ItemDate("Resource/Item/coin.mv1","Coin",50),
 	};
 
 	 LoadPlayer* m_player;
