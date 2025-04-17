@@ -12,6 +12,9 @@ private:
 	int m_bgm;
 
 	Chest* m_chest;
+
+	static constexpr int FirstMaxHaveItem = 3;		//最初にアイテムを持てる数の最大量
+
 public:
 	// コンストラクタ
 	SceneTitle() :

@@ -49,13 +49,21 @@ void SceneGame::Initialize()
 	//インベントリ
 	m_inventory = new Inventory(m_loadPlayer);
 	uiLayer->AddChild(m_inventory);
+	m_inventory->SetMaxHaveItem(m_maxHaveInventory);
 
 	//アイテム
 	m_item = new Item(0, Vector3(100, 50, 100),m_inventory);
 	actorLayer->AddChild(m_item);
+	//アイテム
+	m_item = new Item(0, Vector3(500, 50, 100),m_inventory);
+	actorLayer->AddChild(m_item);
 
 	//アイテム
 	m_item = new Item(1, Vector3(400, 50, 100),m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(1, Vector3(400, 50, 300), m_inventory);
 	actorLayer->AddChild(m_item);
 
 	//アイテム
@@ -116,7 +124,7 @@ SceneBase* SceneGame::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory);
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_inventory->GetMaxHaveItem());
 	}
 
 	return this;

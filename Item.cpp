@@ -65,7 +65,6 @@ void Item::OnCollision(const Actor3D* other)
 		if (Input::GetInstance()->IsKeyPress(KEY_INPUT_F) && m_canGetItem)
 		{
 			m_inventory->SetItemList(this);
-			m_inventory->OnInventory();
 			m_inventory->GettingItem();
 
 			Destroy();

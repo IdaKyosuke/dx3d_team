@@ -65,7 +65,6 @@ void Chest::Update()
 		m_storagingItem = false;
 	}
 
-
 	if (m_isChest)
 	{
 		//アイテム選択
@@ -85,34 +84,6 @@ void Chest::Update()
 		{
 			m_takeItem -= 10;
 		}
-		/*
-		//チェストからインベントリへ変更
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
-		{
-			m_isChest = false;
-		}
-		*/
-		/*
-		//アイテムをインベントリに入れる
-		if (m_haveItemCount > 0)
-		{
-			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
-			{
-				m_haveItemCount--;
-
-				m_menuInventory->Change(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
-
-				m_menuInventory->GettingItem();
-
-				//捨てたアイテムが何番目のアイテムか
-				m_destroyTakeItem = m_takeItem;
-
-				m_destroyItemIcon = true;
-				//vectorの中から捨てたアイテムのデータを消す
-				m_itemList.erase(m_itemList.begin() + m_takeItem);
-			}
-		}
-		*/
 	}
 
 	m_takeItem = m_takeItem % MaxHaveItem;

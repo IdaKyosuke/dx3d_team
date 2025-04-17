@@ -6,6 +6,8 @@
 #include "Input.h"
 
 Inventory::Inventory(LoadPlayer* player) :
+	m_maxHaveItem(FirstMaxHaveItem),
+	m_maxHaveWeight(FirstMaxHaveWeight),
 	m_haveItemCount(0),
 	m_canGetItem(false),
 	m_itemNum(0),
@@ -16,8 +18,8 @@ Inventory::Inventory(LoadPlayer* player) :
 	m_destroyItemIcon(false),
 	m_canHaveWeight(0)
 {
-	m_transform.position = Screen::BottomCenter + Vector2(-400, -70);
-	m_inventoryUi.Register("inventoryUi.png");
+	
+	m_inventoryUi.Register("inventory_ui.png");
 	m_takeItemUi.Register("take_item.png");
 }
 
@@ -44,7 +46,7 @@ void Inventory::Update()
 	}
 
 	//アイテムを拾うことができるか
-	if (m_haveItemCount >= MaxHaveItem)
+	if (m_haveItemCount >= m_maxHaveItem)
 	{
 		m_canGetItem = false;
 	}
@@ -55,17 +57,16 @@ void Inventory::Update()
 
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
-	auto countGetItem = std::distance(m_itemList.begin(), m_itemList.end());
+	m_haveItemCount = m_itemList.size();
 	if (m_gettingItem)
 	{
-		decltype(m_itemList)::iterator getItem = std::next(m_itemList.begin(), countGetItem - 1);
-		m_itemNum = getItem->GetItemNum();
+		m_itemNum = std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemNum();
 
-		GetParent()->AddChild(new ItemIcon(m_itemNum, static_cast<int>(countGetItem - 1),this));
+		GetParent()->AddChild(new ItemIcon(m_itemNum, static_cast<int>(m_haveItemCount - 1),this));
 
 		m_gettingItem = false;
 
-		m_canHaveWeight += getItem->GetItemWeight();
+		m_canHaveWeight += std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemWeight();
 	}
 
 	//アイテム選択
@@ -78,7 +79,7 @@ void Inventory::Update()
 		m_takeItem++;
 	}
 
-	m_takeItem = m_takeItem % MaxHaveItem;
+	m_takeItem = m_takeItem % m_maxHaveItem;
 
 	if (m_haveItemCount > 0)
 	{
@@ -87,11 +88,9 @@ void Inventory::Update()
 		{
 			m_haveItemCount--;
 
-			Vector3 dropPos = m_player->GetPosition();
-
 			//捨てたオブジェクトを生成
 			decltype(m_itemList)::iterator takeItem = std::next(m_itemList.begin(), m_takeItem);
-			GetParent()->AddChild(new Item(takeItem->GetItemNum(), dropPos, this));
+			GetParent()->AddChild(new Item(takeItem->GetItemNum(), m_player->GetPosition(), this));
 
 			//捨てたアイテムが何番目のアイテムか
 			m_destroyTakeItem = m_takeItem;
@@ -106,26 +105,32 @@ void Inventory::Update()
 	//持っていないアイテムとかを選択できないようにしたりなど
 	if (m_takeItem < 0)
 	{
-		if (countGetItem == 0)
+		if (m_haveItemCount == 0)
 		{
 			m_takeItem = 0;
 		}
 		else
 		{
-			m_takeItem = static_cast<int>(countGetItem - 1);
+			m_takeItem = static_cast<int>(m_haveItemCount - 1);
 		}
 	}
-	if (m_takeItem > countGetItem - 1)
+	if (m_takeItem > m_haveItemCount - 1)
 	{
 		m_takeItem = 0;
 	}
 	m_takeItemTransform.position = TakeItemUiPos;
 
-	m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem, 0);
+	//Uiのポジションの設定
+	m_takeItemTransform.position = TakeItemUiPos + Vector2(SquareSize * m_takeItem, 0);
 }
 
 void Inventory::Draw()
 {
-	m_inventoryUi.Draw(m_transform);
+	for (int i = 0; i <= m_maxHaveItem -1; i++)
+	{
+		m_transform.position = InventoryUiPos + Vector2(SquareSize * i, 0);
+
+		m_inventoryUi.Draw(m_transform);
+	}
 	m_takeItemUi.Draw(m_takeItemTransform);
 }

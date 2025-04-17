@@ -21,8 +21,6 @@ class Item;
 class SceneGame : public SceneBase
 {
 private:
-
-
 	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
 
 	Node* m_rootNode;
@@ -45,9 +43,11 @@ private:
 	float m_resultTransitionTime;
 	bool m_isFinish;
 
+	int m_maxHaveInventory;
+
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList) :
+	SceneGame(std::vector<Item> itemList,int maxHaveInventoy) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -63,6 +63,7 @@ public:
 
 		m_keepChest(nullptr),
 		m_chestItem(itemList),
+		m_maxHaveInventory(maxHaveInventoy),
 
 		m_isFinish(false){}
 

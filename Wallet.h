@@ -36,4 +36,9 @@ public:
 	{
 		m_haveMoney += money;
 	}
+
+	int HaveMenoy()
+	{
+		return m_haveMoney;
+	}
 };

@@ -91,9 +91,17 @@ public:
 
 	void LostItem(int itemNum)
 	{
-		m_itemList.erase(m_itemList.begin() + itemNum);
 
 		m_destroyTakeItem = m_takeItem;
 		m_destroyItemIcon = true;
+
+		if (m_takeItem == m_itemList.size()-1)
+		{
+			m_takeItem = m_takeItem -1;
+		}
+
+		m_itemList.erase(m_itemList.begin() + itemNum);
+
+		
 	}
 };

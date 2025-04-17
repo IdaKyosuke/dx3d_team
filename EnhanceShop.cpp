@@ -1,12 +1,9 @@
 #include "EnhanceShop.h"
 #include "Chest.h"
-#include "EnhanceButton.h"
-#include "EnhanceInventory.h"
 
-EnhanceShop::EnhanceShop(Chest* chest, EnhanceButton* enhanceButton, EnhanceInventory* enhanceInventory) :
-	m_chest(chest),
-	m_enhanceButton(enhanceButton),
-	m_enhanceInventory(enhanceInventory)
+EnhanceShop::EnhanceShop(Chest* chest)://, EnhanceButton* enhanceButton) :
+	m_chest(chest)
+	//m_enhanceButton(enhanceButton)
 {
 	//Ui‚Ì“o˜^
 	m_enhanceShopUi.Register("shop_ui.png");
@@ -29,13 +26,8 @@ void EnhanceShop::Update()
 	m_enhanceShopUi.Update();
 
 	//‹­‰»
-	if (m_enhanceInventory->GetCheckOnClick())
-	{
-		if (m_enhanceButton->GetCheckOnClick())
-		{
-			//ƒCƒ“ƒxƒ“ƒgƒŠ‚Ì‹­‰»
-		}
-	}
+	
+	
 }
 
 void EnhanceShop::Draw()

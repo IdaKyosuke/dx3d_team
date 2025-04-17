@@ -63,7 +63,7 @@ void GameMain::Run()
 		Time::GetInstance()->Update();
 
 		// ESCƒL[‚ª‰Ÿ‚³‚ê‚½‚çI—¹
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_ESCAPE))
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_DELETE))
 		{
 			break;
 		}

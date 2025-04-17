@@ -11,9 +11,17 @@ class LoadPlayer;
 class Inventory : public Node
 {
 private:
-	static constexpr int MaxHaveItem = 3;	//アイテムを持てる最大量
-	static constexpr float MaxHaveWeight = 50;
+	static constexpr int FirstMaxHaveItem = 3;		//最初にアイテムを持てる数の最大量
+	static constexpr float FirstMaxHaveWeight = 50;	//最初に持てるアイテムの重さの最大量
 	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
+	static constexpr Vector2 InventoryUiPos = Vector2(60, 890);
+
+
+	static constexpr int SquareSize = 90;
+
+	int m_maxHaveItem;
+	int m_maxHaveWeight;
+
 	int m_haveItemCount;	//アイテムを持ってる数
 
 	int m_takeItem;			//今何のアイテムを持っているか
@@ -50,15 +58,12 @@ public:
 		return m_canGetItem;
 	}
 
-	void OnInventory()
-	{
-		m_haveItemCount++;
-	}
-
+	//アイテムを同時に拾えるようにできたときに消す↓
 	void GettingItem()
 	{
 		m_gettingItem = true;
 	}
+	//-----------------
 
 	void SetItemList(Item* item)
 	{
@@ -78,5 +83,20 @@ public:
 	std::vector<Item> TakeItMenu()
 	{
 		return m_itemList;
+	}
+
+	void EnhanceInventory()
+	{
+		m_maxHaveItem++;
+	}
+
+	void SetMaxHaveItem(int maxHaveItem)
+	{
+		m_maxHaveItem = maxHaveItem;
+	}
+
+	int GetMaxHaveItem()
+	{
+		return m_maxHaveItem;
 	}
 };

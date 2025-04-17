@@ -12,6 +12,9 @@
 #include "EnhanceShopButton.h"
 #include "EnhanceShop.h"
 
+#include "EnhanceType.h"
+#include "EnhanceInventory.h"
+
 #include"Inventory.h"
 
 void SceneMenu::Initialize()
@@ -52,10 +55,16 @@ void SceneMenu::Initialize()
 	m_shop = new Shop(m_chest,m_wallet,m_sellButton, m_shopButton);
 	uiLayer->AddChild(m_shop);
 	
+
+	m_enhanceType = new EnhanceType(m_inventory,m_maxHaveItem);
+
 	//強化ストア
 	m_enhanceShop = new EnhanceShop(m_chest);
 	uiLayer->AddChild(m_enhanceShop);
 	
+	//強化ボタン
+	uiLayer->AddChild(new EnhanceInventory(m_chest,m_wallet,m_enhanceType));
+
 
 	if (!m_inventory->TakeItMenu().empty())
 	{
@@ -93,7 +102,7 @@ SceneBase* SceneMenu::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneGame(m_chest->GetItemList());
+		return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory());
 	}
 
 	return this;

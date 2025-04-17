@@ -4,8 +4,7 @@
 #include "Transform.h"
 
 class Chest;
-class EnhanceButton;
-class EnhanceInventory;
+//class EnhanceButton;
 
 class EnhanceShop : public Node
 {
@@ -14,8 +13,7 @@ private:
 	Transform m_enhanceShopTransform;
 
 	Chest* m_chest;
-	EnhanceButton* m_enhanceButton;
-	EnhanceInventory* m_enhanceInventory;
+	//EnhanceButton* m_enhanceButton;
 
 protected:
 	virtual void Load() override;
@@ -24,5 +22,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	EnhanceShop(Chest* chest,EnhanceButton* enhanceButton,EnhanceInventory* enhanceInventory);
+	EnhanceShop(Chest* chest);//Chest* chest,EnhanceButton* enhanceButton);
 };
