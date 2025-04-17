@@ -17,10 +17,9 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
 #endif // _DEBUG
 
-
 	// レイの設定
 	m_checkMoveStart = Vector3(0, 0, 0);
-	m_checkMoveEnd = Vector3(0, 0, 0); -DiffCheckLine;
+	m_checkMoveEnd = Vector3(0, 0, 0) - CheckLineLength;
 
 	m_getHeightStart = Vector3(0, 0, 0) + DiffGetLine;
 	m_getHeightEnd = Vector3(0, 0, 0);
@@ -38,8 +37,8 @@ void CollisionStage::Release()
 // 移動予定先に足場があるかどうか
 int CollisionStage::CheckStage(const Vector3& pos)
 {
-	m_checkMoveStart = pos;
-	m_checkMoveEnd = pos - DiffCheckLine;
+	m_checkMoveStart = pos + DeffRay;
+	m_checkMoveEnd = pos - CheckLineLength;
 
 	// モデルと線分（プレイヤー）との当たり判定
 	m_stagePoly = MV1CollCheck_Line(m_model, -1, m_checkMoveStart, m_checkMoveEnd);
@@ -48,20 +47,12 @@ int CollisionStage::CheckStage(const Vector3& pos)
 }
 
 // プレイヤーの足元までのレイ
-MV1_COLL_RESULT_POLY CollisionStage::GetHeight(const Vector3& pos, bool terning)
+MV1_COLL_RESULT_POLY CollisionStage::GetHeight(const Vector3& pos)
 {
-	if (!terning)
-	{
-		m_getHeightStart = pos + DiffGetLine;
-		m_getHeightEnd = pos;
-		m_getHeightEnd.y -= 1;
-	}
-	else
-	{
-		m_getHeightStart = pos - DiffGetLine;
-		m_getHeightEnd = pos;
-		m_getHeightEnd.y += 1;
-	}
+	m_getHeightStart = pos + DiffGetLine;
+	m_getHeightEnd = pos;
+	m_getHeightEnd.y -= 1;
+	
 	m_polyHeight = MV1CollCheck_Line(m_model, -1, m_getHeightStart, m_getHeightEnd);
 
 	return m_polyHeight;
@@ -94,8 +85,8 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 	MV1_REF_POLYGON* refPoly;
 
 	// 指定座標のY軸方向に大きく伸びる線分をセット
-	linePos1 = Vector3(pos.x, 100000.0f, pos.z);
-	linePos2 = Vector3(pos.x, -100000.0f, pos.z);
+	linePos1 = Vector3(pos.x, 1400.0f, pos.z);
+	linePos2 = Vector3(pos.x, -1400.0f, pos.z);
 
 	// ステージモデルのポリゴン数だけ繰り返す
 	refPoly = polyList.Polygons;
@@ -122,7 +113,6 @@ void CollisionStage::Draw()
 	MV1DrawModel(m_model);
 	
 #ifdef _DEBUG
-	DrawLine3D(m_getHeightStart, m_getHeightEnd, GetColor(255, 255, 0));
 	// ポリゴンの数だけ繰り返し
 	for (int i = 0; i < m_refPoly.PolygonNum; i++)
 	{
@@ -142,11 +132,5 @@ void CollisionStage::Draw()
 			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[0]].Position,
 			GetColor(255, 255, 0));
 	}
-	/*
-	*/
-	DrawCapsule3D(m_cap1, m_cap2, Radius, 8, GetColor(255, 255, 0), GetColor(255, 255, 0), FALSE);
-
-	// 当たったかどうかを表示する
-	DrawFormatString(0, 80, GetColor(255, 255, 255), "HIT:%d", m_polyHeight.HitFlag);
 #endif // DEBUG
 }

@@ -192,40 +192,6 @@ void Camera::FirstPerson(const Vector3& playerPos)
 	m_camPos = Vector3(playerPos.x, playerPos.y + DiffY, playerPos.z);
 }
 
-// 反重力用カメラ
-void Camera::AntiGravity(const Vector3& playerPos)
-{
-	// 重力の向きが変わったら角度を変えていく
-	if (m_loadPlayerNode->IsTerning() != m_pastTerning)
-	{
-		// いったん角度をリセット
-		m_diffY = 0;
-	}
-
-	if (m_diffY < DiffY)
-	{
-		m_diffY += AddAngleY;
-		if (m_diffY >= DiffY)
-		{
-			// 値に上限を設ける
-			m_diffY = DiffY;
-		}
-	}
-
-	// 重力の向きによって見上げるか見下ろすかを変える
-	if (!m_loadPlayerNode->IsTerning())
-	{
-		m_camPos.y = playerPos.y + m_diffY;
-	}
-	else
-	{
-		m_camPos.y = playerPos.y - m_diffY;
-	}
-
-	// 1フレーム前の重力の状態を保存
-	m_pastTerning = m_loadPlayerNode->IsTerning();
-}
-
 void Camera::Update()
 {
 	// カメラを動かす

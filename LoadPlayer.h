@@ -69,7 +69,6 @@ private:
 	bool m_isJumping;
 	bool m_isFall;
 	bool m_isFloating;
-	bool m_isTerning;	// 重力が反転しているかどうか
 
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
@@ -118,19 +117,9 @@ public:
 
 	// プレイヤーの通常移動
 	void NormalMove();
-	// 無重力状態の移動
-	void ZeroGravityMove();
-
-	// 移動モードの切り替え
-	void ChangeMoveMode();
 
 	bool IsJump()
 	{
 		return m_isJump;
-	}
-
-	bool IsTerning()
-	{
-		return m_isTerning;
 	}
 };

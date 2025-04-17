@@ -23,7 +23,7 @@ private:
 	std::vector<Animation3D*> m_attachAnimList;
 
 	static constexpr int RoopAnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
-	static constexpr float MoveSpeed = 2.0f;	// 移動速度
+	static constexpr float MoveSpeed = 10.0f;	// 移動速度
 	static const char* AnimList[RoopAnimNum];
 	int m_model;	// 敵のモデル
 	int m_animIndex;	// 再生中のアニメーション

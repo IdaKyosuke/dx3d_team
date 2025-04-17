@@ -63,7 +63,4 @@ public:
 
 	// 1人称視点
 	void FirstPerson(const Vector3& playerPos);
-
-	// 反重力を実装する時用
-	void AntiGravity(const Vector3& playerPos);
 };

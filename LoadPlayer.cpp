@@ -40,7 +40,6 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
 	m_isJumping(false),
 	m_isFall(false),
 	m_isFloating(false),
-	m_isTerning(false),
 	m_hit(false)
 {
 	//-----アニメーションの作成-----
@@ -99,23 +98,17 @@ void LoadPlayer::PlayAnim()
 	m_camNode->SetCamPosAndTag();
 
 	// モデルの回転
-	if (!m_isTerning)
-	{
-		Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
-	}
-	else
-	{
-		Quaternion::RotateAxisYZ(m_model, m_transform.angle.y, m_transform.position);
-	}
+	Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
 
 	// モデルの描画
 	MV1DrawModel(m_model);
 	
+#ifdef _DEBUG
 	DrawFormatString(0, 60, GetColor(255, 255, 255),
 		"PlayerPos Vector3(%.0f, %.0f, %.0f)",
 		m_transform.position.x, m_transform.position.y, m_transform.position.z
 	);
-	
+#endif // _DEBUG
 }
 
 // モデル関係を削除
@@ -136,27 +129,10 @@ void LoadPlayer::Update()
 		)
 	{
 		m_transform.position = SpawnPos;
-		m_isTerning = false;
 	}
-	/*
-
-	// 移動状態の切り替え
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
-	{
-		ChangeMoveMode();
-	}*/
 
 	// プレイヤーの移動
-	switch (m_moveMode)
-	{
-	case MoveMode::Normal:
-		NormalMove();
-		break;
-
-	case MoveMode::ZeroGravity:
-		ZeroGravityMove();
-		break;
-	}
+	NormalMove();
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();
@@ -169,17 +145,11 @@ void LoadPlayer::Update()
 void LoadPlayer::Jumping()
 {
 	m_elapsedTime += Time::GetInstance()->GetDeltaTime();
-	if (!m_isTerning)
-	{
-		m_transform.position.y += JumpPower - Gravity * m_elapsedTime;
-	}
-	else
-	{
-		m_transform.position.y += -JumpPower + Gravity * m_elapsedTime;
-	}
+
+	m_transform.position.y += JumpPower - Gravity * m_elapsedTime;
 
 	// 足元が床に触れたら
-	if (m_isJumping && m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag)
+	if (m_isJumping && m_collisionStage->GetHeight(m_transform.position).HitFlag)
 	{
 		m_isJump = false;
 		m_isFall = false;
@@ -203,53 +173,37 @@ void LoadPlayer::NormalMove()
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_A)) inputX = -1;
 	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_D)) inputX = 1;
 
-	// 重力の向きを確認
-	float dir = m_isTerning ? -1.0f : 1.0f;
 	// 移動方向を決定（重力に応じて左右移動の向きが変わる）
 	m_moveDirection = m_camNode->CamFrontPlaneVec() * inputZ + m_camNode->CamRight() * inputX;
 
 	// 重力を加算（ジャンプ中でない && 着地していないときのみ）
-	if (!m_isJump && m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag == 0 && !m_isJump)
+	if (!m_isJump && m_collisionStage->GetHeight(m_transform.position).HitFlag == 0 && !m_isJump)
 	{
 		m_fallTime += Time::GetInstance()->GetDeltaTime();
-		if (!m_isTerning)
-		{
-			// 通常時
-			m_transform.position.y -= Gravity * m_fallTime;
-		}
-		else
-		{
-			m_transform.position.y += Gravity * m_fallTime;
-		}
+		// 通常時
+		m_transform.position.y -= Gravity * m_fallTime;
 	}
-	else if (m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag == 1)
+	else if (m_collisionStage->GetHeight(m_transform.position).HitFlag == 1)
 	{
 		// プレイヤーの高さを足場の高さに合わせる
 		m_fallTime = 0;
-		if (!m_isTerning)
-		{
-			// 通常時
-			m_transform.position.y = m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitPosition.y;
-		}
-		else
-		{
-			// 重力反転時
-			m_transform.position.y = m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitPosition.y;
-		}
+		// 通常時
+		m_transform.position.y = m_collisionStage->GetHeight(m_transform.position).HitPosition.y;
 	}
 
 	// 移動
 	m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
-
-	if (m_collisionStage->CapsuleCollider(m_transform.position, m_isTerning) != 0)
+	
+	// 進む予定先に足場があるか
+	if (!m_collisionStage->CheckStage(this->GetPosition()))
 	{
-		// 進む予定先に壁があった時
+		// ないとき
 		m_transform.position.x = m_playerPastPos.x;
 		m_transform.position.z = m_playerPastPos.z;
 	}
 
 	// ジャンプ
-	if (!m_isJump && m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag != 0 && Input::GetInstance()->IsKeyDown(KEY_INPUT_SPACE))
+	if (!m_isJump && m_collisionStage->GetHeight(m_transform.position).HitFlag != 0 && Input::GetInstance()->IsKeyDown(KEY_INPUT_SPACE))
 	{
 		m_nextAnim = RoopAnim::JumpUp;
 		m_isJump = true;
@@ -271,7 +225,7 @@ void LoadPlayer::NormalMove()
 	}
 
 	// ---- 移動アニメーション ----
-	if (m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag == 0)
+	if (m_collisionStage->GetHeight(m_transform.position).HitFlag == 0)
 	{
 		m_nextAnim = RoopAnim::JumpIdle;
 	}
@@ -305,54 +259,6 @@ void LoadPlayer::NormalMove()
 	}
 }
 
-// 無重力状態の移動
-void LoadPlayer::ZeroGravityMove()
-{
-	if (!m_isFloating)
-	{
-		if (!m_isTerning) m_transform.position.y += FloatHeight;
-		else m_transform.position.y -= FloatHeight;
-		m_isFloating = true;
-	}
-
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_SPACE))
-	{
-		// 重力の反転
-		m_isTerning = !m_isTerning;
-		MV1SetRotationXYZ(m_model, Vector3(0, Math::DegtoRad(180), 0));
-		m_moveMode = MoveMode::Normal;
-		m_isFloating = false;
-	}
-}
-
-// 移動モードの切り替え
-void LoadPlayer::ChangeMoveMode()
-{
-	switch (m_moveMode)
-	{
-	case MoveMode::Normal:
-		// 地面に足がついているときだけ移行できる
-		if (m_collisionStage->GetHeight(m_transform.position, m_isTerning).HitFlag != 0)
-		{
-			// 通常移動 -> 無重力移動
-			m_nextAnim = RoopAnim::Floating;
-			m_moveMode = MoveMode::ZeroGravity;
-			// 重力をリセット
-			m_fallTime = 0;
-		}
-		break;
-
-	case MoveMode::ZeroGravity:
-		// 無重力移動 -> 通常移動
-		m_nextAnim = RoopAnim::Idle;
-		m_moveMode = MoveMode::Normal;
-		m_isFloating = false;
-		// 重力をリセット
-		m_fallTime = 0;
-		break;
-	}
-}
-
 void LoadPlayer::Draw()
 {
 	// アニメーション再生
@@ -361,7 +267,7 @@ void LoadPlayer::Draw()
 
 void LoadPlayer::OnCollision(const Actor3D* other)
 {
-	if (other->GetName() == "wall")
+	if (other->GetName() == "Enemy")
 	{
 		m_hit = true;
 	}

@@ -392,9 +392,6 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	m_startPos = startPos;
 	m_endPos = goalPos;
 
-	// 現在地を設定
-	//m_nowPos = startPos;
-
 	// 経路探索用のメモリ確保
 	m_unitArray = new PathPlanUnit[sizeof(PathPlanUnit) * m_polyList.PolygonNum];
 
@@ -505,7 +502,7 @@ void NavMesh::MoveInitialize(const Vector3& pos)
 	// 移動開始時に乗っているポリゴンをスタート地点に設定
 	m_nowPolyIndex = m_start->polyIndex;
 
-	// 移動開始時点の座標はスタート地点にあるポリゴンの中心座標
+	// 移動開始時点の座標は現在の座標
 	m_nowPos = pos;
 
 	// 移動開始時の経路探索情報をスタート地点のポリゴン情報にする
@@ -562,6 +559,9 @@ bool NavMesh::RefreshMoveDirection(const float speed, const float width)
 		// 中間地点が決まるまでループ
 		while (true)
 		{
+			// プレイヤーが落下中なので追わない
+			if (m_targetPathPlan->nextPolyIndex == 0) break;
+
 			tempPathUnit = &m_unitArray[m_targetPathPlan->nextPolyIndex];
 
 			// 経路上の次のポリゴンの中心座標に直線移動できないとき、ループから抜ける

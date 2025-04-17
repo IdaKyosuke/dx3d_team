@@ -7,7 +7,8 @@
 class CollisionStage : public Node
 {
 private:
-	static constexpr Vector3 DiffCheckLine = Vector3(0, 500, 0);	// 足場があるかどうかを確認するレイの長さ
+	static constexpr Vector3 DeffRay = Vector3(0, 100, 0);	// 足場確認用のレイを体内にめり込ませる長さ
+	static constexpr Vector3 CheckLineLength = Vector3(0, 3000, 0);	// 足場があるかどうかを確認するレイの長さ
 	static constexpr Vector3 DiffGetLine = Vector3(0, 20, 0);	// プレイヤーの足元までのレイの長さ
 	static constexpr Vector3 ModelHeight = Vector3(0, 180, 0);		// 使用しているモデルの高さ
 	static constexpr float Radius = 30.0f;		// カプセルに使う球の半径
@@ -41,7 +42,7 @@ public:
 	int CheckStage(const Vector3& pos);
 
 	// プレイヤーの足元までのレイ(構造体を返す)
-	MV1_COLL_RESULT_POLY GetHeight(const Vector3& pos, bool terning);
+	MV1_COLL_RESULT_POLY GetHeight(const Vector3& pos);
 
 	// プレイヤーのカプセルとステージの当たり判定をとる
 	int CapsuleCollider(const Vector3& pos, bool terning);
