@@ -46,6 +46,10 @@ private:
 	float m_resultTransitionTime;
 	bool m_isFinish;
 
+
+
+	int m_model;
+
 public:
 	// コンストラクタ
 	SceneGame() :
@@ -61,8 +65,8 @@ public:
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
-		m_isFinish(false) {
-	}
+		m_isFinish(false),
+		m_model(0){}
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

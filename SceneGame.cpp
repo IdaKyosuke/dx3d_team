@@ -39,6 +39,17 @@ void SceneGame::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
+
+
+
+	// テスト（ステージの見た目）
+	m_model = MV1LoadModel("Resource/FavoriteStage.mv1");
+
+
+
+
+
+
 	// ステージの当たり判定を作成
 	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));
 
@@ -141,4 +152,6 @@ void SceneGame::Draw()
 {
 	// ノードの描画
 	m_rootNode->TreeDraw();
+
+	MV1DrawModel(m_model);
 }
