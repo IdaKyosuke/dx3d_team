@@ -113,7 +113,7 @@ void LoadPlayer::PlayAnim()
 		m_transform.position.x, m_transform.position.y, m_transform.position.z
 	);
 
-	DrawFormatString(0, 150, GetColor(255, 255, 255), "PlayerHP %.0f", m_hp);
+	DrawFormatString(0, 150, GetColor(255, 255, 255), "PlayerHP %d", m_hp);
 #endif // _DEBUG
 }
 
@@ -164,6 +164,8 @@ void LoadPlayer::Jumping()
 		m_isJump = false;
 		m_isJumping = false;
 		m_nextAnim = Anim::Landing;
+
+		CountFallHeight();
 	}
 	else
 	{
@@ -291,11 +293,7 @@ void LoadPlayer::Draw()
 
 void LoadPlayer::OnCollision(const Actor3D* other)
 {
-	if (!m_hit && other->GetName() == "Enemy")
-	{
-		m_hit = true;
-		DecreaseHP(10);
-	}
+	
 }
 
 // –³“GŠÔ
@@ -320,5 +318,21 @@ void LoadPlayer::CountFallHeight()
 		m_hp = 0;
 	}
 	m_fallStartY = 0;
+}
+
+// ƒvƒŒƒCƒ„[‚Ì‘Ì—Í‚ğŒ¸‚ç‚·ˆ—
+void LoadPlayer::DecreaseHP(int damage)
+{
+	// –³“GŠÔ‚ÍUŒ‚‚ğó‚¯‚È‚¢
+	if (m_hit) return;
+
+	m_hit = true;
+
+	m_hp -= damage;
+
+	if (m_hp <= 0)
+	{
+		m_hp = 0;
+	}
 }
 

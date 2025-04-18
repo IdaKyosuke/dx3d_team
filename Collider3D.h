@@ -15,6 +15,8 @@ public:
 	Collider3D(const Vector3& offset) :
 		m_offset(offset) {}
 
+	virtual void ChangeSize(const Vector3& size) = 0;
+
 	// 衝突判定
 	// ダブルディスパッチによる形状識別を行う
 	virtual bool CheckCollision(const Transform3D& transform1, const Transform3D& transform2, const Collider3D* collider2) const = 0;

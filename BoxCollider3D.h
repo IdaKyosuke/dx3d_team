@@ -23,6 +23,12 @@ public:
 		Collider3D(offset),
 		m_size(size){}
 
+	// 当たり判定のサイズを変更
+	void ChangeSize(const Vector3& size) override
+	{
+		m_size = size;
+	}
+
 	// 衝突判定
 	virtual bool CheckCollision(const Transform3D& transform1, const Transform3D& transform2, const Collider3D* collider2) const override
 	{

@@ -85,7 +85,7 @@ void Animation3D::FadeIn()
 	m_animTime = 0;
 	m_isActive = true;
 	// アニメーション終了フラグのリセット
-	if (!m_finishAnim) m_finishAnim = false;
+	if (m_finishAnim) m_finishAnim = false;
 }
 
 void Animation3D::FadeOut()

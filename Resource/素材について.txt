@@ -1,7 +1,3 @@
-Unitychan_Hundgun_3.png
-© Unity Technologies Japan/UCL
-https://unity-chan.com/contents/guideline/
-
-bullet.png
-Unity Asset Store
-https://assetstore.unity.com/packages/2d/free-2d-mega-pack-177430
+version https://git-lfs.github.com/spec/v1
+oid sha256:966f5e305ebf8a33eac153078d65f12ab82045fcfdda1e6d472b61b0f630453f
+size 202

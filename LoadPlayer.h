@@ -114,14 +114,7 @@ public:
 	void CountFallHeight();
 
 	// ƒvƒŒƒCƒ„[‚Ì‘Ì—Í‚ğŒ¸‚ç‚·ˆ—
-	void DecreaseHP(int damage)
-	{
-		m_hp -= damage;
-		if (m_hp <= 0)
-		{
-			m_hp = 0;
-		}
-	}
+	void DecreaseHP(int damage);
 
 	bool IsJump()
 	{

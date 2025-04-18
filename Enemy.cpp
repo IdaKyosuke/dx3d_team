@@ -3,6 +3,7 @@
 #include "Math.h"
 #include "Animation3D.h"
 #include "Collision3D.h"
+#include"ActorCollision3D.h"
 #include"BoxCollider3D.h"
 #include"LoadPlayer.h"
 #include"Quaternion.h"
@@ -13,7 +14,7 @@
 
 
 // アニメーションリスト
-const char* Enemy::AnimList[RoopAnimNum] =
+const char* Enemy::AnimList[AnimNum] =
 {
 	"Zombie/ZombieIdle.mv1",
 	"Zombie/ZombieWalk.mv1",
@@ -29,13 +30,27 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_navMesh(navMesh),
 	m_player(loadPlayer),
 	m_moveDirection(Vector3(0,0,0)),
-	m_isSet(false)
+	m_isSet(false),
+	m_isFind(false),
+	m_isAttack(false),
+	m_countCoolTime(false),
+	m_durationCoolTime(0)
 {
 	// アニメーションクラスをリスト化する
-	for (int i = 0; i < RoopAnimNum; i++)
+	for (int i = 0; i < AnimNum; i++)
 	{
-		m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i]));
-		AddChild(m_attachAnimList[i]);
+		if (i < AnimNum - 1)
+		{
+			// ループするアニメーション
+			m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i]));
+			AddChild(m_attachAnimList[i]);
+		}
+		else
+		{
+			// ループしないアニメーション
+			m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i], false));
+			AddChild(m_attachAnimList[i]);
+		}
 	}
 
 	// モデルを指定場所に描画
@@ -47,7 +62,7 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	// 最初のアニメーションを指定
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
-	m_collider = new BoxCollider3D(Vector3(100, 200, 100), Vector3(0,100,0));
+	m_collider = new BoxCollider3D(FindColSize, ColOffset);
 }
 
 // アニメーションを切り替える(Lerp)
@@ -92,8 +107,17 @@ void Enemy::Finalize()
 
 void Enemy::Update()
 {
-	EnemyMove();
+	if (m_isAttack)
+	{
+		Attack();
+	}
+	else
+	{
+		// 攻撃中でないとき
+		EnemyMove();
+	}
 
+	// モデルの回転
 	if (!m_moveDirection.IsZero())
 	{
 		float afterAngle = 0;
@@ -101,23 +125,6 @@ void Enemy::Update()
 		Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
 
 		m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
-	}
-
-	// アニメーションの管理
-	/*
-	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_3))
-	{
-		m_nextAnim = Anim::Attack;
-	}
-	*/
-
-	if (this->GetPosition() != m_enemyPastPos)
-	{
-		m_nextAnim = Anim::Run;
-	}
-	else
-	{
-		m_nextAnim = Anim::Idle;
 	}
 
 	// アニメーションの切り替え
@@ -141,6 +148,16 @@ void Enemy::EnemyMove()
 	m_navMesh->RemovePathPlan();
 
 	m_moveDirection = m_transform.position - m_enemyPastPos;
+
+	// 移動アニメーション
+	if (this->GetPosition() != m_enemyPastPos)
+	{
+		m_nextAnim = Anim::Run;
+	}
+	else
+	{
+		m_nextAnim = Anim::Idle;
+	}
 }
 
 void Enemy::Draw()
@@ -163,5 +180,47 @@ void Enemy::Draw()
 
 void Enemy::OnCollision(const Actor3D* other)
 {
+	if (other->GetName() == "Player")
+	{
+		if (!m_isFind)
+		{
+			// プレイヤーを見つけていない => コライダーを小さくする
+			// いったん削除
+			m_collider->ChangeSize(AttackColSize);
+			m_isFind = true;
 
+		}
+		else
+		{
+			// プレイヤーを発見済み => 攻撃
+			m_nextAnim = Anim::Attack;
+			m_player->DecreaseHP(Power);
+			m_isAttack = true;
+		}
+	}
+}
+
+// 敵の攻撃
+void Enemy::Attack()
+{
+	// 攻撃中は動かない
+	if (m_attachAnimList[static_cast<int>(m_nowAnim)]->FinishAnim())
+	{
+		// 攻撃アニメーションの終了と同時にアニメーション変更
+		ChangeAnimQuick(Anim::Idle);
+		m_countCoolTime = true;
+	}
+
+	if (m_countCoolTime)
+	{
+		m_durationCoolTime += Time::GetInstance()->GetDeltaTime();
+
+		// クールタイム終了
+		if (m_durationCoolTime <= CoolTime)
+		{
+			m_countCoolTime = false;
+			m_durationCoolTime = 0;
+			m_isAttack = false;
+		}
+	}
 }

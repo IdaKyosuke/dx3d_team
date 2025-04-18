@@ -10,7 +10,7 @@ Camera::Camera(LoadPlayer* player) :
 	m_loadPlayerNode(player),
 	m_pastTerning(false),
 	m_diffY(DiffY),
-	m_sightMode(SightMode::First),
+	m_sightMode(SightMode::Third),
 	m_isLocked(true)
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
