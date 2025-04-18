@@ -32,7 +32,6 @@ public:
 		switch (enhanceType)
 		{
 		case EnhanceTypeChoice::EnhanceInventory:
-			//m_inventory->EnhanceInventory();
 			m_maxHaveInventory++;
 			m_onButton = true;
 			break;

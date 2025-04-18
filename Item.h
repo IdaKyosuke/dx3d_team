@@ -65,5 +65,10 @@ public:
 		return m_sellMoney;
 	}
 
+	const char* GetItemName()
+	{
+		return m_itemName;
+	}
+
 	virtual void OnCollision(const Actor3D* other);
 };

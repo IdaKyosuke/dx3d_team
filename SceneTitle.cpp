@@ -48,7 +48,7 @@ SceneBase* SceneTitle::Update()
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
-		return new SceneGame(m_chest->GetItemList(), 3);
+		return new SceneGame(m_chest->GetItemList(), FirstMaxHaveItem,0);
 	}
 
 	// ノードの更新

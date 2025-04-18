@@ -2,11 +2,11 @@
 #include "Node.h"
 #include "Sprite.h"
 #include "Transform.h"
+#include <list>
 
 class Chest;
 class Wallet;
 class SellButton;
-class ShopButton;
 
 class Shop : public Node
 {
@@ -21,7 +21,8 @@ private:
 	Chest* m_chest;
 	Wallet* m_wallet;
 	SellButton* m_sellButton;
-	ShopButton* m_shopButton;
+
+
 
 protected:
 	virtual void Load() override;
@@ -30,5 +31,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Shop(Chest* chest, Wallet* wallet,SellButton* sellButton,ShopButton* shopButton);
+	Shop(Chest* chest, Wallet* wallet,SellButton* sellButton);
 };

@@ -6,12 +6,8 @@
 #include "MenuInventory.h"
 #include "Chest.h"
 #include "Shop.h"
-#include "ShopButton.h"
 #include "Wallet.h"
 #include "SellButton.h"
-#include "EnhanceShopButton.h"
-#include "EnhanceShop.h"
-
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
 
@@ -40,30 +36,21 @@ void SceneMenu::Initialize()
 	m_sellButton = new SellButton();
 	uiLayer->AddChild(m_sellButton);
 
-	//ショップ切り替えボタン
-	m_shopButton = new ShopButton();
-	uiLayer->AddChild(m_shopButton);
-	//強化ショップ切り替えボタン
-	m_enhanceShopButton = new EnhanceShopButton();
-	uiLayer->AddChild(m_enhanceShopButton);
-
 	//財布
 	m_wallet = new Wallet();
 	uiLayer->AddChild(m_wallet);
+	m_wallet->InWalletMoney(m_haveMoney);
 
 	//ショップ
-	m_shop = new Shop(m_chest,m_wallet,m_sellButton, m_shopButton);
+	m_shop = new Shop(m_chest,m_wallet,m_sellButton);
 	uiLayer->AddChild(m_shop);
 	
-
+	//強化の種類
 	m_enhanceType = new EnhanceType(m_inventory,m_maxHaveItem);
-
-	//強化ストア
-	m_enhanceShop = new EnhanceShop(m_chest);
-	uiLayer->AddChild(m_enhanceShop);
 	
 	//強化ボタン
-	uiLayer->AddChild(new EnhanceInventory(m_chest,m_wallet,m_enhanceType));
+	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceInventory);
 
 
 	if (!m_inventory->TakeItMenu().empty())
@@ -84,7 +71,6 @@ void SceneMenu::Initialize()
 			m_chest->CreateIcon(i);
 		}
 	}
-
 }
 
 void SceneMenu::Finalize()
@@ -102,7 +88,9 @@ SceneBase* SceneMenu::Update()
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory());
+		m_haveMoney = m_wallet->HaveMoney();
+
+		return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(),m_haveMoney);
 	}
 
 	return this;

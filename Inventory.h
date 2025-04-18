@@ -11,7 +11,7 @@ class LoadPlayer;
 class Inventory : public Node
 {
 private:
-	static constexpr int FirstMaxHaveItem = 3;		//最初にアイテムを持てる数の最大量
+	static constexpr int FirstMaxHaveItem = 5;		//最初にアイテムを持てる数の最大量
 	static constexpr float FirstMaxHaveWeight = 50;	//最初に持てるアイテムの重さの最大量
 	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
 	static constexpr Vector2 InventoryUiPos = Vector2(60, 890);
@@ -20,7 +20,7 @@ private:
 	static constexpr int SquareSize = 90;
 
 	int m_maxHaveItem;
-	int m_maxHaveWeight;
+	float m_maxHaveWeight;
 
 	int m_haveItemCount;	//アイテムを持ってる数
 
@@ -58,16 +58,22 @@ public:
 		return m_canGetItem;
 	}
 
-	//アイテムを同時に拾えるようにできたときに消す↓
-	void GettingItem()
-	{
-		m_gettingItem = true;
-	}
-	//-----------------
 
 	void SetItemList(Item* item)
 	{
 		m_itemList.push_back(*item);
+	}
+
+	void TakeItem(int itemNum,float itemWeight);
+
+	bool GetItemNow()
+	{
+		return m_gettingItem;
+	}
+
+	void GettingItem()
+	{
+		m_gettingItem = true;
 	}
 
 	bool DestoryItemIcon()

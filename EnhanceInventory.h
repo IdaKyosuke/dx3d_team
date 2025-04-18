@@ -1,38 +1,51 @@
 #pragma once
-#include "Enhance.h"
 #include "Button.h"
 #include "Actor.h"
 #include "SceneBase.h"
 #include "Vector2.h"
+#include "EnhanceType.h"
 #include <vector>
 
 class Chest;
 class EnhanceType;
 class Wallet;
 
-class EnhanceInventory : public Enhance
+class EnhanceInventory : public Actor
 {
 private:
-	static constexpr Vector2 Position = Vector2(400, 280);
-	static constexpr int NeedItemVolume = 1;
-	static constexpr int NeedMoney = 100;
+	static constexpr Vector2 Position = Vector2(500, 100);
+	static constexpr Vector2 Size = Vector2(250, 100);
+	static constexpr int FirstNeedMoney = 100;
+	static constexpr int NeedMoney[3] = { 150,200,300 };
 
-	int m_needItemCount;
+	int m_needMoney;		//必要なお金
 
-	bool m_canEnhance;
+	int m_enhanceCount;		//何回強化したか
+	bool m_canEnhance;		//強化できるか
 
 	int m_needItemNum;		//強化に必要なアイテムのナンバー
 
 	Chest* m_chest;
-	Wallet* m_wallet;
-	EnhanceType* m_enhanceType;
 
 	int m_useItemNum;
 
+
 protected:
+	EnhanceType::EnhanceTypeChoice m_enhanceTypeChoice;	//押された時に強化するもの
+	Button m_button;	//ボタン機能
+
+	EnhanceType* m_enhanceType;
+	Wallet* m_wallet;
+
+	//ボタンが押された時に呼ばれるコールバック関数
+	void OnClick();
+
 	//ボタンが有効かどうかをチェック
-	virtual bool CheckCondition() override;
+	virtual bool CheckCondition();
+
+	virtual void Update() override;	//更新
+	virtual void Draw() override;	//描画
 
 public:
-	EnhanceInventory(Chest* chest,Wallet* wallet,EnhanceType* enhanceType);
+	EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* enhanceType);
 };

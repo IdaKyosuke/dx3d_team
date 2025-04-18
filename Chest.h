@@ -40,12 +40,12 @@ protected:
 public:
 	Chest();
 
-	bool DestoryItemIcon()
+	bool DestoryItemIcon() const
 	{
 		return m_destroyItemIcon;
 	}
 
-	int DestroyTakeItem()
+	int DestroyTakeItem() const
 	{
 		return m_destroyTakeItem;
 	}
@@ -91,17 +91,15 @@ public:
 
 	void LostItem(int itemNum)
 	{
-
-		m_destroyTakeItem = m_takeItem;
+		m_destroyTakeItem = itemNum;
 		m_destroyItemIcon = true;
 
+		//一番最後のアイテム消したらエラーが起こったから起こらないようにしてる
 		if (m_takeItem == m_itemList.size()-1)
 		{
 			m_takeItem = m_takeItem -1;
 		}
 
 		m_itemList.erase(m_itemList.begin() + itemNum);
-
-		
 	}
 };

@@ -45,9 +45,11 @@ private:
 
 	int m_maxHaveInventory;
 
+	int m_haveMoney;
+
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList,int maxHaveInventoy) :
+	SceneGame(std::vector<Item> itemList,int maxHaveInventoy, int haveMoney) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -64,6 +66,7 @@ public:
 		m_keepChest(nullptr),
 		m_chestItem(itemList),
 		m_maxHaveInventory(maxHaveInventoy),
+		m_haveMoney(haveMoney),
 
 		m_isFinish(false){}
 

@@ -14,7 +14,7 @@ private:
 	Sprite m_walletImg;		// Wallet画像
 	int m_fontTextureId;	// 数字フォント
 	Transform m_transform;	// 姿勢
-	int m_haveMoney;			// スコアの値
+	int m_haveMoney;		// スコアの値
 
 protected:
 	virtual void Load() override;
@@ -37,7 +37,13 @@ public:
 		m_haveMoney += money;
 	}
 
-	int HaveMenoy()
+	void LostMoney(int money)
+	{
+		m_haveMoney -= money;
+	}
+
+	//今持っているお金
+	int HaveMoney() const
 	{
 		return m_haveMoney;
 	}

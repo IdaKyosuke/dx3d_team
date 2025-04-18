@@ -2,14 +2,13 @@
 #include "Chest.h"
 #include "Wallet.h"
 #include "SellButton.h"
-#include "ShopButton.h"
+#include "ImageLoader.h"
 
-Shop::Shop(Chest* chest,Wallet* wallet,SellButton* sellButton,ShopButton* shopButton) :
+Shop::Shop(Chest* chest,Wallet* wallet,SellButton* sellButton) :
 	m_chest(chest),
 	m_isSellItem(false),
 	m_wallet(wallet),
-	m_sellButton(sellButton),
-	m_shopButton(shopButton)
+	m_sellButton(sellButton)
 {
 	//Ui‚Ì“o˜^
 	m_shopUi.Register("shop_ui.png");
@@ -29,25 +28,20 @@ void Shop::Release()
 
 void Shop::Update()
 {
-	if (m_shopButton->GetCheckOnClick())
-	{
-		m_shopUi.Update();
-	}
+	m_shopUi.Update();	
 
-	int sellItem = m_chest->GetTakeItem();	
+	int takeItem = m_chest->GetTakeItem();	
 
 	if (m_sellButton->GetCheckOnClick() && !m_chest->GetItemList().empty())
 	{
-		m_wallet->InWalletMoney(std::next(m_chest->GetItemList().begin(),sellItem)->GetSellMoney());
+		m_wallet->InWalletMoney(std::next(m_chest->GetItemList().begin(), takeItem)->GetSellMoney());
 
-		m_chest->LostItem(sellItem);
+		m_chest->LostItem(takeItem);
 	}
 }
 
 void Shop::Draw()
 {
-	if(m_shopButton->GetCheckOnClick())
-	{
-		m_shopUi.Draw(m_shopTransform);
-	}
+	m_shopUi.Draw(m_shopTransform);
+	
 }

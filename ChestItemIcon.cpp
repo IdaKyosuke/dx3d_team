@@ -1,6 +1,5 @@
 #include "ChestItemIcon.h"
 #include "Chest.h"
-#include "Screen.h"
 
 ChestItemIcon::ChestItemIcon(int itemNum, int countGetItem, Chest* chest) :
 	m_itemNum(itemNum),

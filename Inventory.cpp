@@ -44,6 +44,10 @@ void Inventory::Update()
 	{
 		m_destroyItemIcon = false;
 	}
+	if (m_gettingItem)
+	{
+		m_gettingItem = false;
+	}
 
 	//アイテムを拾うことができるか
 	if (m_haveItemCount >= m_maxHaveItem)
@@ -57,18 +61,8 @@ void Inventory::Update()
 
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
-	m_haveItemCount = m_itemList.size();
-	if (m_gettingItem)
-	{
-		m_itemNum = std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemNum();
-
-		GetParent()->AddChild(new ItemIcon(m_itemNum, static_cast<int>(m_haveItemCount - 1),this));
-
-		m_gettingItem = false;
-
-		m_canHaveWeight += std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemWeight();
-	}
-
+	m_haveItemCount = static_cast<int>(m_itemList.size());
+	
 	//アイテム選択
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
 	{
@@ -133,4 +127,11 @@ void Inventory::Draw()
 		m_inventoryUi.Draw(m_transform);
 	}
 	m_takeItemUi.Draw(m_takeItemTransform);
+}
+
+void Inventory::TakeItem(int itemNum,float itemWeight)
+{
+	GetParent()->AddChild(new ItemIcon(itemNum, m_haveItemCount, this));
+
+	m_canHaveWeight += itemWeight;
 }
