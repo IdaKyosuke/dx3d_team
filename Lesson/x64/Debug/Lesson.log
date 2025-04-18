@@ -1,5 +1,5 @@
-﻿  GameMain.cpp
-  SceneGame.cpp
-  SceneTitle.cpp
-  コードを生成中...
+﻿  SceneGame.cpp
+D:\2024\GitHub\Dx3d_Team\Enemy.h(31,31): warning C4244: '初期化中': 'float' から 'const int' への変換です。データが失われる可能性があります。
+  (ソース ファイル 'SceneGame.cpp' をコンパイルしています)
+  
   Lesson.vcxproj -> D:\2024\GitHub\Dx3d_Team\x64\Debug\Lesson.exe
