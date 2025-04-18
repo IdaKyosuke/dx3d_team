@@ -149,6 +149,7 @@
     <ClCompile Include="Collision3D.cpp" />
     <ClCompile Include="CollisionStage.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="Collision3D.h" />
     <ClInclude Include="CollisionStage.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameMain.h" />

@@ -135,12 +135,6 @@ void LoadPlayer::Update()
 		m_hp = 100;
 	}
 
-	// 無敵時間
-	if (m_hit)
-	{
-		InvincibleTime();
-	}
-
 	// プレイヤーの移動
 	NormalMove();
 
@@ -296,19 +290,6 @@ void LoadPlayer::OnCollision(const Actor3D* other)
 	
 }
 
-// 無敵時間
-void LoadPlayer::InvincibleTime()
-{
-	m_duration += Time::GetInstance()->GetDeltaTime();
-
-	if (m_duration >= m_time)
-	{
-		// 無敵時間の終了
-		m_duration = 0;
-		m_hit = false;
-	}
-}
-
 // 落下した高さを計算する
 void LoadPlayer::CountFallHeight()
 {
@@ -323,11 +304,6 @@ void LoadPlayer::CountFallHeight()
 // プレイヤーの体力を減らす処理
 void LoadPlayer::DecreaseHP(int damage)
 {
-	// 無敵時間は攻撃を受けない
-	if (m_hit) return;
-
-	m_hit = true;
-
 	m_hp -= damage;
 
 	if (m_hp <= 0)

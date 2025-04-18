@@ -31,10 +31,11 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_player(loadPlayer),
 	m_moveDirection(Vector3(0,0,0)),
 	m_isSet(false),
-	m_isFind(false),
+	m_isFind(true),
 	m_isAttack(false),
 	m_countCoolTime(false),
-	m_durationCoolTime(0)
+	m_durationCoolTime(0),
+	m_isMove(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
@@ -114,7 +115,16 @@ void Enemy::Update()
 	else
 	{
 		// 攻撃中でないとき
-		EnemyMove();
+		if (m_isFind)
+		{
+			// プレイヤーを発見している
+			MoveCombat();
+		}
+		else
+		{
+			// 徘徊中
+			MoveWanderAround();
+		}
 	}
 
 	// モデルの回転
@@ -133,19 +143,19 @@ void Enemy::Update()
 	m_enemyPastPos = this->GetPosition();
 }
 
-// 敵の移動
-void Enemy::EnemyMove()
+// 敵の移動（臨戦態勢）
+void Enemy::MoveCombat()
 {
 	// 自身とプレイヤー間の経路探索を行う
-	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
+	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition(), m_unitArray);
 
 	// 移動準備
 	m_navMesh->MoveInitialize(this->GetPosition());
 
-	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, 20.0f);
+	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray);
 
 	// 今回の探索情報を削除
-	m_navMesh->RemovePathPlan();
+	m_navMesh->RemovePathPlan(m_unitArray);
 
 	m_moveDirection = m_transform.position - m_enemyPastPos;
 
@@ -157,6 +167,35 @@ void Enemy::EnemyMove()
 	else
 	{
 		m_nextAnim = Anim::Idle;
+	}
+}
+
+// 敵の移動（徘徊）
+void Enemy::MoveWanderAround()
+{
+	if (!m_isMove)
+	{
+		// ランダムな座標までの経路探索
+		m_navMesh->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), m_unitArray);
+
+		// 移動準備
+		m_navMesh->MoveInitialize(this->GetPosition());
+
+		m_isMove = true;
+	}
+	else
+	{
+		if (m_transform.position != m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray))
+		{
+			// 目的地に到着していないとき
+			m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray);
+		}
+		else
+		{
+			// 目的に到着 => 今回の探索結果を破棄 && 再度目的地の設定と経路探索
+			m_navMesh->RemovePathPlan(m_unitArray);
+			m_isMove = false;
+		}
 	}
 }
 
@@ -182,6 +221,7 @@ void Enemy::OnCollision(const Actor3D* other)
 {
 	if (other->GetName() == "Player")
 	{
+		
 		if (!m_isFind)
 		{
 			// プレイヤーを見つけていない => コライダーを小さくする
@@ -192,6 +232,7 @@ void Enemy::OnCollision(const Actor3D* other)
 		}
 		else
 		{
+			if (m_isAttack) return;
 			// プレイヤーを発見済み => 攻撃
 			m_nextAnim = Anim::Attack;
 			m_player->DecreaseHP(Power);

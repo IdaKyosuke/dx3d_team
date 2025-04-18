@@ -64,17 +64,20 @@ public:
 	bool CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width);
 
 	// 指定の２点間を経路探索
-	bool SetPathPlan(Vector3 startPos, Vector3 goalPos);
+	bool SetPathPlan(Vector3 startPos, Vector3 goalPos, PathPlanUnit* unitArray);
 	
 	// 経路探索情報を削除
-	void RemovePathPlan();
+	void RemovePathPlan(PathPlanUnit* unitArray);
 
 	// 探索経路の移動処理の初期化
 	void MoveInitialize(const Vector3& pos);
 
 	// 探索経路の移動処理
-	Vector3 Move(const Vector3& pos, const float speed, const float width);
+	Vector3 Move(const Vector3& pos, const float speed, const float width, PathPlanUnit* unitArray);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-	bool RefreshMoveDirection(const float speed, const float width);
+	bool RefreshMoveDirection(const float speed, const float width, PathPlanUnit* unitArray);
+
+	// ポリゴンの情報を使って、ポジションを返す
+	Vector3 GetPos(const int polygonNum = 0);
 };

@@ -2,6 +2,8 @@
 #include"CollisionStage.h"
 #include"Math.h"
 #include"Vector3.h"
+#include <cstdlib>
+#include <ctime>
 
 NavMesh::NavMesh(CollisionStage* collisionStage) :
 	m_collisionStage(collisionStage),
@@ -17,6 +19,7 @@ NavMesh::NavMesh(CollisionStage* collisionStage) :
 	m_nowPathPlan(nullptr),
 	m_targetPathPlan(nullptr)
 {
+	srand(static_cast<unsigned int>(time(NULL)));
 	// 最初にポリゴンの連結情報を構築しておく
 	SetPolyLinkInfo();
 }
@@ -100,6 +103,7 @@ void NavMesh::SetPolyLinkInfo()
 			Vector3 outv = v1.CrossP(v2);
 			outv = Math::Normalized(outv);
 
+			// 角度がついているポリゴンは床とみなさない
 			if (outv.y <= 0.5)
 			{
 				continue;
@@ -392,7 +396,7 @@ bool NavMesh::CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width)
 }
 
 // 指定の２点間を経路探索
-bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
+bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos, PathPlanUnit* unitArray)
 {
 	int num;
 	int polyIndex;
@@ -406,32 +410,32 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	m_endPos = goalPos;
 
 	// 経路探索用のメモリ確保
-	m_unitArray = new PathPlanUnit[sizeof(PathPlanUnit) * m_polyList.PolygonNum];
+	unitArray = new PathPlanUnit[sizeof(PathPlanUnit) * m_polyList.PolygonNum];
 
 	// 経路探索用のポリゴンの初期化
 	for (num = 0; num < m_polyList.PolygonNum; num++)
 	{
-		m_unitArray[num].polyIndex = num;
-		m_unitArray[num].totalDistance = 0;
-		m_unitArray[num].prevPolyIndex = -1;
-		m_unitArray[num].nextPolyIndex = -1;
-		m_unitArray[num].activeNext = nullptr;
+		unitArray[num].polyIndex = num;
+		unitArray[num].totalDistance = 0;
+		unitArray[num].prevPolyIndex = -1;
+		unitArray[num].nextPolyIndex = -1;
+		unitArray[num].activeNext = nullptr;
 	}
 
 	// スタート地点のポリゴン番号を取得 -> 経路探索用の構造体のアドレスを保存
 	polyIndex = CheckPolyIndex(startPos);
 	if (polyIndex == -1) return false;
 
-	m_start = &m_unitArray[polyIndex];
+	m_start = &unitArray[polyIndex];
 
 	// 経路探索用のポリゴンとしてスタート地点のポリゴンを登録
-	m_activeFirst = &m_unitArray[polyIndex];
+	m_activeFirst = &unitArray[polyIndex];
 
 	// ゴール地点にあるポリゴン番号を取得 -> 経路探索用の構造体のアドレスを保存
 	polyIndex = CheckPolyIndex(goalPos);
 	if (polyIndex == -1) return false;
 
-	m_goal = &m_unitArray[polyIndex];
+	m_goal = &unitArray[polyIndex];
 
 	// スタート地点とゴール地点のポリゴンが同じとき
 	if (m_start == m_goal) return false;
@@ -452,7 +456,7 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 				if (m_polyLink[pathUnit->polyIndex].linkPolyIndex[num] == -1) continue;
 
 				// 隣接するポリゴンが経路探索処理が行われている && より距離の長い経路  もしくは　スタート地点のポリゴンの時
-				pathUnit_sub = &m_unitArray[m_polyLink[pathUnit->polyIndex].linkPolyIndex[num]];
+				pathUnit_sub = &unitArray[m_polyLink[pathUnit->polyIndex].linkPolyIndex[num]];
 				if ((pathUnit_sub->prevPolyIndex != -1 && pathUnit_sub->totalDistance <= pathUnit->totalDistance + m_polyLink[pathUnit->polyIndex].linkPolyDistance[num]) ||
 					 pathUnit_sub->polyIndex == m_start->polyIndex )
 				{
@@ -494,7 +498,7 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	do
 	{
 		pathUnit_sub = pathUnit;
-		pathUnit = &m_unitArray[pathUnit_sub->prevPolyIndex];
+		pathUnit = &unitArray[pathUnit_sub->prevPolyIndex];
 		pathUnit->nextPolyIndex = pathUnit_sub->polyIndex;
 	} while (pathUnit != m_start);
 
@@ -503,10 +507,10 @@ bool NavMesh::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 }
 
 // 経路探索情報を削除
-void NavMesh::RemovePathPlan()
+void NavMesh::RemovePathPlan(PathPlanUnit* unitArray)
 {
 	// 経路探索の為に確保したメモリ領域を解放
-	delete[] m_unitArray;
+	delete[] unitArray;
 }
 
 // 探索経路の移動処理の初期化
@@ -526,10 +530,10 @@ void NavMesh::MoveInitialize(const Vector3& pos)
 }
 
 // 探索経路の移動処理
-Vector3 NavMesh::Move(const Vector3& pos, const float speed, const float width)
+Vector3 NavMesh::Move(const Vector3& pos, const float speed, const float width, PathPlanUnit* unitArray)
 {
 	// 移動方向の更新、ゴールにたどり着いていたら終了
-	if (RefreshMoveDirection(speed, width)) return pos;
+	if (RefreshMoveDirection(speed, width, unitArray)) return pos;
 
 	// 移動方向の座標に移動
 	m_nowPos += m_moveDirection * speed;
@@ -538,13 +542,13 @@ Vector3 NavMesh::Move(const Vector3& pos, const float speed, const float width)
 	m_nowPolyIndex = CheckPolyIndex(m_nowPos);
 
 	// 乗っているポリゴンの経路探索情報をアドレスに代入
-	m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
+	m_nowPathPlan = &unitArray[m_nowPolyIndex];
 
 	return m_nowPos;
 }
 
 // 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-bool NavMesh::RefreshMoveDirection(const float speed, const float width)
+bool NavMesh::RefreshMoveDirection(const float speed, const float width, PathPlanUnit* unitArray)
 {
 	PathPlanUnit* tempPathUnit;
 
@@ -575,7 +579,7 @@ bool NavMesh::RefreshMoveDirection(const float speed, const float width)
 			// プレイヤーが落下中なので追わない
 			if (m_targetPathPlan->nextPolyIndex == 0) break;
 
-			tempPathUnit = &m_unitArray[m_targetPathPlan->nextPolyIndex];
+			tempPathUnit = &unitArray[m_targetPathPlan->nextPolyIndex];
 
 			// 経路上の次のポリゴンの中心座標に直線移動できないとき、ループから抜ける
 			if (!CheckPolyMoveWidth(m_nowPos, m_polyLink[tempPathUnit->polyIndex].centerPos, width)) break;
@@ -595,4 +599,16 @@ bool NavMesh::RefreshMoveDirection(const float speed, const float width)
 
 	// ゴールにたどり着いていない
 	return false;
+}
+
+// ポリゴンの情報を使って、ポジションを返す
+Vector3 NavMesh::GetPos(const int polygonNum)
+{
+	if (polygonNum == 0)
+	{
+		int index = rand() % m_polyList.PolygonNum;
+		return m_polyLink[index].centerPos;
+	}
+
+	return m_polyLink[polygonNum].centerPos;
 }

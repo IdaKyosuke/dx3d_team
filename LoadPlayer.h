@@ -106,10 +106,6 @@ public:
 	// プレイヤーの通常移動
 	void NormalMove();
 
-
-	// 無敵時間
-	void InvincibleTime();
-
 	// 落下した高さを計算する
 	void CountFallHeight();
 

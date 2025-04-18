@@ -4,7 +4,7 @@
 
 class Node;
 class LoadPlayer;
-class Enemy;
+class EnemyFactory;
 class Collision3D;
 class NavMesh;
 class Camera;
@@ -30,7 +30,7 @@ private:
 
 	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
-	Enemy* m_enemy;
+	EnemyFactory* m_enemy;
 	Collision3D* m_collision3D;
 	NavMesh* m_navMesh;
 	Camera* m_cam;
