@@ -1,12 +1,13 @@
 #pragma once
 #include"Actor3D.h"
 #include"Vector3.h"
+#include"NavMesh.h"
 #include"DxLib.h"
 #include<vector>
 
 class Animation3D;
-class NavMesh;
 class LoadPlayer;
+class CheckRoot;
 
 class Enemy : public Actor3D
 {
@@ -23,12 +24,13 @@ public:
 
 private:
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
-	static constexpr float MoveSpeed = 10.0f;	// 移動速度
+	static constexpr float MoveSpeed = 2.0f;	// 移動速度
+	static constexpr float Width = 20.0f;	// 敵の幅
 	static const char* AnimList[AnimNum];
-	static constexpr Vector3 FindColSize = Vector3(400, 200, 400);	// プレイヤーを見つけるための当たり判定のサイズ
+	static constexpr Vector3 FindColSize = Vector3(800, 200, 800);	// プレイヤーを見つけるための当たり判定のサイズ
 	static constexpr Vector3 AttackColSize = Vector3(100, 200, 100);	// 攻撃判定のサイズ
 	static constexpr Vector3 ColOffset = Vector3(0, 100, 0);	// コライダーのオフセット
-	static constexpr int Power = 10.0f;		// 攻撃力
+	static constexpr int Power = 10;		// 攻撃力
 	static constexpr float CoolTime = 1.0f;	// 攻撃後のクールタイム
 
 	std::vector<Animation3D*> m_attachAnimList;
@@ -49,10 +51,12 @@ private:
 	LoadPlayer* m_player;	// プレイヤー
 
 	bool m_isSet;
+	bool m_isMove;	// 徘徊中 && 目的地に向かっている途中か
 	bool m_isFind;	// プレイヤーを見つけたか
 	bool m_isAttack;	// 攻撃時に立ち止まるならこのフラグを使う
 	bool m_countCoolTime;	// クールタイムカウント開始フラグ
 	float m_durationCoolTime;	// クールタイムの経過時間
+	CheckRoot* m_checkRoot;	// ステージ情報から経路探索を行う用
 
 protected:
 	virtual void Update() override;
@@ -74,8 +78,11 @@ public:
 	// モデル関係を削除
 	void Finalize();
 
-	// 敵の移動
-	void EnemyMove();
+	// 敵の移動（臨戦態勢）
+	void MoveCombat();
+
+	// 敵の移動（徘徊）
+	void MoveWanderAround();
 
 	// 敵の攻撃
 	void Attack();

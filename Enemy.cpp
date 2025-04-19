@@ -6,12 +6,12 @@
 #include"ActorCollision3D.h"
 #include"BoxCollider3D.h"
 #include"LoadPlayer.h"
+#include"CheckRoot.h"
 #include"Quaternion.h"
 #include"NavMesh.h"
 #include "Input.h"
 #include "Lerp.h"
 #include <math.h>
-
 
 // アニメーションリスト
 const char* Enemy::AnimList[AnimNum] =
@@ -34,7 +34,8 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_isFind(false),
 	m_isAttack(false),
 	m_countCoolTime(false),
-	m_durationCoolTime(0)
+	m_durationCoolTime(0),
+	m_isMove(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
@@ -63,6 +64,8 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
 	m_collider = new BoxCollider3D(FindColSize, ColOffset);
+
+	m_checkRoot = new CheckRoot(m_navMesh);
 }
 
 // アニメーションを切り替える(Lerp)
@@ -91,11 +94,13 @@ void Enemy::PlayAnim()
 {
 	// モデルの描画
 	MV1DrawModel(m_model);
-
+#ifdef _DEBUG
 	DrawFormatString(0, 60, GetColor(255, 255, 255),
 		"EnemyPos Vector3(%.0f, %.0f, %.0f)",
 		m_enemyPos.x, m_enemyPos.y, m_enemyPos.z
 	);
+#endif // _DEBUG
+
 }
 
 // モデル関係を削除
@@ -114,7 +119,29 @@ void Enemy::Update()
 	else
 	{
 		// 攻撃中でないとき
-		EnemyMove();
+		if (m_isFind)
+		{
+			// プレイヤーを発見している
+			MoveCombat();
+		}
+		else
+		{
+			// 徘徊中
+			MoveWanderAround();
+		}
+
+		// 現在の移動方向を取得
+		m_moveDirection = m_transform.position - m_enemyPastPos;
+
+		// 移動アニメーション
+		if (this->GetPosition() != m_enemyPastPos)
+		{
+			m_nextAnim = Anim::Run;
+		}
+		else
+		{
+			m_nextAnim = Anim::Idle;
+		}
 	}
 
 	// モデルの回転
@@ -133,30 +160,47 @@ void Enemy::Update()
 	m_enemyPastPos = this->GetPosition();
 }
 
-// 敵の移動
-void Enemy::EnemyMove()
+// 敵の移動（臨戦態勢）
+void Enemy::MoveCombat()
 {
 	// 自身とプレイヤー間の経路探索を行う
-	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition());
+	m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
 	// 移動準備
-	m_navMesh->MoveInitialize(this->GetPosition());
+	m_checkRoot->MoveInitialize(this->GetPosition());
 
-	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, 20.0f);
+	m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
 
 	// 今回の探索情報を削除
-	m_navMesh->RemovePathPlan();
+	m_checkRoot->RemovePathPlan();
+}
 
-	m_moveDirection = m_transform.position - m_enemyPastPos;
-
-	// 移動アニメーション
-	if (this->GetPosition() != m_enemyPastPos)
+// 敵の移動（徘徊）
+void Enemy::MoveWanderAround()
+{
+	if (!m_isMove)
 	{
-		m_nextAnim = Anim::Run;
+		// ランダムな座標までの経路探索
+		m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos());
+
+		// 移動準備
+		m_checkRoot->MoveInitialize(this->GetPosition());
+
+		m_isMove = true;
 	}
 	else
 	{
-		m_nextAnim = Anim::Idle;
+		if (m_transform.position != m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width))
+		{
+			// 目的地に到着していないとき
+			m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
+		}
+		else
+		{
+			// 目的に到着 => 今回の探索結果を破棄 && 再度目的地の設定と経路探索
+			m_checkRoot->RemovePathPlan();
+			m_isMove = false;
+		}
 	}
 }
 
@@ -182,6 +226,7 @@ void Enemy::OnCollision(const Actor3D* other)
 {
 	if (other->GetName() == "Player")
 	{
+		
 		if (!m_isFind)
 		{
 			// プレイヤーを見つけていない => コライダーを小さくする
@@ -192,6 +237,7 @@ void Enemy::OnCollision(const Actor3D* other)
 		}
 		else
 		{
+			if (m_isAttack) return;
 			// プレイヤーを発見済み => 攻撃
 			m_nextAnim = Anim::Attack;
 			m_player->DecreaseHP(Power);

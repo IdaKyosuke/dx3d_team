@@ -9,6 +9,7 @@
 #include "ImageLoader.h"
 #include"LoadPlayer.h"
 #include "Enemy.h"
+#include "EnemyFacTory.h"
 #include"NavMesh.h"
 #include"CollisionStage.h"
 #include"ItemFactory.h"
@@ -39,16 +40,8 @@ void SceneGame::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
-
-
-
 	// テスト（ステージの見た目）
 	m_model = MV1LoadModel("Resource/FavoriteStage.mv1");
-
-
-
-
-
 
 	// ステージの当たり判定を作成
 	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));
@@ -92,8 +85,7 @@ void SceneGame::Initialize()
 	m_navMesh = new NavMesh(m_collisionStage);
 	
 	// 敵
-	m_enemy = new Enemy(m_navMesh, Vector3(800, 0, 10), m_loadPlayer);
-	actorLayer->AddChild(m_enemy);
+	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer, EnemyNum);
 	
 	// スコア
 	m_uiScore = new UiScore();
@@ -126,7 +118,6 @@ void SceneGame::Finalize()
 	m_rootNode = nullptr;
 
 	// navMesh情報の破棄
-	m_navMesh->RemovePathPlan();
 	m_navMesh->RemovePolyLinkInfo();
 }
 
@@ -153,5 +144,5 @@ void SceneGame::Draw()
 	// ノードの描画
 	m_rootNode->TreeDraw();
 
-	MV1DrawModel(m_model);
+	//MV1DrawModel(m_model);
 }
