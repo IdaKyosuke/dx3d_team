@@ -3,26 +3,14 @@
 #include"Vector3.h"
 
 class UiScore;
+class NavMesh;
+class Inventory;
+class LoadPlayer;
 
 class ItemFactory : public Node
 {
 private:
-	static constexpr int ItemNum = 1;
-
-	// アイテム生成場所のリスト
-	const Vector3 pos[ItemNum] =
-	{
-		Vector3(-660, 440, 640),
-		/*
-		Vector3(-12, 120, 2700),
-		Vector3(-600, 120, -920),
-		Vector3(30, 420, 0),
-		Vector3(-920, 980, -690),
-		Vector3(500, 1580, -680),
-		Vector3(880, 720, 570),
-		Vector3(850, 720, -670),
-		*/
-	};
+	static constexpr int ItemNum = 6;
 
 	bool m_isFinish;		// アイテムをすべて集め終えたか
 	int m_getNum;		// 集め終えたアイテム数
@@ -33,11 +21,15 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ItemFactory(UiScore* uiScore);
+	ItemFactory(
+		UiScore* uiScore,
+		LoadPlayer* player,
+		Inventory* inventory,
+		NavMesh* navMesh
+	);
 
 	// 獲得されたアイテム数をカウントアップ
 	void ItemCount();
-
 
 	// クリアフラグを返す
 	bool IsFinish()

@@ -1,16 +1,26 @@
 #include"ItemFactory.h"
-#include"Sphere.h"
+#include"Item.h"
+#include"NavMesh.h"
 #include"UiScore.h"
+#include <cstdlib>
+#include <ctime>
 
-ItemFactory::ItemFactory(UiScore* uiScore) :
+ItemFactory::ItemFactory(
+	UiScore* uiScore,
+	LoadPlayer* player,
+	Inventory* inventory,
+	NavMesh* navMesh
+) :
 	m_isFinish(false),
 	m_getNum(0),
 	m_uiScore(uiScore)
 {
+	srand(static_cast<unsigned int>(time(NULL)));
 	// アイテムを生成する
 	for (int i = 0; i < ItemNum; i++)
 	{
-		AddChild(new Sphere(pos[i], this));
+		int itemNum = rand() % 6;
+		AddChild(new Item(itemNum, navMesh->GetPos(), player, inventory));
 	}
 
 	// 表示用スコアの設定

@@ -45,18 +45,16 @@ void SceneGame::Initialize()
 
 	// ステージの当たり判定を作成
 	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));
-
 	uiLayer->AddChild(m_collisionStage);
 
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
-
 	actorLayer->AddChild(m_loadPlayer);
 
 	//インベントリ
 	m_inventory = new Inventory(m_loadPlayer);
 	uiLayer->AddChild(m_inventory);
-
+	/*
 	//アイテム
 	m_item = new Item(0, Vector3(100, 0, 100), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
@@ -80,6 +78,7 @@ void SceneGame::Initialize()
 	// アイテム
 	m_item = new Item(5, Vector3(700, 0, 700), m_loadPlayer, m_inventory);
 	actorLayer->AddChild(m_item);
+	*/
 
 	// ナビメッシュ
 	m_navMesh = new NavMesh(m_collisionStage);
@@ -92,7 +91,7 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_uiScore);
 	
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_uiScore);
+	m_itemfactory = new ItemFactory(m_uiScore, m_loadPlayer, m_inventory, m_navMesh);
 	actorLayer->AddChild(m_itemfactory);
 
 	// リザルト画面
