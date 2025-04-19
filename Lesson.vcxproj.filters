@@ -118,6 +118,9 @@
     <ClCompile Include="EnemyFactory.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="CheckRoot.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -277,6 +280,9 @@
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
     <ClInclude Include="EnemyFactory.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckRoot.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -85,10 +85,7 @@ void SceneGame::Initialize()
 	m_navMesh = new NavMesh(m_collisionStage);
 	
 	// “G
-	m_enemy = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);
-	
-	//m_enemy = new Enemy(m_navMesh, Vector3(800, 0, 10), m_loadPlayer);
-	//actorLayer->AddChild(m_enemy);
+	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer, EnemyNum);
 	
 	// ƒXƒRƒA
 	m_uiScore = new UiScore();
@@ -147,5 +144,5 @@ void SceneGame::Draw()
 	// ƒm[ƒh‚Ì•`‰æ
 	m_rootNode->TreeDraw();
 
-	MV1DrawModel(m_model);
+	//MV1DrawModel(m_model);
 }

@@ -6,6 +6,7 @@
 #include"ActorCollision3D.h"
 #include"BoxCollider3D.h"
 #include"LoadPlayer.h"
+#include"CheckRoot.h"
 #include"Quaternion.h"
 #include"NavMesh.h"
 #include "Input.h"
@@ -31,7 +32,7 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_player(loadPlayer),
 	m_moveDirection(Vector3(0,0,0)),
 	m_isSet(false),
-	m_isFind(true),
+	m_isFind(false),
 	m_isAttack(false),
 	m_countCoolTime(false),
 	m_durationCoolTime(0),
@@ -64,6 +65,8 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
 	m_collider = new BoxCollider3D(FindColSize, ColOffset);
+
+	m_checkRoot = new CheckRoot(m_navMesh);
 }
 
 // ƒAƒjƒ[ƒVƒ‡ƒ“‚ðØ‚è‘Ö‚¦‚é(Lerp)
@@ -125,6 +128,19 @@ void Enemy::Update()
 			// œpœj’†
 			MoveWanderAround();
 		}
+
+		// Œ»Ý‚ÌˆÚ“®•ûŒü‚ðŽæ“¾
+		m_moveDirection = m_transform.position - m_enemyPastPos;
+
+		// ˆÚ“®ƒAƒjƒ[ƒVƒ‡ƒ“
+		if (this->GetPosition() != m_enemyPastPos)
+		{
+			m_nextAnim = Anim::Run;
+		}
+		else
+		{
+			m_nextAnim = Anim::Idle;
+		}
 	}
 
 	// ƒ‚ƒfƒ‹‚Ì‰ñ“]
@@ -147,27 +163,15 @@ void Enemy::Update()
 void Enemy::MoveCombat()
 {
 	// Ž©g‚ÆƒvƒŒƒCƒ„[ŠÔ‚ÌŒo˜H’Tõ‚ðs‚¤
-	m_navMesh->SetPathPlan(this->GetPosition(), m_player->GetPosition(), m_unitArray);
+	m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition());
 
 	// ˆÚ“®€”õ
-	m_navMesh->MoveInitialize(this->GetPosition());
+	m_checkRoot->MoveInitialize(this->GetPosition());
 
-	m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray);
+	m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
 
 	// ¡‰ñ‚Ì’Tõî•ñ‚ðíœ
-	m_navMesh->RemovePathPlan(m_unitArray);
-
-	m_moveDirection = m_transform.position - m_enemyPastPos;
-
-	// ˆÚ“®ƒAƒjƒ[ƒVƒ‡ƒ“
-	if (this->GetPosition() != m_enemyPastPos)
-	{
-		m_nextAnim = Anim::Run;
-	}
-	else
-	{
-		m_nextAnim = Anim::Idle;
-	}
+	m_checkRoot->RemovePathPlan();
 }
 
 // “G‚ÌˆÚ“®iœpœjj
@@ -176,24 +180,24 @@ void Enemy::MoveWanderAround()
 	if (!m_isMove)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€‚ÈÀ•W‚Ü‚Å‚ÌŒo˜H’Tõ
-		m_navMesh->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), m_unitArray);
+		m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos());
 
 		// ˆÚ“®€”õ
-		m_navMesh->MoveInitialize(this->GetPosition());
+		m_checkRoot->MoveInitialize(this->GetPosition());
 
 		m_isMove = true;
 	}
 	else
 	{
-		if (m_transform.position != m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray))
+		if (m_transform.position != m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width))
 		{
 			// –Ú“I’n‚É“ž’…‚µ‚Ä‚¢‚È‚¢‚Æ‚«
-			m_transform.position = m_navMesh->Move(this->GetPosition(), MoveSpeed, Width, m_unitArray);
+			m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
 		}
 		else
 		{
 			// –Ú“I‚É“ž’… => ¡‰ñ‚Ì’TõŒ‹‰Ê‚ð”jŠü && Ä“x–Ú“I’n‚ÌÝ’è‚ÆŒo˜H’Tõ
-			m_navMesh->RemovePathPlan(m_unitArray);
+			m_checkRoot->RemovePathPlan();
 			m_isMove = false;
 		}
 	}

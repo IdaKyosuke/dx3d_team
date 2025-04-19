@@ -27,10 +27,11 @@ private:
 	};
 
 	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
+	static constexpr int EnemyNum = 3;	// 敵の数
 
 	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
-	EnemyFactory* m_enemy;
+	EnemyFactory* m_enemyFactory;
 	Collision3D* m_collision3D;
 	NavMesh* m_navMesh;
 	Camera* m_cam;
@@ -42,11 +43,8 @@ private:
 	Item* m_item;
 	Inventory* m_inventory;
 
-
 	float m_resultTransitionTime;
 	bool m_isFinish;
-
-
 
 	int m_model;
 
@@ -55,7 +53,8 @@ public:
 	SceneGame() :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
-		m_enemy(nullptr),
+		m_enemyFactory(nullptr),
+		m_collision3D(nullptr),
 		m_navMesh(nullptr),
 		m_cam(nullptr),
 		m_resultTransitionTime(ResultTransitionTime),

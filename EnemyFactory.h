@@ -11,6 +11,10 @@ private:
 	static constexpr int EnemyNum = 3;
 
 public:
-	EnemyFactory(Node* m_actorNode, NavMesh* navMesh, LoadPlayer* loadPlayer);
+	EnemyFactory(
+		Node* m_actorNode,
+		NavMesh* navMesh,
+		LoadPlayer* loadPlayer,
+		const int enemyNum);
 
 };
