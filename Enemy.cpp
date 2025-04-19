@@ -13,7 +13,6 @@
 #include "Lerp.h"
 #include <math.h>
 
-
 // アニメーションリスト
 const char* Enemy::AnimList[AnimNum] =
 {
@@ -95,11 +94,13 @@ void Enemy::PlayAnim()
 {
 	// モデルの描画
 	MV1DrawModel(m_model);
-
+#ifdef _DEBUG
 	DrawFormatString(0, 60, GetColor(255, 255, 255),
 		"EnemyPos Vector3(%.0f, %.0f, %.0f)",
 		m_enemyPos.x, m_enemyPos.y, m_enemyPos.z
 	);
+#endif // _DEBUG
+
 }
 
 // モデル関係を削除
