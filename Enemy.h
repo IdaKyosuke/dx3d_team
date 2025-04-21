@@ -24,7 +24,7 @@ public:
 
 private:
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
-	static constexpr float MoveSpeed = 2.0f;	// 移動速度
+	static constexpr float MoveSpeed = 10.0f;	// 移動速度
 	static constexpr float Width = 20.0f;	// 敵の幅
 	static const char* AnimList[AnimNum];
 	static constexpr Vector3 FindColSize = Vector3(800, 200, 800);	// プレイヤーを見つけるための当たり判定のサイズ
@@ -57,6 +57,8 @@ private:
 	bool m_countCoolTime;	// クールタイムカウント開始フラグ
 	float m_durationCoolTime;	// クールタイムの経過時間
 	CheckRoot* m_checkRoot;	// ステージ情報から経路探索を行う用
+	int m_polyCount;	// 目的地までのポリゴン数
+	bool m_isCheck;		// プレイヤー発見時、プレイヤーまでの探索が終わっているか
 
 protected:
 	virtual void Update() override;

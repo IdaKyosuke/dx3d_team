@@ -20,7 +20,7 @@ private:
 	Vector3 m_moveDirection;	// 移動方向
 	PathPlanUnit* m_nowPathPlan;	// 現在乗っているポリゴンの経路探索情報が格納されているアドレス
 	PathPlanUnit* m_targetPathPlan;	// 次の中間地点になる経路上のポリゴン情報へのアドレス
-
+	PathPlanUnit* m_pastPoly;	// 1つ前のポリゴン情報
 	NavMesh* m_navMesh;
 
 public:
@@ -36,7 +36,8 @@ public:
 		m_nowPos(Vector3(0, 0, 0)),
 		m_moveDirection(Vector3(0, 0, 0)),
 		m_nowPathPlan(nullptr),
-		m_targetPathPlan(nullptr){}
+		m_targetPathPlan(nullptr),
+		m_pastPoly(nullptr) {}
 
 	// 指定の２点間を直線的に移動できるか
 	bool CheckPolyMove(Vector3 startPos, Vector3 goalPos);
@@ -45,7 +46,7 @@ public:
 	bool CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width);
 
 	// 指定の２点間を経路探索
-	bool SetPathPlan(Vector3 startPos, Vector3 goalPos);
+	bool SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount);
 
 	// 経路探索情報を削除
 	void RemovePathPlan();
@@ -54,8 +55,11 @@ public:
 	void MoveInitialize(const Vector3& pos);
 
 	// 探索経路の移動処理
-	Vector3 Move(const Vector3& pos, const float speed, const float width);
+	Vector3 Move(const Vector3& pos, const float speed, const float width, int* polyCount);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
 	bool RefreshMoveDirection(const float speed, const float width);
+
+	// 現在のポリゴンにプレイヤーがいるかどうか
+	bool CheckPlayerPoly(const Vector3& enemyPos, const Vector3& playerPos);
 };

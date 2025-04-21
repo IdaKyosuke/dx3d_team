@@ -245,7 +245,7 @@ bool CheckRoot::CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float widt
 }
 
 // 指定の２点間を経路探索
-bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos)
+bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
 {
 	int num;
 	int polyIndex;
@@ -253,6 +253,8 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 	PathPlanUnit* pathUnit_sub;
 	PathPlanUnit* pathUnit_sub2;
 	bool isGoal;
+	// ゴールまでのポリゴン数
+	int count = 0;
 
 	// スタート位置とゴール位置を保存
 	m_startPos = startPos;
@@ -340,6 +342,8 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 
 		// m_activeFirst == nullptr の時、ゴールにたどり着けない
 		if (m_activeFirst == nullptr) return false;
+
+		count++;
 	}
 
 	// ゴールからスタートまでたどって、経路上の次に移動するべきポリゴン番号を代入
@@ -350,6 +354,19 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos)
 		pathUnit = &m_unitArray[pathUnit_sub->prevPolyIndex];
 		pathUnit->nextPolyIndex = pathUnit_sub->polyIndex;
 	} while (pathUnit != m_start);
+
+	if (count >= 15)
+	{
+		*polyCount = count / 2;
+	}
+	else if (count >= 5)
+	{
+		*polyCount = count;
+	}
+	else
+	{
+		*polyCount = 0;
+	}
 
 	// 探索終了
 	return true;
@@ -376,10 +393,13 @@ void CheckRoot::MoveInitialize(const Vector3& pos)
 
 	// 移動開始時の移動中間地点の経路探索情報もスタート地点のポリゴン
 	m_targetPathPlan = m_start;
+
+	// どれだけポリゴンを移動したかをカウントする用
+	m_pastPoly = m_start;
 }
 
 // 探索経路の移動処理
-Vector3 CheckRoot::Move(const Vector3& pos, const float speed, const float width)
+Vector3 CheckRoot::Move(const Vector3& pos, const float speed, const float width, int* polyCount)
 {
 	// 移動方向の更新、ゴールにたどり着いていたら終了
 	if (RefreshMoveDirection(speed, width)) return pos;
@@ -392,6 +412,13 @@ Vector3 CheckRoot::Move(const Vector3& pos, const float speed, const float width
 
 	// 乗っているポリゴンの経路探索情報をアドレスに代入
 	m_nowPathPlan = &m_unitArray[m_nowPolyIndex];
+
+	if (*polyCount != 0 && m_pastPoly != m_nowPathPlan)
+	{
+		// 位置の更新
+		m_pastPoly = m_nowPathPlan;
+		*polyCount = *polyCount - 1;
+	}
 
 	return m_nowPos;
 }
@@ -447,5 +474,16 @@ bool CheckRoot::RefreshMoveDirection(const float speed, const float width)
 	m_moveDirection = Math::Normalized(m_moveDirection);
 
 	// ゴールにたどり着いていない
+	return false;
+}
+
+// 現在のポリゴンにプレイヤーがいるかどうか
+bool CheckRoot::CheckPlayerPoly(const Vector3& enemyPos, const Vector3& playerPos)
+{
+	if (m_navMesh->CheckPolyIndex(enemyPos) == m_navMesh->CheckPolyIndex(playerPos))
+	{
+		return true;
+	}
+
 	return false;
 }

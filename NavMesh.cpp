@@ -147,6 +147,7 @@ Vector3 NavMesh::GetPos(const int polygonNum)
 	if (polygonNum == 0)
 	{
 		int index = rand() % m_polyList.PolygonNum;
+
 		return m_polyLink[index].centerPos;
 	}
 

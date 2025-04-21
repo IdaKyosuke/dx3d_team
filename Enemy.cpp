@@ -24,18 +24,20 @@ const char* Enemy::AnimList[AnimNum] =
 Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	Actor3D("Enemy", pos),
 	m_model(MV1LoadModel("Resource/Zombie/Zombie.mv1")),
+	m_player(loadPlayer),
 	m_animIndex(0),
 	m_nowAnim(Anim::Idle),
 	m_nextAnim(Anim::Idle),
 	m_navMesh(navMesh),
-	m_player(loadPlayer),
 	m_moveDirection(Vector3(0,0,0)),
 	m_isSet(false),
 	m_isFind(false),
 	m_isAttack(false),
 	m_countCoolTime(false),
 	m_durationCoolTime(0),
-	m_isMove(false)
+	m_isMove(false),
+	m_polyCount(0),
+	m_isCheck(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
@@ -123,25 +125,28 @@ void Enemy::Update()
 		{
 			// プレイヤーを発見している
 			MoveCombat();
+
+			// アニメーションは常に移動アニメーション
+			m_nextAnim = Anim::Run;
 		}
 		else
 		{
 			// 徘徊中
 			MoveWanderAround();
+
+			// アニメーション
+			if (this->GetPosition() != m_enemyPastPos)
+			{
+				m_nextAnim = Anim::Run;
+			}
+			else
+			{
+				m_nextAnim = Anim::Idle;
+			}
 		}
 
 		// 現在の移動方向を取得
 		m_moveDirection = m_transform.position - m_enemyPastPos;
-
-		// 移動アニメーション
-		if (this->GetPosition() != m_enemyPastPos)
-		{
-			m_nextAnim = Anim::Run;
-		}
-		else
-		{
-			m_nextAnim = Anim::Idle;
-		}
 	}
 
 	// モデルの回転
@@ -163,16 +168,29 @@ void Enemy::Update()
 // 敵の移動（臨戦態勢）
 void Enemy::MoveCombat()
 {
-	// 自身とプレイヤー間の経路探索を行う
-	m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition());
+	if (!m_isCheck)
+	{
+		// 自身とプレイヤー間の経路探索を行う
+		m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition(), &m_polyCount);
 
-	// 移動準備
-	m_checkRoot->MoveInitialize(this->GetPosition());
+		// 移動準備
+		m_checkRoot->MoveInitialize(this->GetPosition());
 
-	m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
+		m_isCheck = true;
+	}
+	else
+	{
+		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
 
-	// 今回の探索情報を削除
-	m_checkRoot->RemovePathPlan();
+		// ある程度移動ができたら || プレイヤーが同じポリゴン上にいるとき 再探索
+		if (m_polyCount <= 0 || m_checkRoot->CheckPlayerPoly(this->GetPosition(), m_player->GetPosition()))
+		{
+			// 今回の探索情報を削除
+			m_checkRoot->RemovePathPlan();
+
+			m_isCheck = false;
+		}
+	}
 }
 
 // 敵の移動（徘徊）
@@ -181,7 +199,7 @@ void Enemy::MoveWanderAround()
 	if (!m_isMove)
 	{
 		// ランダムな座標までの経路探索
-		m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos());
+		m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), &m_polyCount);
 
 		// 移動準備
 		m_checkRoot->MoveInitialize(this->GetPosition());
@@ -190,10 +208,10 @@ void Enemy::MoveWanderAround()
 	}
 	else
 	{
-		if (m_transform.position != m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width))
+		if (m_transform.position != m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount))
 		{
 			// 目的地に到着していないとき
-			m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width);
+			m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
 		}
 		else
 		{
