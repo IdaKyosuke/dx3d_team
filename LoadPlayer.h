@@ -40,6 +40,7 @@ private:
 	static constexpr Vector3 SpawnPos = Vector3(850, 100, 850);	// ステージにスポーンする場所
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
 	static constexpr Vector3 ColSize = Vector3(70, 180, 70);	// コライダーのサイズ
+	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
 
@@ -55,6 +56,11 @@ private:
 	bool m_isFall;	// 現在落下しているか
 	bool m_isFloating;
 	float m_fallStartY;	// 落下し始めの高さ
+
+	float m_theWorldCoolDown;
+	float m_time111;
+	float m_stopTime;	//時間停止できる時間
+	bool m_isStop;		//時間停止してるか
 
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
@@ -112,8 +118,16 @@ public:
 	// プレイヤーの体力を減らす処理
 	void DecreaseHP(int damage);
 
+	//時間停止
+	void TheWorld();
+
 	bool IsJump()
 	{
 		return m_isJump;
+	}
+
+	bool IsTheWorld()
+	{
+		return m_isStop;
 	}
 };

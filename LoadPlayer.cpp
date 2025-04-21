@@ -41,7 +41,10 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
 	m_duration(0),
 	m_isFall(false),
 	m_fallStartY(0),
-	m_hit(false)
+	m_hit(false),
+	m_stopTime(10),
+	m_isStop(false),
+	m_theWorldCoolDown(0)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -277,6 +280,8 @@ void LoadPlayer::NormalMove()
 			}
 		}
 	}
+
+	TheWorld();
 }
 
 void LoadPlayer::Draw()
@@ -312,3 +317,23 @@ void LoadPlayer::DecreaseHP(int damage)
 	}
 }
 
+//時間停止
+void LoadPlayer::TheWorld()
+{
+	m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
+
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0)
+	{
+		m_isStop = true;
+	}
+	if (m_isStop)
+	{
+		m_time111 += Time::GetInstance()->GetDeltaTime();
+
+		if (m_time111 >= m_stopTime)
+		{
+			m_isStop = false;
+			m_theWorldCoolDown = TheWorldCoolDown;
+		}
+	}
+}

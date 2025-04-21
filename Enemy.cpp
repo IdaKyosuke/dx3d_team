@@ -73,22 +73,28 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 // アニメーションを切り替える(Lerp)
 void Enemy::ChangeAnimLerp()
 {
-	if (m_nowAnim == m_nextAnim) return;
+	if (!m_player->IsTheWorld())
+	{
+		if (m_nowAnim == m_nextAnim) return;
 
-	m_attachAnimList[static_cast<int>(m_nowAnim)]->FadeOut();
-	m_attachAnimList[static_cast<int>(m_nextAnim)]->FadeIn();
+		m_attachAnimList[static_cast<int>(m_nowAnim)]->FadeOut();
+		m_attachAnimList[static_cast<int>(m_nextAnim)]->FadeIn();
 
-	m_nowAnim = m_nextAnim;
+		m_nowAnim = m_nextAnim;
+	}
 }
 
 // アニメーションを切り替える(即座)
 void Enemy::ChangeAnimQuick(const Anim nextAnim)
 {
-	m_attachAnimList[static_cast<int>(m_nowAnim)]->ChangeOut();
-	m_attachAnimList[static_cast<int>(nextAnim)]->ChangeIn();
+	if (!m_player->IsTheWorld())
+	{
+		m_attachAnimList[static_cast<int>(m_nowAnim)]->ChangeOut();
+		m_attachAnimList[static_cast<int>(nextAnim)]->ChangeIn();
 
-	m_nowAnim = nextAnim;
-	m_nextAnim = nextAnim;
+		m_nowAnim = nextAnim;
+		m_nextAnim = nextAnim;
+	}
 }
 
 // アニメーションを再生する
@@ -114,55 +120,58 @@ void Enemy::Finalize()
 
 void Enemy::Update()
 {
-	if (m_isAttack)
+	if (!m_player->IsTheWorld())
 	{
-		Attack();
-	}
-	else
-	{
-		// 攻撃中でないとき
-		if (m_isFind)
+		if (m_isAttack)
 		{
-			// プレイヤーを発見している
-			MoveCombat();
-
-			// アニメーションは常に移動アニメーション
-			m_nextAnim = Anim::Run;
+			Attack();
 		}
 		else
 		{
-			// 徘徊中
-			MoveWanderAround();
-
-			// アニメーション
-			if (this->GetPosition() != m_enemyPastPos)
+			// 攻撃中でないとき
+			if (m_isFind)
 			{
+				// プレイヤーを発見している
+				MoveCombat();
+
+				// アニメーションは常に移動アニメーション
 				m_nextAnim = Anim::Run;
 			}
 			else
 			{
-				m_nextAnim = Anim::Idle;
+				// 徘徊中
+				MoveWanderAround();
+
+				// アニメーション
+				if (this->GetPosition() != m_enemyPastPos)
+				{
+					m_nextAnim = Anim::Run;
+				}
+				else
+				{
+					m_nextAnim = Anim::Idle;
+				}
 			}
+
+			// 現在の移動方向を取得
+			m_moveDirection = m_transform.position - m_enemyPastPos;
 		}
 
-		// 現在の移動方向を取得
-		m_moveDirection = m_transform.position - m_enemyPastPos;
+		// モデルの回転
+		if (!m_moveDirection.IsZero())
+		{
+			float afterAngle = 0;
+
+			Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
+
+			m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
+		}
+
+		// アニメーションの切り替え
+		ChangeAnimLerp();
+
+		m_enemyPastPos = this->GetPosition();
 	}
-
-	// モデルの回転
-	if (!m_moveDirection.IsZero())
-	{
-		float afterAngle = 0;
-
-		Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
-
-		m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
-	}
-
-	// アニメーションの切り替え
-	ChangeAnimLerp();
-
-	m_enemyPastPos = this->GetPosition();
 }
 
 // 敵の移動（臨戦態勢）
@@ -220,14 +229,18 @@ void Enemy::MoveWanderAround()
 			m_isMove = false;
 		}
 	}
+	
 }
 
 void Enemy::Draw()
 {
-	// アニメーション再生
-	PlayAnim();
+	if (!m_player->IsTheWorld())
+	{
+		// アニメーション再生
+		PlayAnim();
 
-	Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
+		Quaternion::RotateAxisY(m_model, m_transform.angle.y, m_transform.position);
+	}
 
 	// モデルの描画
 	MV1DrawModel(m_model);
@@ -244,7 +257,6 @@ void Enemy::OnCollision(const Actor3D* other)
 {
 	if (other->GetName() == "Player")
 	{
-		
 		if (!m_isFind)
 		{
 			// プレイヤーを見つけていない => コライダーを小さくする
