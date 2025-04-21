@@ -1,9 +1,17 @@
 #pragma once
-#include"Actor3D.h"
+#include"Node.h"
 
-// ステージの見た目だけを
-class DrawStageView : public Actor3D
+// ステージの見た目だけを表示する
+class DrawStageView : public Node
 {
 private:
-	static constexpr Vector3 DrawPos = Vector3(0, 0, 0);
+	int m_model;
+
+protected:
+	virtual void Draw() override;
+	virtual void Release() override;
+
+public:
+	DrawStageView(const char* model);
+
 };

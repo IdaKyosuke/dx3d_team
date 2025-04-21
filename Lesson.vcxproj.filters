@@ -151,6 +151,9 @@
     <ClCompile Include="Wallet.cpp">
       <Filter>ソースファイル\Item</Filter>
     </ClCompile>
+    <ClCompile Include="DrawStageView.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">

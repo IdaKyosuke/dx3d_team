@@ -17,6 +17,7 @@ class Chest;
 class NavMesh;
 class KeepChest;
 class Item;
+class DrawStageView;
 
 // ƒQ[ƒ€ƒV[ƒ“
 class SceneGame : public SceneBase
@@ -39,6 +40,7 @@ private:
 	NavMesh* m_navMesh;
 	KeepChest* m_keepChest;
 	Item* m_item;
+	DrawStageView* m_drawStageView;
 
 	std::vector<Item> m_chestItem;
 
@@ -70,7 +72,7 @@ public:
 		m_chestItem(itemList),
 		m_maxHaveInventory(maxHaveInventoy),
 		m_haveMoney(haveMoney),
-
+		m_drawStageView(nullptr),
 		m_isFinish(false){}
 
 	virtual void Initialize() override;		// ‰Šú‰»

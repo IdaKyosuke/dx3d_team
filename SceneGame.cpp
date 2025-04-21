@@ -18,6 +18,7 @@
 #include"Inventory.h"
 #include"CollisionStage.h"
 #include"NavMesh.h"
+#include"DrawStageView.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -39,6 +40,12 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
+
+	// ステージの見た目を描画
+	/*
+	m_drawStageView = new DrawStageView();
+	uiLayer->AddChild(m_drawStageView);
+	*/
 
 	// ステージの当たり判定を作成
 	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));

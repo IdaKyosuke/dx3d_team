@@ -152,6 +152,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision3D.cpp" />
     <ClCompile Include="CollisionStage.cpp" />
+    <ClCompile Include="DrawStageView.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="EnhanceInventory.cpp" />
