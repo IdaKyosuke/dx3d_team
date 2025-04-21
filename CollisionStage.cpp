@@ -110,9 +110,9 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 
 void CollisionStage::Draw()
 {
-	MV1DrawModel(m_model);
 	
 #ifdef _DEBUG
+	//MV1DrawModel(m_model);
 	// ƒ|ƒŠƒSƒ“‚Ì”‚¾‚¯ŒJ‚è•Ô‚µ
 	for (int i = 0; i < m_refPoly.PolygonNum; i++)
 	{
