@@ -13,9 +13,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Fade.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -26,18 +23,6 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemFactory.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="ItemIcon.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Lerp.cpp">
@@ -56,9 +41,6 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="ModelLoader.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="NavMesh.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
@@ -115,11 +97,59 @@
     <ClCompile Include="Collision.cpp">
       <Filter>ソースファイル\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyFactory.cpp">
+    <ClCompile Include="SceneMenu.cpp">
+      <Filter>ソースファイル\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnhanceInventory.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuInventory.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="MenuItemIcon.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="SellButton.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Shop.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="CheckRoot.cpp">
-      <Filter>ソースファイル</Filter>
+      <Filter>ソースファイル\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="NavMesh.cpp">
+      <Filter>ソースファイル\NavMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>ソースファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyFactory.cpp">
+      <Filter>ソースファイル\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Chest.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ChestItemIcon.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemFactory.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemIcon.cpp">
+      <Filter>ソースファイル\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Wallet.cpp">
+      <Filter>ソースファイル\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -136,9 +166,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Fade.h">
@@ -159,21 +186,6 @@
     <ClInclude Include="Input.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemDate.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemFactory.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemIcon.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Lerp.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -190,9 +202,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="ModelLoader.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="NavMesh.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
@@ -279,14 +288,65 @@
     <ClInclude Include="SceneTitle.h">
       <Filter>ヘッダーファイル\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyFactory.h">
+    <ClInclude Include="DrawStageView.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneMenu.h">
+      <Filter>ヘッダーファイル\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnhanceInventory.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuInventory.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="MenuItemIcon.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SellButton.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Shop.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="CheckRoot.h">
-      <Filter>ヘッダーファイル</Filter>
+      <Filter>ヘッダーファイル\NavMesh</Filter>
     </ClInclude>
-    <ClInclude Include="DrawStageView.h">
-      <Filter>ヘッダーファイル</Filter>
+    <ClInclude Include="NavMesh.h">
+      <Filter>ヘッダーファイル\NavMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyFactory.h">
+      <Filter>ヘッダーファイル\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Chest.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ChestItemIcon.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemDate.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactory.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemIcon.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>ヘッダーファイル\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Wallet.h">
+      <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +367,24 @@
     </Filter>
     <Filter Include="ヘッダーファイル\Scene">
       <UniqueIdentifier>{1a19edf6-c6a1-453f-bd2c-d89ac88e4322}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\NavMesh">
+      <UniqueIdentifier>{7fda8bbf-1548-4179-900b-c59507567e65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Enemy">
+      <UniqueIdentifier>{f007a0e2-83be-4114-af92-0abd6ac6fc4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソースファイル\Item">
+      <UniqueIdentifier>{1fa9f279-42e7-467f-a4fe-c685d41bd758}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\NavMesh">
+      <UniqueIdentifier>{93dca5fa-3b3c-4e66-a71e-c16e89f7125c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Enemy">
+      <UniqueIdentifier>{1af0850e-c138-4be3-9f9e-1fbbf6eadf03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダーファイル\Item">
+      <UniqueIdentifier>{6fda6b66-16f4-4c89-94ac-979ed32fddbe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

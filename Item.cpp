@@ -7,7 +7,8 @@
 #include "DxLib.h"
 #include <cmath>
 
-Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory) : Actor3D("Item", spownPos),
+Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory):
+	Actor3D("Item", spownPos),
 	m_itemNumber(itemNumber),
 	m_itemName(),
 	m_inventory(inventory),

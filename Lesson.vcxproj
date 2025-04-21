@@ -144,13 +144,17 @@
     <ClCompile Include="ActorCollision.cpp" />
     <ClCompile Include="ActorCollision3D.cpp" />
     <ClCompile Include="Animation3D.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckRoot.cpp" />
+    <ClCompile Include="Chest.cpp" />
+    <ClCompile Include="ChestItemIcon.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Collision3D.cpp" />
     <ClCompile Include="CollisionStage.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
+    <ClCompile Include="EnhanceInventory.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -164,6 +168,8 @@
     <ClCompile Include="LoadPlayer.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Math.cpp" />
+    <ClCompile Include="MenuInventory.cpp" />
+    <ClCompile Include="MenuItemIcon.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
     <ClCompile Include="NavMesh.cpp" />
     <ClCompile Include="Node.cpp" />
@@ -171,7 +177,10 @@
     <ClCompile Include="Quaternion.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="SellButton.cpp" />
+    <ClCompile Include="Shop.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Time.cpp" />
@@ -179,6 +188,7 @@
     <ClCompile Include="UiScore.cpp" />
     <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="Vector3.cpp" />
+    <ClCompile Include="Wallet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -189,8 +199,11 @@
     <ClInclude Include="Animation3D.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="BoxCollider3D.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CheckRoot.h" />
+    <ClInclude Include="Chest.h" />
+    <ClInclude Include="ChestItemIcon.h" />
     <ClInclude Include="CircleCollider2D.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collider3D.h" />
@@ -200,6 +213,7 @@
     <ClInclude Include="DrawStageView.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
+    <ClInclude Include="EnhanceInventory.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameMain.h" />
@@ -216,6 +230,8 @@
     <ClInclude Include="LoaderBase.h" />
     <ClInclude Include="LoadPlayer.h" />
     <ClInclude Include="Math.h" />
+    <ClInclude Include="MenuInventory.h" />
+    <ClInclude Include="MenuItemIcon.h" />
     <ClInclude Include="ModelLoader.h" />
     <ClInclude Include="NavMesh.h" />
     <ClInclude Include="Node.h" />
@@ -224,8 +240,11 @@
     <ClInclude Include="SceneBase.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneMenu.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="SellButton.h" />
+    <ClInclude Include="Shop.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3D.h" />
@@ -236,6 +255,7 @@
     <ClInclude Include="UiScore.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+    <ClInclude Include="Wallet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

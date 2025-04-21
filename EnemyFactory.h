@@ -14,7 +14,6 @@ public:
 	EnemyFactory(
 		Node* m_actorNode,
 		NavMesh* navMesh,
-		LoadPlayer* loadPlayer,
-		const int enemyNum);
+		LoadPlayer* loadPlayer);
 
 };

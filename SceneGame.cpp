@@ -12,10 +12,12 @@
 #include"LoadPlayer.h"
 #include"Collision3D.h"
 #include"ItemFactory.h"
+#include"EnemyFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
 #include"Inventory.h"
 #include"CollisionStage.h"
+#include"NavMesh.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -39,8 +41,11 @@ void SceneGame::Initialize()
 	m_rootNode->AddChild(uiLayer);
 
 	// ステージの当たり判定を作成
-	m_collisionStage = new CollisionStage("Resource/stage.mv1", Vector3(0, 0, 0));
+	m_collisionStage = new CollisionStage("Resource/nav_test.mv1", Vector3(0, 0, 0));
 	uiLayer->AddChild(m_collisionStage);
+
+	// navMesh
+	m_navMesh = new NavMesh(m_collisionStage);
 
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage);
@@ -50,7 +55,7 @@ void SceneGame::Initialize()
 	m_inventory = new Inventory(m_loadPlayer);
 	uiLayer->AddChild(m_inventory);
 	m_inventory->SetMaxHaveItem(m_maxHaveInventory);
-
+	/*
 	//アイテム
 	m_item = new Item(0, Vector3(100, 50, 100),m_inventory);
 	actorLayer->AddChild(m_item);
@@ -75,14 +80,18 @@ void SceneGame::Initialize()
 	//アイテム
 	m_item = new Item(2, Vector3(100, 50, 400),m_inventory);
 	actorLayer->AddChild(m_item);
+	*/
 
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
 
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_loadPlayer, m_uiScore);
+	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh);
 	actorLayer->AddChild(m_itemfactory);
+
+	// 敵の生成
+	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);
 
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
@@ -108,6 +117,9 @@ void SceneGame::Finalize()
 {
 	// プレイヤー情報の削除
 	m_loadPlayer->Finalize();
+
+	// ポリゴンの連結情報を破棄
+	m_navMesh->RemovePolyLinkInfo();
 
 	// ノードの削除
 	m_rootNode->TreeRelease();

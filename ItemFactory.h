@@ -23,7 +23,6 @@ protected:
 public:
 	ItemFactory(
 		UiScore* uiScore,
-		LoadPlayer* player,
 		Inventory* inventory,
 		NavMesh* navMesh
 	);

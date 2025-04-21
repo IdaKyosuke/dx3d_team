@@ -7,7 +7,6 @@
 
 ItemFactory::ItemFactory(
 	UiScore* uiScore,
-	LoadPlayer* player,
 	Inventory* inventory,
 	NavMesh* navMesh
 ) :
@@ -19,8 +18,8 @@ ItemFactory::ItemFactory(
 	// アイテムを生成する
 	for (int i = 0; i < ItemNum; i++)
 	{
-		int itemNum = rand() % 6;
-		AddChild(new Item(itemNum, navMesh->GetPos(), player, inventory));
+		int itemNum = rand() % Item::GetItemTypeNum();
+		AddChild(new Item(itemNum, navMesh->GetPos(), inventory));
 	}
 
 	// 表示用スコアの設定

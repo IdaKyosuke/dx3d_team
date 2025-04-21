@@ -5,11 +5,10 @@
 EnemyFactory::EnemyFactory(
 	Node* m_actorNode,
 	NavMesh* navMesh,
-	LoadPlayer* loadPlayer, 
-	const int enemyNum
+	LoadPlayer* loadPlayer
 )
 {
-	for (int i = 0; i < enemyNum; i++)
+	for (int i = 0; i < EnemyNum; i++)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€‚ÅÀ•W‚ðŒˆ‚ß‚Ä¶¬
 		Vector3 pos = navMesh->GetPos();

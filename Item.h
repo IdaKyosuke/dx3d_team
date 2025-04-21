@@ -71,4 +71,9 @@ public:
 	}
 
 	virtual void OnCollision(const Actor3D* other);
+
+	static int GetItemTypeNum()
+	{
+		return static_cast<int>(ItemNameList::Length);
+	}
 };
