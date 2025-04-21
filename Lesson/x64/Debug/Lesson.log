@@ -1,8 +1,2 @@
-﻿  EnemyFactory.cpp
-  GameMain.cpp
-  SceneGame.cpp
-  SceneMenu.cpp
-  SceneTitle.cpp
-  SellButton.cpp
-  コードを生成中...
+﻿  NavMesh.cpp
   Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Debug\Lesson.exe

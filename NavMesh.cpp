@@ -146,10 +146,35 @@ Vector3 NavMesh::GetPos(const int polygonNum)
 {
 	if (polygonNum == 0)
 	{
-		int index = rand() % m_polyList.PolygonNum;
+		int index;
+		Vector3 outv;
 
+		// 抽選の場合、法線からポリゴンの角度を取得 => 歩けない場所の時は再抽選
+		do
+		{
+			index = rand() % m_polyList.PolygonNum;
+
+			Vector3 subVertexPos[3] = { Vector3(0, 0, 0) };
+
+			// この周で隣り合っているか調べるポリゴンの頂点座標
+			for (int k = 0; k < 3; k++)
+			{
+				subVertexPos[k] = m_polyList.Vertexs[m_polyList.Polygons[index].VIndex[k]].Position;
+			}
+
+			// 法線からポリゴンの向きを計算
+			Vector3 v1 = subVertexPos[1] - subVertexPos[0];
+			Vector3 v2 = subVertexPos[2] - subVertexPos[0];
+
+			// 外積
+			outv = v1.CrossP(v2);
+			outv = Math::Normalized(outv);
+		} while (outv.y <= 0.5);
+		
 		return m_polyLink[index].centerPos;
 	}
-
-	return m_polyLink[polygonNum].centerPos;
+	else
+	{
+		return m_polyLink[polygonNum].centerPos;
+	}
 }
