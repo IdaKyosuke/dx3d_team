@@ -87,7 +87,8 @@ bool EnhanceInventory::CheckCondition()
 		{
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
-				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() )
+				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() &&
+					m_needMoney <= m_wallet->HaveMoney())
 				{
 					m_canEnhance = true;
 					m_useItemNum = i;
