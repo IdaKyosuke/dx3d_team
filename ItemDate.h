@@ -6,13 +6,13 @@ public:
 	const char* m_modelName;
 	const char* m_itemName;
 	int m_sellMoney;
-	float m_weight;
+	int m_weight;
 
 	ItemDate(
 		const char* modelName,
 		const char* itemName,
 		int sellMoney,
-		float weight
+		int weight
 	) :
 		m_modelName(modelName),
 		m_itemName(itemName),

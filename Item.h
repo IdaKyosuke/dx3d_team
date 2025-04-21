@@ -13,7 +13,7 @@ private:
 	int m_model;		//アイテムのモデル
 	const char* m_itemName;
 	int m_sellMoney;	//売った時の金額
-	float m_itemWeight;	//アイテムの重さ
+	int m_itemWeight;	//アイテムの重さ
 
 	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//拾える範囲
 
@@ -55,12 +55,12 @@ public:
 		return m_itemNumber;
 	}
 
-	float GetItemWeight()
+	int GetItemWeight() const
 	{
 		return m_itemWeight;
 	}
 
-	int GetSellMoney()
+	int GetSellMoney() const
 	{
 		return m_sellMoney;
 	}

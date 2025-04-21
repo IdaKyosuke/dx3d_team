@@ -51,7 +51,8 @@ void SceneMenu::Initialize()
 	//‹­‰»ƒ{ƒ^ƒ“
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
-
+	
+	
 
 	if (!m_inventory->TakeItMenu().empty())
 	{
