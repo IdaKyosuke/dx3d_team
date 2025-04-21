@@ -1,71 +1,74 @@
 #pragma once
 #include "SceneBase.h"
-#include <list>
+#include "Item.h"
+#include <vector>
 
 class Node;
 class LoadPlayer;
-class EnemyFactory;
-class Collision3D;
-class NavMesh;
 class Camera;
+class Collision3D;
 class ItemFactory;
 class UiScore;
 class UiResult;
 class CollisionStage;
-
-class Item;
 class Inventory;
+class Chest;
 
+class KeepChest;
+class Item;
 
 // ゲームシーン
 class SceneGame : public SceneBase
 {
 private:
-	const std::list<const char*> ImagePreload =
-	{
-
-	};
-
 	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
-	static constexpr int EnemyNum = 3;	// 敵の数
 
 	Node* m_rootNode;
+
 	LoadPlayer* m_loadPlayer;
-	EnemyFactory* m_enemyFactory;
-	Collision3D* m_collision3D;
-	NavMesh* m_navMesh;
 	Camera* m_cam;
-	CollisionStage* m_collisionStage;
+	Collision3D* m_collision3D;
 	ItemFactory* m_itemfactory;			// アイテムのポインタ
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
-
-	Item* m_item;
+	CollisionStage* m_collisionStage;
 	Inventory* m_inventory;
+	Chest* m_chest;
+
+	KeepChest* m_keepChest;
+	Item* m_item;
+
+	std::vector<Item> m_chestItem;
 
 	float m_resultTransitionTime;
 	bool m_isFinish;
 
-	int m_model;
+	int m_maxHaveInventory;
+
+	int m_haveMoney;
 
 public:
 	// コンストラクタ
-	SceneGame() :
+	SceneGame(std::vector<Item> itemList,int maxHaveInventoy, int haveMoney) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
-		m_enemyFactory(nullptr),
-		m_collision3D(nullptr),
-		m_navMesh(nullptr),
 		m_cam(nullptr),
 		m_resultTransitionTime(ResultTransitionTime),
-		m_collisionStage(nullptr),
+		m_collision3D(nullptr),
 		m_itemfactory(nullptr),
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
-		m_isFinish(false),
-		m_model(0){}
+		m_collisionStage(nullptr),
+		m_chest(nullptr),
+
+		m_keepChest(nullptr),
+		m_chestItem(itemList),
+		m_maxHaveInventory(maxHaveInventoy),
+		m_haveMoney(haveMoney),
+
+		m_isFinish(false){}
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

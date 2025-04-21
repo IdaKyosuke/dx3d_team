@@ -6,6 +6,8 @@
 #include "Actor.h"
 #include "PressAny.h"
 
+#include "Chest.h"
+
 // 初期化
 void SceneTitle::Initialize()
 {
@@ -20,6 +22,8 @@ void SceneTitle::Initialize()
 
 	// Press Any Button
 	m_rootNode->AddChild(new PressAny());
+
+	m_chest = new Chest();
 
 	// BGM
 	m_bgm = LoadSoundMem("Resource/sound/title_bgm.mp3");
@@ -44,7 +48,7 @@ SceneBase* SceneTitle::Update()
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
-		return new SceneGame();
+		return new SceneGame(m_chest->GetItemList(), FirstMaxHaveItem,0);
 	}
 
 	// ノードの更新

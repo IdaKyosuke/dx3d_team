@@ -1,16 +1,14 @@
 #include "ItemIcon.h"
+#include "Inventory.h"
 #include "Screen.h"
 
-#include "Inventory.h"
 
-ItemIcon::ItemIcon(int itemNum, int countGetItem, Inventory* inventry) :
+ItemIcon::ItemIcon(int itemNum, int countGetItem,Inventory* inventry) :
 	m_itemNum(itemNum),
 	m_countGetItem(countGetItem),
 	m_inventory(inventry)
 {
 	m_itemIconUi.Register(m_iconName[m_itemNum]);
-
-	
 }
 
 void ItemIcon::Load()
