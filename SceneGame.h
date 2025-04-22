@@ -19,6 +19,7 @@ class KeepChest;
 class Item;
 class DrawStageView;
 class EscapePoint;
+class ScreenFilter;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -43,7 +44,7 @@ private:
 	Item* m_item;
 	DrawStageView* m_drawStageView;
 	EscapePoint* m_escapePoint;
-
+	ScreenFilter* m_screenFilter;
 	std::vector<Item> m_chestItem;
 
 	float m_resultTransitionTime;
@@ -55,7 +56,7 @@ private:
 
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList,int maxHaveInventoy, int haveMoney) :
+	SceneGame(std::vector<Item> itemList, int maxHaveInventoy, int haveMoney) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -76,7 +77,8 @@ public:
 		m_haveMoney(haveMoney),
 		m_drawStageView(nullptr),
 		m_isFinish(false),
-		m_escapePoint(nullptr) {}
+		m_escapePoint(nullptr),
+		m_screenFilter(nullptr) {}
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

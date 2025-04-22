@@ -1,6 +1,14 @@
-﻿  CollisionStage.cpp
+﻿  Camera.cpp
+  Chest.cpp
+  CollisionStage.cpp
+  Enemy.cpp
+  Inventory.cpp
+  Item.cpp
+D:\2024井田\2024\GitHub\dx3d_team\Item.cpp(71,41): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   LoadPlayer.cpp
-  NavMesh.cpp
+  MenuInventory.cpp
   SceneGame.cpp
+  ScreenFilter.cpp
+  Sphere.cpp
   コードを生成中...
   Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Debug\Lesson.exe

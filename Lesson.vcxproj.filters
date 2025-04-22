@@ -157,6 +157,9 @@
     <ClCompile Include="EscapePoint.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ScreenFilter.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -355,6 +358,9 @@
       <Filter>ヘッダーファイル\Item</Filter>
     </ClInclude>
     <ClInclude Include="EscapePoint.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ScreenFilter.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

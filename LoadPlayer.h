@@ -41,6 +41,7 @@ private:
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
 	static constexpr Vector3 ColSize = Vector3(70, 180, 70);	// コライダーのサイズ
 	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
+	static constexpr int MaxHp = 100;	// 体力の最大値
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
 
@@ -129,5 +130,11 @@ public:
 	bool IsTheWorld()
 	{
 		return m_isStop;
+	}
+
+	// 現在のHpの割合を返す
+	float GetHpRatio()
+	{
+		return static_cast<float>(m_hp) / static_cast<float>(MaxHp);
 	}
 };

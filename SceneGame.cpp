@@ -20,6 +20,7 @@
 #include"NavMesh.h"
 #include"DrawStageView.h"
 #include"EscapePoint.h"
+#include"ScreenFilter.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -97,11 +98,10 @@ void SceneGame::Initialize()
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh);
 	actorLayer->AddChild(m_itemfactory);
-	/*
+	
 	// 敵の生成
 	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);
-	*/
-
+	
 	// 脱出地点の作成
 	m_escapePoint = new EscapePoint();
 	actorLayer->AddChild(m_escapePoint);
@@ -123,6 +123,10 @@ void SceneGame::Initialize()
 			m_keepChest->SetItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
 		}
 	}
+
+	// スクリーンに掛けるフィルター
+	m_screenFilter = new ScreenFilter(m_loadPlayer);
+	actorLayer->AddChild(m_screenFilter);
 }
 
 // 終了

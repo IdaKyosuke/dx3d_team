@@ -74,7 +74,7 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
 	m_collider = new BoxCollider3D(ColSize, ColOffset);
 
 	// 体力の初期値を設定
-	m_hp = 100;
+	m_hp = MaxHp;
 }
 
 // アニメーションを切り替える(Lerp)

@@ -181,6 +181,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneMenu.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="ScreenFilter.cpp" />
     <ClCompile Include="SellButton.cpp" />
     <ClCompile Include="Shop.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="SceneMenu.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="Screen.h" />
+    <ClInclude Include="ScreenFilter.h" />
     <ClInclude Include="SellButton.h" />
     <ClInclude Include="Shop.h" />
     <ClInclude Include="Sphere.h" />
