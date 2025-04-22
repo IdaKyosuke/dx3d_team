@@ -173,6 +173,7 @@
     <ClCompile Include="MenuInventory.cpp" />
     <ClCompile Include="MenuItemIcon.cpp" />
     <ClCompile Include="ModelLoader.cpp" />
+    <ClCompile Include="MoneyCount.cpp" />
     <ClCompile Include="NavMesh.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="PressAny.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="MenuInventory.h" />
     <ClInclude Include="MenuItemIcon.h" />
     <ClInclude Include="ModelLoader.h" />
+    <ClInclude Include="MoneyCount.h" />
     <ClInclude Include="NavMesh.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PressAny.h" />
