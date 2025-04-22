@@ -21,6 +21,7 @@
 #include"DrawStageView.h"
 #include"EscapePoint.h"
 #include"ScreenFilter.h"
+#include "MoneyCount.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -42,7 +43,11 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-	
+	/*
+	// ステージの見た目を描画
+	m_drawStageView = new DrawStageView("nav_stage_test_view.mv1");
+	uiLayer->AddChild(m_drawStageView);
+	*/
 	// ステージの見た目を描画
 	m_drawStageView = new DrawStageView("favorite_stage.mv1");
 	uiLayer->AddChild(m_drawStageView);
@@ -83,11 +88,13 @@ void SceneGame::Initialize()
 	//アイテム
 	m_item = new Item(1, Vector3(400, 50, 300), m_inventory);
 	actorLayer->AddChild(m_item);
+	*/
 
 	//アイテム
-	m_item = new Item(2, Vector3(100, 50, 400),m_inventory);
+	m_item = new Item(1, Vector3(300, 0, 0),m_inventory);
+	actorLayer->AddChild(m_item);//アイテム
+	m_item = new Item(0, Vector3(300, 0, 0),m_inventory);
 	actorLayer->AddChild(m_item);
-	*/
 
 	// スコア
 	m_uiScore = new UiScore();
@@ -108,6 +115,8 @@ void SceneGame::Initialize()
 	m_uiResult = new UiResult(m_itemfactory);
 	uiLayer->AddChild(m_uiResult);
 
+	m_restDays = m_moneyCount->GetRestDays();
+	m_moneyCount = new MoneyCount(m_wallet, m_restDays, 0);
 	m_keepChest = new KeepChest;
 	
 	//チェストとインベントリ
@@ -157,7 +166,11 @@ SceneBase* SceneGame::Update()
 
 	if (m_escapePoint->IsEscape())
 	{
-		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_inventory->GetMaxHaveItem(),m_haveMoney);
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_inventory->GetMaxHaveItem(),m_haveMoney,m_moneyCount);
+	}
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+	{
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_inventory->GetMaxHaveItem(), m_haveMoney, m_moneyCount);
 	}
 
 	return this;

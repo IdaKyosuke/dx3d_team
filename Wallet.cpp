@@ -31,10 +31,10 @@ void Wallet::Update()
 
 void Wallet::Draw()
 {
-	// SCORE‰æ‘œ‚ð•`‰æ
+	// Wallet‚ð•`‰æ
 	m_walletImg.Draw(m_transform);
 
-	Vector2 dest = m_transform.position + Vector2(40, -20);
+	Vector2 dest = m_transform.position + Vector2(40, -17);
 	dest.y += FontMargin;
 	int score = m_haveMoney;
 	int digit = 1;

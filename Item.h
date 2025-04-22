@@ -17,6 +17,8 @@ private:
 
 	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//èEÇ¶ÇÈîÕàÕ
 
+	const char* m_iconName;
+
 	bool m_canGetItem;
 
 	Vector3 m_itemPos;
@@ -43,6 +45,9 @@ private:
 		ItemDate("Resource/Item/coin.mv1","Coin",20,10),
 		ItemDate("Resource/Item/watch.mv1","Watch",60,15),
 	};
+
+	const char* IconName[static_cast<int>(ItemNameList::Length)] = 
+	{ "iron_icon.png","gem_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
 
 	Inventory* m_inventory;
 
@@ -74,6 +79,11 @@ public:
 	const char* GetItemName()
 	{
 		return m_itemName;
+	}
+
+	const char* GetItemIconName()
+	{
+		return m_iconName;
 	}
 
 	virtual void OnCollision(const Actor3D* other);

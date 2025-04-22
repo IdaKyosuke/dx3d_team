@@ -16,9 +16,12 @@ class Inventory;
 class Chest;
 class NavMesh;
 class KeepChest;
+class KeepMoneyCount;
 class Item;
 class DrawStageView;
 class EscapePoint;
+class MoneyCount;
+class Wallet;
 class ScreenFilter;
 
 // ゲームシーン
@@ -41,10 +44,14 @@ private:
 	Chest* m_chest;
 	NavMesh* m_navMesh;
 	KeepChest* m_keepChest;
+	KeepMoneyCount* m_keepMoneyCount;
 	Item* m_item;
 	DrawStageView* m_drawStageView;
 	EscapePoint* m_escapePoint;
+	MoneyCount* m_moneyCount;
+	Wallet* m_wallet;
 	ScreenFilter* m_screenFilter;
+
 	std::vector<Item> m_chestItem;
 
 	float m_resultTransitionTime;
@@ -53,10 +60,11 @@ private:
 	int m_maxHaveInventory;
 
 	int m_haveMoney;
+	int m_restDays;
 
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList, int maxHaveInventoy, int haveMoney) :
+	SceneGame(std::vector<Item> itemList,int maxHaveInventoy, int haveMoney,MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -72,12 +80,16 @@ public:
 		m_chest(nullptr),
 		m_navMesh(nullptr),
 		m_keepChest(nullptr),
+		m_keepMoneyCount(nullptr),
 		m_chestItem(itemList),
 		m_maxHaveInventory(maxHaveInventoy),
 		m_haveMoney(haveMoney),
 		m_drawStageView(nullptr),
 		m_isFinish(false),
 		m_escapePoint(nullptr),
+		m_moneyCount(moneyCount),
+		m_wallet(nullptr),
+		m_restDays(0),
 		m_screenFilter(nullptr) {}
 
 	virtual void Initialize() override;		// 初期化

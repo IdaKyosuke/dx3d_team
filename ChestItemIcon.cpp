@@ -6,7 +6,7 @@ ChestItemIcon::ChestItemIcon(int itemNum, int countGetItem, Chest* chest) :
 	m_countGetItem(countGetItem),
 	m_chest(chest)
 {
-	m_itemIconUi.Register(m_iconName[m_itemNum]);
+	m_itemIconUi.Register(std::next(m_chest->GetItemList().begin(), m_countGetItem)->GetItemIconName());
 }
 
 void ChestItemIcon::Load()

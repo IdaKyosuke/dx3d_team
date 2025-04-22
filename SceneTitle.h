@@ -3,6 +3,8 @@
 
 class Node;
 class Chest;
+class MoneyCount;
+class Wallet;
 
 // タイトルシーン
 class SceneTitle : public SceneBase
@@ -12,6 +14,9 @@ private:
 	int m_bgm;
 
 	Chest* m_chest;
+	MoneyCount* m_moneyCount;
+	Wallet* m_wallet;
+
 
 	static constexpr int FirstMaxHaveItem = 3;		//最初にアイテムを持てる数の最大量
 
@@ -20,7 +25,9 @@ public:
 	SceneTitle() :
 		m_rootNode(nullptr),
 		m_bgm(0),
-		m_chest(nullptr){}
+		m_chest(nullptr),
+		m_wallet(nullptr),
+		m_moneyCount(nullptr){}
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

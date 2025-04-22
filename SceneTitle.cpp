@@ -7,6 +7,8 @@
 #include "PressAny.h"
 
 #include "Chest.h"
+#include "Wallet.h"
+#include "MoneyCount.h"
 
 // 初期化
 void SceneTitle::Initialize()
@@ -24,6 +26,8 @@ void SceneTitle::Initialize()
 	m_rootNode->AddChild(new PressAny());
 
 	m_chest = new Chest();
+	m_wallet = new Wallet();
+	m_moneyCount = new MoneyCount(m_wallet, 3, 0);
 
 	// BGM
 	m_bgm = LoadSoundMem("Resource/sound/title_bgm.mp3");
@@ -48,7 +52,7 @@ SceneBase* SceneTitle::Update()
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
-		return new SceneGame(m_chest->GetItemList(), FirstMaxHaveItem,0);
+		return new SceneGame(m_chest->GetItemList(), FirstMaxHaveItem,0,m_moneyCount);
 	}
 
 	// ノードの更新

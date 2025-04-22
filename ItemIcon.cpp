@@ -8,7 +8,7 @@ ItemIcon::ItemIcon(int itemNum, int countGetItem,Inventory* inventry) :
 	m_countGetItem(countGetItem),
 	m_inventory(inventry)
 {
-	m_itemIconUi.Register(m_iconName[m_itemNum]);
+	m_itemIconUi.Register(std::next(m_inventory->GetItemList().begin(), m_countGetItem)->GetItemIconName());
 }
 
 void ItemIcon::Load()

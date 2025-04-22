@@ -8,7 +8,7 @@ MenuItemIcon::MenuItemIcon(int itemNum, int countGetItem, MenuInventory* menuInv
 	m_countGetItem(countGetItem),
 	m_menuInventory(menuInventory)
 {
-	m_itemIconUi.Register(m_iconName[m_itemNum]);
+	m_itemIconUi.Register(std::next(m_menuInventory->GetItemList().begin(), m_countGetItem)->GetItemIconName());
 }
 
 void MenuItemIcon::Load()

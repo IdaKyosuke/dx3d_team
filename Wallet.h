@@ -26,11 +26,13 @@ public:
 	// コンストラクタ
 	Wallet();
 
+	/*
 	// 座標を設定
 	void SetPosition(const Vector2& position)
 	{
 		m_transform.position = position;
 	}
+	*/
 
 	void InWalletMoney(int money)
 	{

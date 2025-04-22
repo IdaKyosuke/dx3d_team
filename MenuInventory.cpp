@@ -5,10 +5,11 @@
 #include "LoadPlayer.h"
 #include "Input.h"
 #include "Chest.h"
+#include "EnhanceType.h"
 
 #include "Item.h"
 
-MenuInventory::MenuInventory(Chest* chest) :
+MenuInventory::MenuInventory(Chest* chest,EnhanceType* enhanceType) :
 	m_haveItemCount(0),
 	m_itemNum(0),
 	m_destroyTakeItem(0),
@@ -16,10 +17,12 @@ MenuInventory::MenuInventory(Chest* chest) :
 	m_destroyItemIcon(false),
 	m_isIventory(false),
 	m_chest(chest),
-	m_gettingItem(false)
+	m_gettingItem(false),
+	m_maxHaveItem(0),
+	m_enhanceType(enhanceType)
 {
 	m_transform.position = Screen::BottomCenter + Vector2(0, -70);
-	m_menuInventoryUi.Register("inventoryUi.png");
+	m_menuInventoryUi.Register("inventory_ui.png");
 	m_takeItemUi.Register("take_item.png");	
 }
 
@@ -44,6 +47,8 @@ void MenuInventory::Update()
 	{
 		m_destroyItemIcon = false;
 	}
+
+	m_maxHaveItem = m_enhanceType->GetMaxHaveInventory();
 
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
@@ -144,6 +149,11 @@ void MenuInventory::Update()
 
 void MenuInventory::Draw()
 {
-	m_menuInventoryUi.Draw(m_transform);
+	for (int i = 0; i <= m_maxHaveItem - 1; i++)
+	{
+		m_transform.position = InventoryUiPos + Vector2(SquareSize * i, 0);
+
+		m_menuInventoryUi.Draw(m_transform);
+	}
 	m_takeItemUi.Draw(m_takeItemTransform);
 }

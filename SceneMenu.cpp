@@ -10,8 +10,11 @@
 #include "SellButton.h"
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
+#include "MoneyCount.h"
 
 #include"Inventory.h"
+
+#include "SceneTitle.h"
 
 void SceneMenu::Initialize()
 {
@@ -25,11 +28,14 @@ void SceneMenu::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
+	//強化の種類
+	m_enhanceType = new EnhanceType(m_maxHaveItem, 0, 0);
+
 	//チェスト
 	m_chest = new Chest();
 	uiLayer->AddChild(m_chest);
 	//メニューのインベントリ
-	m_menuInventory = new MenuInventory(m_chest);
+	m_menuInventory = new MenuInventory(m_chest,m_enhanceType);
 	uiLayer->AddChild(m_menuInventory);
 	
 	//売るボタン
@@ -45,21 +51,23 @@ void SceneMenu::Initialize()
 	m_shop = new Shop(m_chest,m_wallet,m_sellButton);
 	uiLayer->AddChild(m_shop);
 	
-	//強化の種類
-	m_enhanceType = new EnhanceType(m_inventory,m_maxHaveItem);
-	
 	//強化ボタン
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
 	
-	
+	m_restDays = m_moneyCount->GetRestDays();
+	m_clearCount = m_moneyCount->GetClearCount();
 
-	if (!m_inventory->TakeItMenu().empty())
+	m_moneyCount = new MoneyCount(m_wallet, m_restDays, m_clearCount);
+	uiLayer->AddChild(m_moneyCount);
+	m_moneyCount->BackMenu();
+
+	if (!m_inventory->GetItemList().empty())
 	{
-		for (int i = 0; i <= m_inventory->TakeItMenu().size() - 1; i++)
+		for (int i = 0; i <= m_inventory->GetItemList().size() - 1; i++)
 		{
 			//持って帰ったアイテムを格納する
-			m_menuInventory->Change(std::next(m_inventory->TakeItMenu().begin(), i)->GetItemNum());
+			m_menuInventory->Change(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
 		}
 	}
 
@@ -87,11 +95,31 @@ SceneBase* SceneMenu::Update()
 	// ノードの更新
 	m_rootNode->TreeUpdate();
 
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+	
+	if (m_moneyCount->GetRestDays() <= 0)
 	{
-		m_haveMoney = m_wallet->HaveMoney();
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+		{
+			if (m_moneyCount->GetTaskClear())
+			{
+				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
 
-		return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(),m_haveMoney);
+				return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(), m_wallet->HaveMoney(), m_moneyCount);
+			}
+			else 
+			{
+				return new SceneTitle();
+			}
+		}
+	}
+	else
+	{
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+		{
+			m_haveMoney = m_wallet->HaveMoney();
+
+			return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(), m_haveMoney, m_moneyCount);
+		}
 	}
 
 	return this;

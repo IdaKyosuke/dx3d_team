@@ -6,20 +6,20 @@ class Inventory;
 class EnhanceType
 {
 private:
-
-	Inventory* m_inventory;
-
 	bool m_onButton;
 
-	int m_maxHaveInventory;
+	int m_maxHaveInventory;	//インベントリの最大容量
+
+	int m_maxTheWorldTime;	//時を止めれる最大時間
+	int m_maxUseTheWorld;	//時を止めれる最大回数
 
 public:
 
-	EnhanceType(Inventory* inventory,int i) :
-		m_inventory(inventory),
+	EnhanceType(int maxHaveInventory,int maxTheWorldTime,int maxUseTheWorld) :
 		m_onButton(false),
-		m_maxHaveInventory(i){
-	};
+		m_maxHaveInventory(maxHaveInventory),
+		m_maxTheWorldTime(maxTheWorldTime),
+		m_maxUseTheWorld(maxUseTheWorld){};
 
 	enum class EnhanceTypeChoice
 	{
@@ -48,7 +48,7 @@ public:
 		m_onButton = false;
 	}
 
-	int GetMaxHaveInventory()
+	int GetMaxHaveInventory() const
 	{
 		return m_maxHaveInventory;
 	}

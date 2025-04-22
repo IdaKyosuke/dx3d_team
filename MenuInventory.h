@@ -6,12 +6,18 @@
 #include <vector>
 
 class Chest;
+class EnhanceType;
 
 class MenuInventory : public Node
 {
 private:
 	static constexpr int MaxHaveItem = 5;
 	static constexpr Vector2 TakeItemUiPos = Vector2(460,890);
+	static constexpr Vector2 InventoryUiPos = Vector2(460, 890);
+
+	static constexpr int SquareSize = 90;
+
+	int m_maxHaveItem;
 
 	int m_haveItemCount;	//アイテムを持ってる数
 	int m_takeItem;			//今何番目のアイテムを持っているか
@@ -32,6 +38,7 @@ private:
 	Transform m_takeItemTransform;	// 姿勢
 
 	Chest* m_chest;
+	EnhanceType* m_enhanceType;
 
 	bool haveitem = m_itemList.empty();
 
@@ -42,7 +49,7 @@ protected:
 	virtual void Draw() override;
 
 public:
-	MenuInventory(Chest* chest);
+	MenuInventory(Chest* chest,EnhanceType* enhancetype);
 
 	bool DestoryItemIcon() 
 	{
@@ -69,6 +76,11 @@ public:
 		m_gettingItem = true;
 	}
 	
+	std::vector<Item> GetItemList()
+	{
+		return m_itemList;
+	}
+
 	void Change(int itemNum)
 	{
 		Item m_item = Item(itemNum);

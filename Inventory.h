@@ -58,7 +58,6 @@ public:
 		return m_canGetItem;
 	}
 
-
 	void SetItemList(Item* item)
 	{
 		m_itemList.push_back(*item);
@@ -86,9 +85,14 @@ public:
 		return m_destroyTakeItem;
 	}
 
-	std::vector<Item> TakeItMenu()
+	std::vector<Item> GetItemList()
 	{
 		return m_itemList;
+	}
+
+	int GetTakeItem()
+	{
+		return m_takeItem;
 	}
 
 	void EnhanceInventory()

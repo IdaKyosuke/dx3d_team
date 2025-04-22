@@ -10,6 +10,7 @@ class Shop;
 class Inventory;
 class Wallet;
 class SellButton;
+class MoneyCount;
 
 class EnhanceType;
 
@@ -27,6 +28,7 @@ private:
 
 	Shop* m_shop;
 	SellButton* m_sellButton;
+	MoneyCount* m_moneyCount;
 
 	EnhanceType* m_enhanceType;
 
@@ -37,8 +39,11 @@ private:
 	int m_maxHaveItem;
 	int m_haveMoney;
 
+	int m_restDays;
+	int m_clearCount;
+
 public:
-	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, int maxHaveItem, int haveMoney) :
+	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, int maxHaveItem, int haveMoney,MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_menuInventory(nullptr),
 		m_chest(nullptr),
@@ -50,7 +55,10 @@ public:
 		m_enhanceInventory(nullptr),
 		m_enhanceType(nullptr),
 		m_maxHaveItem(maxHaveItem),
-		m_haveMoney(haveMoney) {};
+		m_haveMoney(haveMoney),
+		m_moneyCount(moneyCount),
+		m_restDays(0),
+		m_clearCount(0){};
 	
 
 	virtual void Initialize() override;		// èâä˙âª

@@ -35,6 +35,8 @@ Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory):
 	m_sellMoney = itemDate[static_cast<int>(itemList)].m_sellMoney;
 	//アイテムの重さ設定
 	m_itemWeight = itemDate[static_cast<int>(itemList)].m_weight;
+	//アイコンのテクスチャID
+	m_iconName = IconName[static_cast<int>(itemList)];
 }
 
 void Item::Release()
