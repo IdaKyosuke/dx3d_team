@@ -1,6 +1,8 @@
 #include"EscapePoint.h"
 #include"BoxCollider3D.h"
 #include "ModelLoader.h"
+#include"Quaternion.h"
+#include"Math.h"
 
 EscapePoint::EscapePoint() :
 	Actor3D("Exit"),
@@ -14,11 +16,14 @@ EscapePoint::EscapePoint() :
 
 	m_model = ModelLoader::LoadModel(m_stairPath);
 
+	// モデルの回転
+	MV1SetRotationXYZ(m_model, Vector3(0, Math::DegtoRad(Rotate[index]), 0));
+
+	// モデルの座標指定
+	MV1SetPosition(m_model, m_transform.position);
+
 	// モデルの描画
 	MV1DrawModel(m_model);
-
-	//ポジションの設定
-	MV1SetPosition(m_model, m_transform.position);
 }
 
 void EscapePoint::OnCollision(const Actor3D* other)

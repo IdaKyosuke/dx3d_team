@@ -18,11 +18,10 @@ GameMain::~GameMain()
 {
 	// 自作スクリーンの破棄
 	DeleteGraph(m_screen);
-	/*
+
 	// シーンの破棄
 	delete m_sceneManager;
 	m_sceneManager = nullptr;
-	*/
 
 	// DxLib 終了
 	DxLib_End();
