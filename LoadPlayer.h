@@ -63,6 +63,8 @@ private:
 	float m_stopTime;	//ŠÔ’â~‚Å‚«‚éŠÔ
 	bool m_isStop;		//ŠÔ’â~‚µ‚Ä‚é‚©
 
+	int m_seDamage;	// UŒ‚‚ğó‚¯‚½‚Æ‚«‚ÌSE
+
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
 

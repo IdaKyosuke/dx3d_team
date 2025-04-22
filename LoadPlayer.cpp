@@ -54,6 +54,10 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
 		AddChild(m_attachAnimList[i]);
 	}
 
+	// ダメージボイスを設定
+	m_seDamage = LoadSoundMem("Resource/sound/damage.mp3");
+	ChangeVolumeSoundMem(128, m_seDamage);
+
 	// アニメーション用の位置
 	m_playerPastPos = m_transform.position;
 
@@ -310,6 +314,9 @@ void LoadPlayer::CountFallHeight()
 void LoadPlayer::DecreaseHP(int damage)
 {
 	m_hp -= damage;
+
+	// SE:被ダメージ
+	PlaySoundMem(m_seDamage, DX_PLAYTYPE_BACK);
 
 	if (m_hp <= 0)
 	{
