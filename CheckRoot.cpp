@@ -278,6 +278,7 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
 	if (polyIndex == -1) return false;
 
 	m_start = &m_unitArray[polyIndex];
+	if (!m_start) return false;
 
 	// 経路探索用のポリゴンとしてスタート地点のポリゴンを登録
 	m_activeFirst = &m_unitArray[polyIndex];
@@ -287,6 +288,7 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
 	if (polyIndex == -1) return false;
 
 	m_goal = &m_unitArray[polyIndex];
+	if (!m_goal) return false;
 
 	// スタート地点とゴール地点のポリゴンが同じとき
 	if (m_start == m_goal) return false;
@@ -402,7 +404,7 @@ void CheckRoot::MoveInitialize(const Vector3& pos)
 Vector3 CheckRoot::Move(const Vector3& pos, const float speed, const float width, int* polyCount)
 {
 	// 移動方向の更新、ゴールにたどり着いていたら終了
-	if (RefreshMoveDirection(speed, width)) return pos;
+	if (RefreshMoveDirection(speed, width, polyCount)) return pos;
 
 	// 移動方向の座標に移動
 	m_nowPos += m_moveDirection * speed;
@@ -424,7 +426,7 @@ Vector3 CheckRoot::Move(const Vector3& pos, const float speed, const float width
 }
 
 // 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-bool CheckRoot::RefreshMoveDirection(const float speed, const float width)
+bool CheckRoot::RefreshMoveDirection(const float speed, const float width, int* polyCount)
 {
 	PathPlanUnit* tempPathUnit;
 
@@ -438,6 +440,7 @@ bool CheckRoot::RefreshMoveDirection(const float speed, const float width)
 		// 目標座標までの距離が移動速度以下なら到達したとする
 		if (m_moveDirection.Magnitude() <= speed)
 		{
+			polyCount = 0;
 			return true;
 		}
 

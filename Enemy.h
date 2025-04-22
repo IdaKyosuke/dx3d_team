@@ -59,6 +59,7 @@ private:
 	CheckRoot* m_checkRoot;	// ステージ情報から経路探索を行う用
 	int m_polyCount;	// 目的地までのポリゴン数
 	bool m_isCheck;		// プレイヤー発見時、プレイヤーまでの探索が終わっているか
+	bool m_pastAttackFlg;	// 攻撃時に再探索を行う用
 
 protected:
 	virtual void Update() override;

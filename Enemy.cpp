@@ -37,7 +37,8 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_durationCoolTime(0),
 	m_isMove(false),
 	m_polyCount(0),
-	m_isCheck(false)
+	m_isCheck(false),
+	m_pastAttackFlg(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
@@ -171,6 +172,8 @@ void Enemy::Update()
 		ChangeAnimLerp();
 
 		m_enemyPastPos = this->GetPosition();
+
+		m_pastAttackFlg = m_isAttack;
 	}
 }
 
@@ -180,8 +183,8 @@ void Enemy::MoveCombat()
 	if (!m_isCheck)
 	{
 		// 自身とプレイヤー間の経路探索を行う
-		m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition(), &m_polyCount);
-
+		bool endCheck = m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition(), &m_polyCount);
+		
 		// 移動準備
 		m_checkRoot->MoveInitialize(this->GetPosition());
 
@@ -192,7 +195,10 @@ void Enemy::MoveCombat()
 		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
 
 		// ある程度移動ができたら || プレイヤーが同じポリゴン上にいるとき 再探索
-		if (m_polyCount <= 0 || m_checkRoot->CheckPlayerPoly(this->GetPosition(), m_player->GetPosition()))
+		if (m_polyCount <= 0 || 
+			m_checkRoot->CheckPlayerPoly(this->GetPosition(), m_player->GetPosition()) || 
+			m_pastAttackFlg != m_isAttack
+			)
 		{
 			// 今回の探索情報を削除
 			m_checkRoot->RemovePathPlan();
@@ -208,12 +214,15 @@ void Enemy::MoveWanderAround()
 	if (!m_isMove)
 	{
 		// ランダムな座標までの経路探索
-		m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), &m_polyCount);
+		bool endCheck = m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), &m_polyCount);
 
 		// 移動準備
 		m_checkRoot->MoveInitialize(this->GetPosition());
 
 		m_isMove = true;
+
+		m_transform.position = m_navMesh->GetPos();
+
 	}
 	else
 	{

@@ -124,7 +124,7 @@ void SceneGame::Initialize()
 
 	// スクリーンに掛けるフィルター
 	m_screenFilter = new ScreenFilter(m_loadPlayer);
-	actorLayer->AddChild(m_screenFilter);
+	uiLayer->AddChild(m_screenFilter);
 }
 
 // 終了

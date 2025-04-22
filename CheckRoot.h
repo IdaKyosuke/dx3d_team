@@ -58,7 +58,7 @@ public:
 	Vector3 Move(const Vector3& pos, const float speed, const float width, int* polyCount);
 
 	// 探索経路の移動方向を更新（true:目標地点に到達, false:目標地点に未到達）
-	bool RefreshMoveDirection(const float speed, const float width);
+	bool RefreshMoveDirection(const float speed, const float width, int* polyCount);
 
 	// 現在のポリゴンにプレイヤーがいるかどうか
 	bool CheckPlayerPoly(const Vector3& enemyPos, const Vector3& playerPos);
