@@ -18,6 +18,7 @@ class NavMesh;
 class KeepChest;
 class Item;
 class DrawStageView;
+class EscapePoint;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -41,6 +42,7 @@ private:
 	KeepChest* m_keepChest;
 	Item* m_item;
 	DrawStageView* m_drawStageView;
+	EscapePoint* m_escapePoint;
 
 	std::vector<Item> m_chestItem;
 
@@ -73,7 +75,8 @@ public:
 		m_maxHaveInventory(maxHaveInventoy),
 		m_haveMoney(haveMoney),
 		m_drawStageView(nullptr),
-		m_isFinish(false){}
+		m_isFinish(false),
+		m_escapePoint(nullptr) {}
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

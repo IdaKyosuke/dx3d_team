@@ -72,7 +72,6 @@ void Item::OnCollision(const Actor3D* other)
 				m_inventory->GettingItem();
 				Destroy();
 			}
-
 		}
 	}
 }

@@ -156,6 +156,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="EnhanceInventory.cpp" />
+    <ClCompile Include="EscapePoint.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
     <ClCompile Include="ImageLoader.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="EnhanceInventory.h" />
+    <ClInclude Include="EscapePoint.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameMain.h" />

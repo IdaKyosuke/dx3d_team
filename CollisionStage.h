@@ -9,7 +9,7 @@ class CollisionStage : public Node
 private:
 	static constexpr Vector3 DeffRay = Vector3(0, 100, 0);	// 足場確認用のレイを体内にめり込ませる長さ
 	static constexpr Vector3 CheckLineLength = Vector3(0, 3000, 0);	// 足場があるかどうかを確認するレイの長さ
-	static constexpr Vector3 DiffGetLine = Vector3(0, 20, 0);	// プレイヤーの足元までのレイの長さ
+	static constexpr Vector3 DiffGetLine = Vector3(0, 60, 0);	// プレイヤーの足元までのレイの長さ
 	static constexpr Vector3 ModelHeight = Vector3(0, 180, 0);		// 使用しているモデルの高さ
 	static constexpr float Radius = 30.0f;		// カプセルに使う球の半径
 	static constexpr float CapsuleLength = 180.0f;	// カプセルの長さ（球同士の距離）

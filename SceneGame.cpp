@@ -19,6 +19,7 @@
 #include"CollisionStage.h"
 #include"NavMesh.h"
 #include"DrawStageView.h"
+#include"EscapePoint.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -40,10 +41,11 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-
+	/*
 	// ステージの見た目を描画
 	m_drawStageView = new DrawStageView("nav_stage_test_view.mv1");
 	uiLayer->AddChild(m_drawStageView);
+	*/
 	
 
 	// ステージの当たり判定を作成
@@ -95,9 +97,14 @@ void SceneGame::Initialize()
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh);
 	actorLayer->AddChild(m_itemfactory);
-
+	/*
 	// 敵の生成
 	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);
+	*/
+
+	// 脱出地点の作成
+	m_escapePoint = new EscapePoint();
+	actorLayer->AddChild(m_escapePoint);
 
 	// リザルト画面
 	m_uiResult = new UiResult(m_itemfactory);
@@ -146,7 +153,7 @@ SceneBase* SceneGame::Update()
 	}
 	
 
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+	if (m_escapePoint->IsEscape())
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_inventory->GetMaxHaveItem(),m_haveMoney);
 	}
