@@ -10,7 +10,7 @@ class ChestItemIcon : public Node
 private:
 	static constexpr Vector2 SetPos = Vector2(235, 560);
 
-	const char* m_iconName[3] = { "iron_icon.png","gem_icon.png","potion_icon.png" };
+	const char* m_iconName[6] = { "iron_icon.png","gem_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
 
 	int m_itemNum;
 	int m_countGetItem;

@@ -42,12 +42,10 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-	/*
-	// ステージの見た目を描画
-	m_drawStageView = new DrawStageView("nav_stage_test_view.mv1");
-	uiLayer->AddChild(m_drawStageView);
-	*/
 	
+	// ステージの見た目を描画
+	m_drawStageView = new DrawStageView("favorite_stage.mv1");
+	uiLayer->AddChild(m_drawStageView);
 
 	// ステージの当たり判定を作成
 	m_collisionStage = new CollisionStage("Resource/nav_test_stage.mv1", Vector3(0, 0, 0));
