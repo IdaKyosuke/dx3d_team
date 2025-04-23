@@ -25,7 +25,7 @@ void SceneTitle::Initialize()
 	// ƒ^ƒCƒgƒ‹ƒƒS
 	m_rootNode->AddChild(new Actor(
 		"Logo",
-		"game_title.png",
+		"title_logo.png",
 		Screen::TopCenter + Vector2(0, Screen::Height / 3)
 	));
 
