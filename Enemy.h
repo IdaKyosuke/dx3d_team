@@ -64,7 +64,7 @@ private:
 	bool m_pastAttackFlg;	// UŒ‚‚ÉÄ’Tõ‚ğs‚¤—p
 
 	std::thread* m_thread = nullptr;
-	std::atomic<bool> m_moveEnd = false;
+	bool m_found = false;	// ’Tõ‚ªI‚í‚Á‚½‚©‚Ç‚¤‚©
 
 protected:
 	virtual void Update() override;
@@ -98,14 +98,4 @@ public:
 	{
 		return m_enemyPos;
 	}
-
-	/*
-	void Hoge()
-	{
-		Sleep(5000);
-		int a;
-		a = 0;
-		hogeFlg = false;
-	}
-	*/
 };

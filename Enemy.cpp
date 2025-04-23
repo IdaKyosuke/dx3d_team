@@ -118,22 +118,6 @@ void Enemy::PlayAnim()
 
 void Enemy::Update()
 {
-	/*
-	if (!hoge)
-	{
-		hoge = new std::thread(&Enemy::Hoge, this);
-		hogeFlg = true;
-	}
-
-	if (hoge && !hogeFlg)
-	{
-		hoge->join();
-		delete hoge;
-		hoge = nullptr;
-	}
-	*/
-
-
 	if (!m_player->IsTheWorld())
 	{
 		if (m_isAttack)
@@ -145,36 +129,14 @@ void Enemy::Update()
 			// 攻撃中でないとき
 			if (m_isFind)
 			{
-				if (!m_thread)
-				{
-					m_thread = new std::thread(&Enemy::MoveCombat, this);
-					m_moveEnd = false;
-				}
-				else if (m_thread && m_moveEnd)
-				{
-					// 処理が終了したとき
-					delete m_thread;
-					m_thread = nullptr;
-				}
-
+				MoveCombat();
 				// アニメーションは常に移動アニメーション
 				m_nextAnim = Anim::Run;
 			}
 			else
 			{
-				if (!m_thread)
-				{
-					m_thread = new std::thread(&Enemy::MoveWanderAround, this);
-					m_moveEnd = false;
-				}
-				else if (m_thread && m_moveEnd)
-				{
-					// 処理が終了したとき
-					delete m_thread;
-					m_thread = nullptr;
-				}
+				MoveWanderAround();
 			}
-
 			// 現在の移動方向を取得
 			m_moveDirection = m_transform.position - m_enemyPastPos;
 		}
@@ -203,13 +165,22 @@ void Enemy::MoveCombat()
 {
 	if (!m_isCheck)
 	{
-		// 自身とプレイヤー間の経路探索を行う
-		m_checkRoot->SetPathPlan(this->GetPosition(), m_player->GetPosition(), &m_polyCount);
-		
-		// 移動準備
-		m_checkRoot->MoveInitialize(this->GetPosition());
+		if (!m_found)
+		{
+			m_thread = new std::thread(&CheckRoot::SetPathPlan, m_checkRoot, this->GetPosition(), m_player->GetPosition(), &m_polyCount, &m_found);
+			m_thread->detach();
+		}
+		else
+		{
+			// 移動準備
+			m_checkRoot->MoveInitialize(this->GetPosition());
+			m_isCheck = true;
+			m_found = false;
 
-		m_isCheck = true;
+			// threadの破棄
+			delete m_thread;
+			m_thread = nullptr;
+		}
 	}
 	else
 	{
@@ -223,7 +194,6 @@ void Enemy::MoveCombat()
 		{
 			// 今回の探索情報を削除
 			m_checkRoot->RemovePathPlan();
-			m_moveEnd = true;
 			m_isCheck = false;
 		}
 	}
@@ -234,13 +204,22 @@ void Enemy::MoveWanderAround()
 {
 	if (!m_isMove)
 	{
-		// ランダムな座標までの経路探索
-		bool endCheck = m_checkRoot->SetPathPlan(this->GetPosition(), m_navMesh->GetPos(), &m_polyCount);
+		if (!m_found)
+		{
+			m_thread = new std::thread(&CheckRoot::SetPathPlan, m_checkRoot, this->GetPosition(), m_navMesh->GetPos(), &m_polyCount, &m_found);
+			m_thread->detach();
+		}
+		else
+		{
+			// 移動準備
+			m_checkRoot->MoveInitialize(this->GetPosition());
+			m_isMove = true;
+			m_found = false;
 
-		// 移動準備
-		m_checkRoot->MoveInitialize(this->GetPosition());
-
-		m_isMove = true;
+			// threadの破棄
+			delete m_thread;
+			m_thread = nullptr;
+		}
 	}
 	else
 	{
@@ -253,8 +232,7 @@ void Enemy::MoveWanderAround()
 		{
 			// 目的に到着 => 今回の探索結果を破棄 && 再度目的地の設定と経路探索
 			m_checkRoot->RemovePathPlan();
-			m_isMove = false;
-			m_moveEnd = true;
+ 			m_isMove = false;
 		}
 
 		// アニメーション
@@ -304,6 +282,8 @@ void Enemy::OnCollision(const Actor3D* other)
 			// プレイヤーを再探索
 			delete m_thread;
 			m_thread = nullptr;
+			m_checkRoot->RemovePathPlan();
+			m_found = false;
 		}
 		else
 		{

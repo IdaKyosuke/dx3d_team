@@ -245,7 +245,7 @@ bool CheckRoot::CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float widt
 }
 
 // w’è‚Ì‚Q“_ŠÔ‚ğŒo˜H’Tõ
-bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
+bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount, bool* found)
 {
 	int num;
 	int polyIndex;
@@ -376,6 +376,9 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
 		*polyCount = 0;
 	}
 
+	// ’TõI—¹ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	*found = true;
+
 	// ’TõI—¹
 	return true;
 }
@@ -385,6 +388,7 @@ void CheckRoot::RemovePathPlan()
 {
 	// Œo˜H’Tõ‚Ìˆ×‚ÉŠm•Û‚µ‚½ƒƒ‚ƒŠ—Ìˆæ‚ğ‰ğ•ú
 	delete[] m_unitArray;
+	m_unitArray = nullptr;
 }
 
 // ’TõŒo˜H‚ÌˆÚ“®ˆ—‚Ì‰Šú‰»

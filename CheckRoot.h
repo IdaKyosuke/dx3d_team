@@ -46,7 +46,7 @@ public:
 	bool CheckPolyMoveWidth(Vector3 startPos, Vector3 goalPos, float width);
 
 	// w’è‚Ì‚Q“_ŠÔ‚ğŒo˜H’Tõ
-	bool SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount);
+	bool SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount, bool* found);
 
 	// Œo˜H’Tõî•ñ‚ğíœ
 	void RemovePathPlan();
