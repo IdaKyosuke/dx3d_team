@@ -77,18 +77,18 @@ void SceneGame::Initialize()
 	//アイテム
 	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
 	actorLayer->AddChild(m_item);
-	//アイテム
-	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(1, Vector3(400, 50, 100),m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(1, Vector3(400, 50, 300), m_inventory);
-	actorLayer->AddChild(m_item);
 	*/
+	//アイテム
+	m_item = new Item(5, Vector3(500, 50, 100), m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(3, Vector3(400, 0, 100),m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(2, Vector3(400, 0, 300), m_inventory);
+	actorLayer->AddChild(m_item);
 
 	//アイテム
 	m_item = new Item(1, Vector3(300, 0, 0),m_inventory);

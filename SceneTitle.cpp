@@ -15,6 +15,13 @@ void SceneTitle::Initialize()
 {
 	m_rootNode = new Node();
 
+	// ”wŒi
+	m_rootNode->AddChild(new Actor(
+		"Background",
+		"title_background.png",
+		Screen::Center
+	));
+
 	// ƒ^ƒCƒgƒ‹ƒƒS
 	m_rootNode->AddChild(new Actor(
 		"Logo",
