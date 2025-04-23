@@ -4,6 +4,8 @@
 #include"NavMesh.h"
 #include"DxLib.h"
 #include<vector>
+#include <thread>
+#include <atomic>
 
 class Animation3D;
 class LoadPlayer;
@@ -61,9 +63,13 @@ private:
 	bool m_isCheck;		// プレイヤー発見時、プレイヤーまでの探索が終わっているか
 	bool m_pastAttackFlg;	// 攻撃時に再探索を行う用
 
+	std::thread* m_thread = nullptr;
+	std::atomic<bool> m_moveEnd = false;
+
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;
+	virtual void Release() override;
 	virtual void OnCollision(const Actor3D* other) override;
 
 public:
@@ -77,9 +83,6 @@ public:
 
 	// アニメーションを再生する
 	void PlayAnim();
-
-	// モデル関係を削除
-	void Finalize();
 
 	// 敵の移動（臨戦態勢）
 	void MoveCombat();
@@ -95,4 +98,14 @@ public:
 	{
 		return m_enemyPos;
 	}
+
+	/*
+	void Hoge()
+	{
+		Sleep(5000);
+		int a;
+		a = 0;
+		hogeFlg = false;
+	}
+	*/
 };

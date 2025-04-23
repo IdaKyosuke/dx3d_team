@@ -280,6 +280,12 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount)
 	m_start = &m_unitArray[polyIndex];
 	if (!m_start) return false;
 
+	// デバッグ用
+	if (!m_start)
+	{
+		m_start = &m_unitArray[polyIndex];
+	}
+
 	// 経路探索用のポリゴンとしてスタート地点のポリゴンを登録
 	m_activeFirst = &m_unitArray[polyIndex];
 
@@ -440,7 +446,7 @@ bool CheckRoot::RefreshMoveDirection(const float speed, const float width, int* 
 		// 目標座標までの距離が移動速度以下なら到達したとする
 		if (m_moveDirection.Magnitude() <= speed)
 		{
-			polyCount = 0;
+			*polyCount = 0;
 			return true;
 		}
 

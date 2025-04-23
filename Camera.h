@@ -1,10 +1,10 @@
 #pragma once
-#include"Actor.h"
+#include"Actor3D.h"
 #include"Vector3.h"
 
 class LoadPlayer;
 
-class Camera : public Actor
+class Camera : public Actor3D
 {
 public:
 	enum SightMode
@@ -25,7 +25,7 @@ private:
 	static constexpr float MaxCamHeight = 500.0f;	// カメラの注視点の最大の高さ差分
 	static constexpr float MinCamHeight = -100.0f;	// カメラの注視点の最低の高さ差分
 
-	Vector3 m_camPos;
+	//Vector3 m_camPos;
 	Vector3 m_camTarget;
 	Vector3 m_pastPlayerPos;
 
