@@ -8,6 +8,7 @@
 #include"Quaternion.h"
 #include"CollisionStage.h"
 #include"BoxCollider3D.h"
+#include "Inventory.h"
 #include<math.h>
 
 // アニメーションリスト
@@ -23,7 +24,7 @@ const char* LoadPlayer::AnimList[AnimNum] =
 	"Man/Floating.mv1",
 };
 
-LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
+LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory) :
 	Actor3D("Player", SpawnPos),
 	m_model(MV1LoadModel("Resource/Man/Man.mv1")),
 	m_animIndex(0),
@@ -44,7 +45,10 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage) :
 	m_hit(false),
 	m_stopTime(10),
 	m_isStop(false),
-	m_theWorldCoolDown(0)
+	m_theWorldCoolDown(0),
+	m_nowStopTime(0),
+	m_isGetting(false),
+	m_inventory(inventory)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -285,6 +289,23 @@ void LoadPlayer::NormalMove()
 		}
 	}
 
+	if (m_inventory->GetDropItem())
+	{
+		//捨てたオブジェクトを生成
+		
+		GetParent()->AddChild(new Item(
+			std::next(m_inventory->GetItemList().begin(), m_inventory->GetTakeItem())->GetItemNum(),
+			GetPosition(),
+			m_inventory, 
+			this));
+
+		m_inventory->GetDropItemHoge();
+
+		//vectorの中から捨てたアイテムのデータを消す
+		//m_inventory->GetItemList().erase(m_inventory->GetItemList().begin() + m_inventory->GetTakeItem());
+	}
+
+
 	TheWorld();
 }
 
@@ -296,7 +317,31 @@ void LoadPlayer::Draw()
 
 void LoadPlayer::OnCollision(const Actor3D* other)
 {
-	
+	//プレイヤーが拾える範囲に入ったら拾える
+	if (other->GetName() == "Item")
+	{
+		if (!m_isGetting)
+		{
+			if (Input::GetInstance()->IsKeyPress(KEY_INPUT_F) )
+			{
+				if (m_inventory->CanGetItem())
+				{
+					m_isGetting = true;
+
+					m_inventory->SetItemList(other->GetItemNum());
+					m_inventory->AddItemCount();
+					m_inventory->ItemListSet();
+					m_inventory->TakeItem(other->GetItemNum());
+					m_inventory->GettingItem();				
+
+				}
+			}
+		}
+		else if (m_isGetting)
+		{
+			m_isGetting = false;
+		}
+	}
 }
 
 // 落下した高さを計算する
@@ -335,9 +380,9 @@ void LoadPlayer::TheWorld()
 	}
 	if (m_isStop)
 	{
-		m_time111 += Time::GetInstance()->GetDeltaTime();
+		m_nowStopTime += Time::GetInstance()->GetDeltaTime();
 
-		if (m_time111 >= m_stopTime)
+		if (m_nowStopTime >= m_stopTime)
 		{
 			m_isStop = false;
 			m_theWorldCoolDown = TheWorldCoolDown;

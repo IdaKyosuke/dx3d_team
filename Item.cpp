@@ -7,13 +7,14 @@
 #include "DxLib.h"
 #include <cmath>
 
-Item::Item(int itemNumber,Vector3 spownPos,Inventory* inventory):
-	Actor3D("Item", spownPos),
+Item::Item(int itemNumber, Vector3 spownPos, Inventory* inventory, LoadPlayer* player) :
+	Actor3D("Item", spownPos, itemNumber),
 	m_itemNumber(itemNumber),
 	m_itemName(),
 	m_inventory(inventory),
 	m_canGetItem(false),
-	m_playerToDistance(0)
+	m_playerToDistance(0),
+	m_player(player)
 {
 	//ポジションの設定
 	m_itemPos = spownPos;
@@ -65,15 +66,9 @@ void Item::OnCollision(const Actor3D* other)
 	//プレイヤーが拾える範囲に入ったら拾える
 	if (other->GetName() == "Player")
 	{
-		if (Input::GetInstance()->IsKeyPress(KEY_INPUT_F) && m_canGetItem)
+		if (m_player->GetIsGetting())
 		{
-			if (!m_inventory->GetItemNow())
-			{
-				m_inventory->SetItemList(this);
-				m_inventory->TakeItem(m_itemNumber, m_itemWeight);
-				m_inventory->GettingItem();
-				Destroy();
-			}
+			Destroy();
 		}
 	}
 }

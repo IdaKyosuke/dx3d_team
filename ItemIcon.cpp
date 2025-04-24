@@ -26,13 +26,13 @@ void ItemIcon::Update()
 	m_itemIconUi.Update();
 	m_transform.position = SetPos[m_countGetItem];
 
-	if (m_inventory->DestoryItemIcon())
+	if (m_inventory->GetDropItem())
 	{
-		if (m_countGetItem == m_inventory->DestroyTakeItem())
+		if (m_countGetItem == m_inventory->GetTakeItem())
 		{
 			Destroy();
 		}
-		if (m_countGetItem >= m_inventory->DestroyTakeItem())
+		if (m_countGetItem >= m_inventory->GetTakeItem())
 		{
 			m_countGetItem--;
 		}

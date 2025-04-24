@@ -1,10 +1,10 @@
-#include "EnhanceInventory.h"
+#include "EnhanceTheWorldTime.h"
 #include "Chest.h"
 #include "Wallet.h"
 
-EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
-	Actor("Enhance", "ehance_inventory.png", Position),
-	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceInventory::OnClick, this)),
+EnhanceTheWorldTime::EnhanceTheWorldTime(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
+	Actor("Enhance", "enhance_theWorld_time.png", Position),
+	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceTheWorldTime::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
 	m_needItemNum(0),
@@ -13,27 +13,27 @@ EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* en
 	m_needMoney(FirstNeedMoney),
 	m_enhanceType(enhanceType),
 	m_wallet(wallet),
-	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceInventory)
+	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceTheWorldTime)
 {
-	m_needItemNum = 0;
+	m_needItemNum = 3;
 }
 
 //更新
-void EnhanceInventory::Update()
+void EnhanceTheWorldTime::Update()
 {
 	//本来の更新処理
 	Actor::Update();
 
 	//強化していくごとに必要素材を増やす
-	if (m_enhanceType->GetMaxTheWorldTime() >= 7)
+	if (m_enhanceType->GetMaxHaveInventory() >= 5)
 	{
 		m_needMoney = NeedMoney[0];
 	}
-	if (m_enhanceType->GetMaxTheWorldTime() >= 9)
+	if (m_enhanceType->GetMaxHaveInventory() >= 7)
 	{
 		m_needMoney = NeedMoney[1];
 	}
-	if (m_enhanceType->GetMaxTheWorldTime() >= 10)
+	if (m_enhanceType->GetMaxHaveInventory() >= 9)
 	{
 		m_needMoney = NeedMoney[2];
 	}
@@ -43,7 +43,7 @@ void EnhanceInventory::Update()
 }
 
 //描画　
-void EnhanceInventory::Draw()
+void EnhanceTheWorldTime::Draw()
 {
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
@@ -64,7 +64,7 @@ void EnhanceInventory::Draw()
 }
 
 //ボタンが押された時に呼ばれるコールバック関数
-void EnhanceInventory::OnClick()
+void EnhanceTheWorldTime::OnClick()
 {
 	if (!CheckCondition()) return;
 
@@ -77,16 +77,17 @@ void EnhanceInventory::OnClick()
 }
 
 //ボタンが有効かどうかチェック
-bool EnhanceInventory::CheckCondition()
+bool EnhanceTheWorldTime::CheckCondition()
 {
-	//15まで強化したら終わり
-	if (m_enhanceType->GetMaxTheWorldTime() < 15)
+	//10まで強化したら終わり
+	if (m_enhanceType->GetMaxHaveInventory() < 10)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
 		{
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
+				//あったら強化
 				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() &&
 					m_needMoney <= m_wallet->HaveMoney())
 				{

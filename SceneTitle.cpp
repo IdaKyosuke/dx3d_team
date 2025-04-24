@@ -9,6 +9,7 @@
 #include "Chest.h"
 #include "Wallet.h"
 #include "MoneyCount.h"
+#include "EnhanceType.h"
 
 // 初期化
 void SceneTitle::Initialize()
@@ -35,6 +36,7 @@ void SceneTitle::Initialize()
 	m_chest = new Chest();
 	m_wallet = new Wallet();
 	m_moneyCount = new MoneyCount(m_wallet, 3, 0);
+	m_enhanceType = new EnhanceType(FirstMaxHaveItem, 5, 0);
 
 	// BGM
 	m_bgm = LoadSoundMem("Resource/sound/title_bgm.mp3");
@@ -59,7 +61,7 @@ SceneBase* SceneTitle::Update()
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
-		return new SceneGame(m_chest->GetItemList(), FirstMaxHaveItem,0,m_moneyCount);
+		return new SceneGame(m_chest->GetItemList(), m_enhanceType,0,m_moneyCount);
 	}
 
 	// ノードの更新

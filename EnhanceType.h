@@ -23,7 +23,10 @@ public:
 
 	enum class EnhanceTypeChoice
 	{
-		EnhanceInventory
+		EnhanceInventory,
+		EnhanceTheWorldTime,
+
+		Lenght
 	};
 
 	//‹­‰»
@@ -33,6 +36,11 @@ public:
 		{
 		case EnhanceTypeChoice::EnhanceInventory:
 			m_maxHaveInventory++;
+			m_onButton = true;
+			break;
+
+		case EnhanceTypeChoice::EnhanceTheWorldTime:
+			m_maxTheWorldTime += 2;
 			m_onButton = true;
 			break;
 		}
@@ -51,5 +59,10 @@ public:
 	int GetMaxHaveInventory() const
 	{
 		return m_maxHaveInventory;
+	}
+
+	int GetMaxTheWorldTime() const
+	{
+		return m_maxTheWorldTime;
 	}
 };

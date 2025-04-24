@@ -5,17 +5,15 @@
 #include "LoadPlayer.h"
 #include "Input.h"
 
-Inventory::Inventory(LoadPlayer* player) :
-	m_maxHaveItem(FirstMaxHaveItem),
+Inventory::Inventory(int maxHaveItem) :
+	m_maxHaveItem(maxHaveItem),
 	m_maxHaveWeight(FirstMaxHaveWeight),
 	m_haveItemCount(0),
 	m_canGetItem(false),
 	m_itemNum(0),
-	m_destroyTakeItem(0),
 	m_gettingItem(false),
-	m_player(player),
 	m_takeItem(0),
-	m_destroyItemIcon(false),
+	m_dropItem(false),
 	m_canHaveWeight(0)
 {
 	
@@ -40,9 +38,9 @@ void Inventory::Update()
 	m_inventoryUi.Update();
 	m_takeItemUi.Update();
 
-	if (m_destroyItemIcon)
+	if (m_dropItem)
 	{
-		m_destroyItemIcon = false;
+		m_dropItem = false;
 	}
 	if (m_gettingItem)
 	{
@@ -50,18 +48,18 @@ void Inventory::Update()
 	}
 
 	//アイテムを拾うことができるか
-	if (m_haveItemCount >= m_maxHaveItem)
-	{
-		m_canGetItem = false;
-	}
-	else
+	if (m_haveItemCount < m_maxHaveItem)
 	{
 		m_canGetItem = true;
 	}
+	else 
+	{
+		m_canGetItem = false;
+	}
+
 
 	//拾ったアイテムを認識する
 	//認識してアイコンを生成
-	m_haveItemCount = static_cast<int>(m_itemList.size());
 	
 	//アイテム選択
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
@@ -80,19 +78,16 @@ void Inventory::Update()
 		//アイテムを捨てる
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_G))
 		{
+			m_dropItem = true;
 			m_haveItemCount--;
 
-			//捨てたオブジェクトを生成
-			decltype(m_itemList)::iterator takeItem = std::next(m_itemList.begin(), m_takeItem);
-			GetParent()->AddChild(new Item(takeItem->GetItemNum(), m_player->GetPosition(), this));
-
-			//捨てたアイテムが何番目のアイテムか
-			m_destroyTakeItem = m_takeItem;
-
-			m_destroyItemIcon = true;
-
-			//vectorの中から捨てたアイテムのデータを消す
+			m_dropItemNum = m_takeItem;			
+		}
+		if (m_dropItemHoge)
+		{
 			m_itemList.erase(m_itemList.begin() + m_takeItem);
+
+			m_dropItemHoge = false;
 		}
 	}
 
@@ -129,9 +124,20 @@ void Inventory::Draw()
 	m_takeItemUi.Draw(m_takeItemTransform);
 }
 
-void Inventory::TakeItem(int itemNum,float itemWeight)
+void Inventory::TakeItem(int itemNum)
 {
-	GetParent()->AddChild(new ItemIcon(itemNum, m_haveItemCount, this));
+	if (m_haveItemCount <= m_maxHaveItem)
+	{
+		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
+	}
+}
 
-	m_canHaveWeight += itemWeight;
+void Inventory::ItemListSet()
+{
+	if (m_advanceItemList.size() <= m_maxHaveItem)
+	{
+		m_itemList.push_back(std::next(m_advanceItemList.begin(), m_advanceItemList.size() - 1)->GetItem());
+
+		m_advanceItemList.erase(std::next(m_advanceItemList.begin(), m_advanceItemList.size() - 1));
+	}
 }

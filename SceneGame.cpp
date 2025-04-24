@@ -22,6 +22,7 @@
 #include"EscapePoint.h"
 #include"ScreenFilter.h"
 #include "MoneyCount.h"
+#include "EnhanceType.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -59,14 +60,20 @@ void SceneGame::Initialize()
 	// navMesh
 	m_navMesh = new NavMesh(m_collisionStage);
 
-	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collisionStage);
-	actorLayer->AddChild(m_loadPlayer);
+	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
+	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
+	m_useCountTheWorld = 0;
+
+	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld);
 
 	//インベントリ
-	m_inventory = new Inventory(m_loadPlayer);
+	m_inventory = new Inventory(m_maxHaveInventory);
 	uiLayer->AddChild(m_inventory);
-	m_inventory->SetMaxHaveItem(m_maxHaveInventory);
+
+	// プレイヤー
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory);
+	actorLayer->AddChild(m_loadPlayer);
+
 	/*
 	//アイテム
 	m_item = new Item(0, Vector3(100, 50, 100),m_inventory);
@@ -77,23 +84,30 @@ void SceneGame::Initialize()
 	//アイテム
 	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
 	actorLayer->AddChild(m_item);
+	//アイテム
+	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(1, Vector3(400, 50, 100),m_inventory);
+	actorLayer->AddChild(m_item);
+
+	//アイテム
+	m_item = new Item(1, Vector3(400, 50, 300), m_inventory);
+	actorLayer->AddChild(m_item);
 	*/
-	//アイテム
-	m_item = new Item(5, Vector3(500, 50, 100), m_inventory);
-	actorLayer->AddChild(m_item);
 
 	//アイテム
-	m_item = new Item(3, Vector3(400, 0, 100),m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(2, Vector3(400, 0, 300), m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(1, Vector3(300, 0, 0),m_inventory);
+	m_item = new Item(1, Vector3(300, 0, 0),m_inventory,m_loadPlayer);
 	actorLayer->AddChild(m_item);//アイテム
-	m_item = new Item(0, Vector3(300, 0, 0),m_inventory);
+	m_item = new Item(0, Vector3(300, 0, 0),m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
+
+	m_item = new Item(3, Vector3(300, 0, 0), m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
+	m_item = new Item(4, Vector3(300, 0, 200), m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
+	m_item = new Item(0, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
 
 	// スコア
@@ -101,7 +115,7 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_uiScore);
 
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh);
+	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh, m_loadPlayer);
 	actorLayer->AddChild(m_itemfactory);
 	
 	// 敵の生成
@@ -166,11 +180,11 @@ SceneBase* SceneGame::Update()
 
 	if (m_escapePoint->IsEscape())
 	{
-		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_inventory->GetMaxHaveItem(),m_haveMoney,m_moneyCount);
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_enhanceType,m_haveMoney,m_moneyCount);
 	}
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
-		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_inventory->GetMaxHaveItem(), m_haveMoney, m_moneyCount);
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
 
 	return this;

@@ -9,7 +9,8 @@ Shop::Shop(Chest* chest,Wallet* wallet,SellButton* sellButton) :
 	m_isSellItem(false),
 	m_wallet(wallet),
 	m_sellButton(sellButton),
-	m_takeItem(0)
+	m_takeItem(0),
+	m_dontSellFlag(false)
 {
 	//Ui‚Ì“o˜^
 	m_shopUi.Register("shop_ui.png");
@@ -34,7 +35,7 @@ void Shop::Update()
 	m_takeItem = m_chest->GetTakeItem();	
 
 	if (m_sellButton->GetCheckOnClick() && !m_chest->GetItemList().empty())
-	{
+	{	
 		m_wallet->InWalletMoney(std::next(m_chest->GetItemList().begin(), m_takeItem)->GetSellMoney());
 
 		m_chest->LostItem(m_takeItem);
@@ -48,18 +49,18 @@ void Shop::Draw()
 	if (!m_chest->GetItemList().empty())
 	{
 		DrawString(750, 300,
-			std::next(m_chest->GetItemList().begin(), m_takeItem)->GetItemName()
+			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemName()
 			, GetColor(255, 255, 255));
 
 		DrawFormatString(750, 350,
 			GetColor(255, 255, 255),
 			" %d $", 
-			std::next(m_chest->GetItemList().begin(), m_takeItem)->GetSellMoney());
+			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetSellMoney());
 
 		DrawFormatString(750, 400,
 			GetColor(255, 255, 255),
 			" %d kg",
-			std::next(m_chest->GetItemList().begin(), m_takeItem)->GetItemWeight());
+			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemWeight());
 
 		SetFontSize(35);
 	}

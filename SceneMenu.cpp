@@ -10,6 +10,7 @@
 #include "SellButton.h"
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
+#include "EnhanceTheWorldTime.h"
 #include "MoneyCount.h"
 
 #include"Inventory.h"
@@ -29,7 +30,9 @@ void SceneMenu::Initialize()
 	m_rootNode->AddChild(uiLayer);
 
 	//強化の種類
-	m_enhanceType = new EnhanceType(m_maxHaveItem, 0, 0);
+	m_maxHaveItem = m_inventory->GetMaxHaveItem();
+	m_maxTheWorldTime = m_enhanceType->GetMaxTheWorldTime();
+	m_enhanceType = new EnhanceType(m_maxHaveItem, m_maxTheWorldTime, 0);
 
 	//チェスト
 	m_chest = new Chest();
@@ -55,6 +58,9 @@ void SceneMenu::Initialize()
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
 	
+	m_enhanceWorldTime = new EnhanceTheWorldTime(m_chest,m_wallet,m_enhanceType);
+	uiLayer->AddChild(m_enhanceWorldTime);
+
 	m_restDays = m_moneyCount->GetRestDays();
 	m_clearCount = m_moneyCount->GetClearCount();
 
@@ -76,7 +82,7 @@ void SceneMenu::Initialize()
 		for (int i = 0; i <= m_chestItem.size() - 1; i++)
 		{
 			//チェストに保管していたアイテム
-			m_chest->Change(std::next(m_chestItem.begin(), i)->GetItemNum());
+			m_chest->SetItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
 			m_chest->CreateIcon(i);
 		}
 	}
@@ -104,7 +110,7 @@ SceneBase* SceneMenu::Update()
 			{
 				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
 
-				return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(), m_wallet->HaveMoney(), m_moneyCount);
+				return new SceneGame(m_chest->GetItemList(),m_enhanceType, m_wallet->HaveMoney(), m_moneyCount);
 			}
 			else 
 			{
@@ -118,7 +124,7 @@ SceneBase* SceneMenu::Update()
 		{
 			m_haveMoney = m_wallet->HaveMoney();
 
-			return new SceneGame(m_chest->GetItemList(), m_enhanceType->GetMaxHaveInventory(), m_haveMoney, m_moneyCount);
+			return new SceneGame(m_chest->GetItemList(), m_enhanceType, m_haveMoney, m_moneyCount);
 		}
 	}
 

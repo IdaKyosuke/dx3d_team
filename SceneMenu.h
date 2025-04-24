@@ -15,6 +15,7 @@ class MoneyCount;
 class EnhanceType;
 
 class EnhanceInventory;
+class EnhanceTheWorldTime;
 
 class SceneMenu : public SceneBase
 {
@@ -33,17 +34,19 @@ private:
 	EnhanceType* m_enhanceType;
 
 	EnhanceInventory* m_enhanceInventory;
+	EnhanceTheWorldTime* m_enhanceWorldTime;
 
 	std::vector<Item> m_chestItem;
 
 	int m_maxHaveItem;
+	int m_maxTheWorldTime;
 	int m_haveMoney;
 
 	int m_restDays;
 	int m_clearCount;
 
 public:
-	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, int maxHaveItem, int haveMoney,MoneyCount* moneyCount) :
+	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, EnhanceType* enhanceType, int haveMoney,MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_menuInventory(nullptr),
 		m_chest(nullptr),
@@ -53,12 +56,14 @@ public:
 		m_sellButton(nullptr),
 		m_chestItem(itemList),
 		m_enhanceInventory(nullptr),
-		m_enhanceType(nullptr),
-		m_maxHaveItem(maxHaveItem),
+		m_enhanceType(enhanceType),
+		m_maxHaveItem(0),
+		m_maxTheWorldTime(0),
 		m_haveMoney(haveMoney),
 		m_moneyCount(moneyCount),
 		m_restDays(0),
-		m_clearCount(0){};
+		m_clearCount(0),
+		m_enhanceWorldTime(nullptr){};
 	
 
 	virtual void Initialize() override;		// èâä˙âª

@@ -23,6 +23,7 @@ class EscapePoint;
 class MoneyCount;
 class Wallet;
 class ScreenFilter;
+class EnhanceType;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -51,6 +52,7 @@ private:
 	MoneyCount* m_moneyCount;
 	Wallet* m_wallet;
 	ScreenFilter* m_screenFilter;
+	EnhanceType* m_enhanceType;
 
 	std::vector<Item> m_chestItem;
 
@@ -58,13 +60,15 @@ private:
 	bool m_isFinish;
 
 	int m_maxHaveInventory;
+	int m_theWorldTime;
+	int m_useCountTheWorld;
 
 	int m_haveMoney;
 	int m_restDays;
 
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList,int maxHaveInventoy, int haveMoney,MoneyCount* moneyCount) :
+	SceneGame(std::vector<Item> itemList, EnhanceType* enhanceType, int haveMoney, MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -82,7 +86,9 @@ public:
 		m_keepChest(nullptr),
 		m_keepMoneyCount(nullptr),
 		m_chestItem(itemList),
-		m_maxHaveInventory(maxHaveInventoy),
+		m_maxHaveInventory(0),
+		m_theWorldTime(0),
+		m_useCountTheWorld(0),
 		m_haveMoney(haveMoney),
 		m_drawStageView(nullptr),
 		m_isFinish(false),
@@ -90,7 +96,8 @@ public:
 		m_moneyCount(moneyCount),
 		m_wallet(nullptr),
 		m_restDays(0),
-		m_screenFilter(nullptr) {}
+		m_screenFilter(nullptr),
+		m_enhanceType(enhanceType) {};
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

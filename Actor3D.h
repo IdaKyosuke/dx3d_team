@@ -13,6 +13,8 @@ protected:
 	Transform3D m_transform;	// 姿勢情報
 	Collider3D* m_collider;	// 衝突判定の形状
 
+	int m_itemNum;
+
 	virtual void Load() override;		// リソースの読み込み
 	virtual void Release() override;	// リソースの解放
 	virtual void Draw() override;		// 描画
@@ -21,7 +23,8 @@ public:
 	// コンストラクタ
 	Actor3D(
 		const char* name,
-		const Vector3& position = Vector3()
+		const Vector3& position = Vector3(),
+		int itemNum = 0
 	);
 
 	// 子ノードを含む更新
@@ -49,6 +52,11 @@ public:
 	const Collider3D* GetCollider() const
 	{
 		return m_collider;
+	}
+
+	int GetItemNum() const
+	{
+		return m_itemNum;
 	}
 
 	// 衝突イベント

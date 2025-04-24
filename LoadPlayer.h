@@ -7,6 +7,7 @@
 class Camera;
 class Animation3D;
 class CollisionStage;
+class Inventory;
 
 class LoadPlayer : public Actor3D
 {
@@ -40,8 +41,8 @@ private:
 	static constexpr Vector3 SpawnPos = Vector3(850, 100, 850);	// ステージにスポーンする場所
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
 	static constexpr Vector3 ColSize = Vector3(150, 180, 150);	// コライダーのサイズ
-	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
 	static constexpr int MaxHp = 100;	// 体力の最大値
+	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
 
@@ -59,14 +60,18 @@ private:
 	float m_fallStartY;	// 落下し始めの高さ
 
 	float m_theWorldCoolDown;
-	float m_time111;
+	float m_nowStopTime;//時間停止してから何秒経ったか
 	float m_stopTime;	//時間停止できる時間
 	bool m_isStop;		//時間停止してるか
+
+	bool m_isGetting;	//アイテムを拾ったか
 
 	int m_seDamage;	// 攻撃を受けたときのSE
 
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
+
+	Inventory* m_inventory;
 
 	Vector3 m_playerPastPos;
 	Vector3 m_playerRotate;
@@ -98,7 +103,7 @@ protected:
 	virtual void OnCollision(const Actor3D* other) override;
 
 public:
-	LoadPlayer(CollisionStage* collisionStage);
+	LoadPlayer(CollisionStage* collisionStage, Inventory* inventory);
 
 	// アニメーションを切り替える(Lerp)
 	void ChangeAnimLerp();
@@ -138,5 +143,25 @@ public:
 	float GetHpRatio()
 	{
 		return static_cast<float>(m_hp) / static_cast<float>(MaxHp);
+	}
+
+	float GetTheWorldTime()
+	{
+		return m_stopTime;
+	}
+
+	float SetTheWorldTime(float theWorldTime)
+	{
+		m_stopTime = theWorldTime;
+	}
+
+	bool GetIsGetting()
+	{
+		return m_isGetting;
+	}
+
+	void GetEnd()
+	{
+		m_isGetting = false;
 	}
 };

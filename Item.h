@@ -38,7 +38,7 @@ private:
 	//アイテムの情報
 	struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
-		ItemDate("Resource/Item/gold.mv1","Gold",100,30),
+		ItemDate("Resource/Item/gold.mv1","Iron",100,30),
 		ItemDate("Resource/Item/diamond.mv1","Diamond",200,30),
 		ItemDate("Resource/Item/potion.mv1","Potion",10,20),
 		ItemDate("Resource/Item/bag.mv1","Bag",40, 25),
@@ -47,9 +47,10 @@ private:
 	};
 
 	const char* IconName[static_cast<int>(ItemNameList::Length)] = 
-	{ "goldbar_icon.png","diamond_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
+	{ "iron_icon.png","gem_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
 
 	Inventory* m_inventory;
+	LoadPlayer* m_player;
 
 	float m_playerToDistance;	//プレイヤーとの距離
 
@@ -59,7 +60,7 @@ protected:
 	virtual void Draw();
 
 public:
-	Item(int itemNumber, Vector3 spownPos = Vector3(0, 0, 0), Inventory* inventory = nullptr);
+	Item(int itemNumber, Vector3 spownPos = Vector3(0, 0, 0), Inventory* inventory = nullptr,LoadPlayer* player = nullptr);
 
 	int GetItemNum() const
 	{
@@ -91,5 +92,10 @@ public:
 	static int GetItemTypeNum()
 	{
 		return static_cast<int>(ItemNameList::Length);
+	}
+
+	Item GetItem()
+	{
+		return *this;
 	}
 };

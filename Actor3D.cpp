@@ -3,8 +3,9 @@
 #include "Collider3D.h"
 
 // コンストラクタ
-Actor3D::Actor3D(const char* name, const Vector3& position) :
+Actor3D::Actor3D(const char* name, const Vector3& position, int itemNum) :
 	m_name(name),
+	m_itemNum(itemNum),
 	m_collider(nullptr)
 {
 	m_transform.position = position;

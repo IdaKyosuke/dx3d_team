@@ -6,12 +6,9 @@
 #include <list>
 #include <vector>
 
-class LoadPlayer;
-
 class Inventory : public Node
 {
 private:
-	static constexpr int FirstMaxHaveItem = 5;		//最初にアイテムを持てる数の最大量
 	static constexpr float FirstMaxHaveWeight = 50;	//最初に持てるアイテムの重さの最大量
 	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
 	static constexpr Vector2 InventoryUiPos = Vector2(60, 890);
@@ -25,24 +22,25 @@ private:
 	int m_haveItemCount;	//アイテムを持ってる数
 
 	int m_takeItem;			//今何のアイテムを持っているか
-	int m_destroyTakeItem;	//捨てたときどこのアイテムを持っていたか
+	int m_dropItemNum;			//捨てたアイテムの番号
 
 	float m_canHaveWeight;	//どれぐらいの重さまで持てるか
 
 	bool m_canGetItem;			//アイテムを拾えるか
 	bool m_gettingItem;			//アイテムを拾ったか
-	bool m_destroyItemIcon;		//アイコンを消すか
+	bool m_dropItem;			//アイテムを落としたか
+	bool m_dropItemHoge;
 
 	int m_itemNum;		//アイテムの番号格納用
 
 	//アイテム格納用
 	std::vector<Item> m_itemList;
+	std::vector<Item> m_advanceItemList;
 	Sprite m_inventoryUi;
 	Sprite m_takeItemUi;
 	Transform m_transform;	// 姿勢
 	Transform m_takeItemTransform;	// 姿勢
 
-	LoadPlayer* m_player;
 
 protected:
 	virtual void Load() override;
@@ -51,19 +49,26 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Inventory(LoadPlayer* player);
+	Inventory(int maxHaveItem);
 
 	bool CanGetItem()
 	{
 		return m_canGetItem;
 	}
-
-	void SetItemList(Item* item)
+	
+	void SetItemList(int itemNum)
 	{
-		m_itemList.push_back(*item);
+		Item item = Item(itemNum);
+
+		if (m_maxHaveItem >= m_haveItemCount)
+		{
+			m_advanceItemList.push_back(item);
+		}
 	}
 
-	void TakeItem(int itemNum,float itemWeight);
+	void ItemListSet();
+
+	void TakeItem(int itemNum);
 
 	bool GetItemNow()
 	{
@@ -75,14 +80,19 @@ public:
 		m_gettingItem = true;
 	}
 
-	bool DestoryItemIcon()
+	bool GetDropItem()
 	{
-		return m_destroyItemIcon;
+		return m_dropItem;
 	}
 
-	int DestroyTakeItem()
+	int GetDropItemNum()
 	{
-		return m_destroyTakeItem;
+		return m_dropItemNum;
+	}
+
+	void GetDropItemHoge()
+	{
+		m_dropItemHoge = true;
 	}
 
 	std::vector<Item> GetItemList()
@@ -100,13 +110,18 @@ public:
 		m_maxHaveItem++;
 	}
 
-	void SetMaxHaveItem(int maxHaveItem)
-	{
-		m_maxHaveItem = maxHaveItem;
-	}
-
 	int GetMaxHaveItem()
 	{
 		return m_maxHaveItem;
+	}
+
+	int GetHaveItemCount()
+	{
+		return m_haveItemCount;
+	}
+
+	void AddItemCount()
+	{
+		m_haveItemCount++;
 	}
 };

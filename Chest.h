@@ -25,6 +25,7 @@ private:
 	bool m_destroyItemIcon;		//ÉAÉCÉRÉìÇè¡Ç∑Ç©
 
 	std::vector<Item> m_itemList;
+	std::vector<Item> m_lostItemList;
 
 	Sprite m_chestUi;
 	Sprite m_takeItemUi;
@@ -65,16 +66,16 @@ public:
 		m_isChest = nowTake;
 	}
 
-	void  StringingChest()
-	{
-		m_storagingItem = true;
-	}
-
-	void Change(int itemNum)
+	void SetItemList(int itemNum)
 	{
 		Item m_item = Item(itemNum);
 
 		m_itemList.push_back(m_item);
+	}
+
+	void  StringingChest()
+	{
+		m_storagingItem = true;
 	}
 
 	std::vector<Item> GetItemList()
@@ -82,7 +83,12 @@ public:
 		return m_itemList;
 	}
 
-	int GetTakeItem()
+	std::vector<Item> GetLostItemList()
+	{
+		return m_lostItemList;
+	}
+
+	int GetTakeItem() const
 	{
 		return m_takeItem;
 	}

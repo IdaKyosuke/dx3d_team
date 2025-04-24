@@ -2,13 +2,15 @@
 #include"Item.h"
 #include"NavMesh.h"
 #include"UiScore.h"
+#include"LoadPlayer.h"
 #include <cstdlib>
 #include <ctime>
 
 ItemFactory::ItemFactory(
 	UiScore* uiScore,
 	Inventory* inventory,
-	NavMesh* navMesh
+	NavMesh* navMesh,
+	LoadPlayer* player
 ) :
 	m_isFinish(false),
 	m_getNum(0),
@@ -19,7 +21,7 @@ ItemFactory::ItemFactory(
 	for (int i = 0; i < ItemNum; i++)
 	{
 		int itemNum = rand() % Item::GetItemTypeNum();
-		AddChild(new Item(itemNum, navMesh->GetPos(), inventory));
+		AddChild(new Item(itemNum, navMesh->GetPos(), inventory, player));
 	}
 
 	// 表示用スコアの設定

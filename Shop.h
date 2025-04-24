@@ -2,7 +2,7 @@
 #include "Node.h"
 #include "Sprite.h"
 #include "Transform.h"
-#include <list>
+#include <vector>
 
 class Chest;
 class Wallet;
@@ -17,13 +17,14 @@ private:
 
 	bool m_isSellItem;
 
+	bool m_dontSellFlag;
+
 	Sprite m_shopUi;
 	Transform m_shopTransform;
 
 	Chest* m_chest;
 	Wallet* m_wallet;
 	SellButton* m_sellButton;
-
 
 
 protected:

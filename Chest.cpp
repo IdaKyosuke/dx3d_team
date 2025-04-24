@@ -122,7 +122,10 @@ void Chest::Update()
 void Chest::Draw()
 {
 	m_chestUi.Draw(m_transform);
-	m_takeItemUi.Draw(m_takeItemTransform);
+	if (m_isChest)
+	{
+		m_takeItemUi.Draw(m_takeItemTransform);
+	}
 }
 
 void Chest::CreateIcon(int ItemNum)

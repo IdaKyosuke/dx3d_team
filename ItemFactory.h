@@ -24,7 +24,8 @@ public:
 	ItemFactory(
 		UiScore* uiScore,
 		Inventory* inventory,
-		NavMesh* navMesh
+		NavMesh* navMesh,
+		LoadPlayer* player
 	);
 
 	// 獲得されたアイテム数をカウントアップ

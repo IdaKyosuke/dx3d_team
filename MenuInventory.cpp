@@ -99,7 +99,7 @@ void MenuInventory::Update()
 				//格納したアイテムが何番目のアイテムか
 				m_destroyTakeItem = m_takeItem;
 
-				m_chest->Change(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
+				m_chest->SetIsInventory(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
 
 				m_destroyItemIcon = true;
 
@@ -155,5 +155,9 @@ void MenuInventory::Draw()
 
 		m_menuInventoryUi.Draw(m_transform);
 	}
-	m_takeItemUi.Draw(m_takeItemTransform);
+	if (m_isIventory)
+	{
+		m_takeItemUi.Draw(m_takeItemTransform);
+
+	}
 }
