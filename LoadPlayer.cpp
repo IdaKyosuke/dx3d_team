@@ -221,8 +221,24 @@ void LoadPlayer::NormalMove()
 	}
 
 	// 移動
-	m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
-	
+	if (m_stamina > 0)
+	{
+		// ダッシュフラグの管理
+		m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+
+		// スタミナがある時の移動
+		m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+	}
+	else
+	{
+		// スタミナがないときの移動
+		m_transform.position += Math::Normalized(m_moveDirection) * WalkSpeed;
+		m_isDash = false;
+	}
+
+	// スタミナ管理
+	StaminaManagement();
+
 	// 進む予定先に足場があるか
 	if (!m_collisionStage->CheckStage(this->GetPosition()))
 	{
@@ -386,6 +402,42 @@ void LoadPlayer::TheWorld()
 		{
 			m_isStop = false;
 			m_theWorldCoolDown = TheWorldCoolDown;
+		}
+	}
+}
+
+// スタミナ管理
+void LoadPlayer::StaminaManagement()
+{
+	if (m_isDash)
+	{
+		// 走っている間はスタミナを減らす
+		m_stamina -= StaminaDecreaseAmount * Time::GetInstance()->GetDeltaTime();
+		m_duration = 0;
+		if (m_stamina <= 0)
+		{
+			m_stamina = 0;
+		}
+	}
+	else
+	{
+		// すでにスタミナが最大の時
+		if (m_stamina == MaxStamina) return;
+
+		// 走っていないとき
+		m_duration += Time::GetInstance()->GetDeltaTime();
+
+		if (m_duration >= TimeToRecoverStamina)
+		{
+			// スタミナ回復までの時間を超えたら回復を始める
+			m_stamina += StaminaRecoveryAmount * Time::GetInstance()->GetDeltaTime();
+		}
+
+		if (m_stamina >= MaxStamina)
+		{
+			// スタミナの最大値を超えたら調整
+			m_stamina = MaxStamina;
+			m_duration = 0;
 		}
 	}
 }

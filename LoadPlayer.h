@@ -32,8 +32,8 @@ private:
 
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
 
-	static constexpr float WalkSpeed = 8.0f;	// 歩く速度
-	static constexpr float RunSpeed = 12.0f;	// 走る速度
+	static constexpr float WalkSpeed = 5.0f;	// 歩く速度
+	static constexpr float RunSpeed = 15.0f;	// 走る速度
 	static constexpr float RotateSpeed = 10.0f;	// 回転速度
 	static constexpr float DurationTime = 1.0f;
 	static constexpr float JumpPower = 4.0f;	// 初速度
@@ -43,6 +43,12 @@ private:
 	static constexpr Vector3 ColSize = Vector3(150, 180, 150);	// コライダーのサイズ
 	static constexpr int MaxHp = 100;	// 体力の最大値
 	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
+
+	// スタミナ関連
+	static constexpr float MaxStamina = 100;	// 走るのに必要なスタミナの最大値
+	static constexpr float StaminaRecoveryAmount = 10;	// スタミナの回復量
+	static constexpr float StaminaDecreaseAmount = 20;	// スタミナの消費量
+	static constexpr float TimeToRecoverStamina = 1;	// スタミナが回復し始めるまでの時間
 
 	Vector3 AxisY = Vector3(0.0f, 1.0f, 0.0f);	// 回転軸(Y軸で上方向)
 
@@ -88,8 +94,11 @@ private:
 
 	// プレイヤーの体力に関する変数
 	int m_hp;	// プレイヤーの体力
-	float m_duration;	// 時間経過をカウントする用
 	static constexpr float m_time = 1.0f;	// 無敵時間
+
+	float m_stamina;	// プレイヤーの現在のスタミナ	
+	bool m_isDash;		// 走っているか
+	float m_duration;	// 時間経過をカウントする用
 
 	// プレイヤーのジャンプ処理
 	void Jumping();		// 自分でジャンプする処理
@@ -164,4 +173,7 @@ public:
 	{
 		m_isGetting = false;
 	}
+
+	// スタミナ管理
+	void StaminaManagement();
 };

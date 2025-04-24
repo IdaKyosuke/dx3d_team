@@ -156,6 +156,7 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="EnhanceInventory.cpp" />
+    <ClCompile Include="EnhanceTheWorldTime.cpp" />
     <ClCompile Include="EscapePoint.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="EnhanceInventory.h" />
+    <ClInclude Include="EnhanceTheWorldTime.h" />
     <ClInclude Include="EscapePoint.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
