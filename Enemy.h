@@ -27,9 +27,9 @@ public:
 private:
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
 	static constexpr float MoveSpeed = 5.0f;	// 移動速度
-	static constexpr float Width = 20.0f;	// 敵の幅
+	static constexpr float Width = 300.0f;	// 敵の幅
 	static const char* AnimList[AnimNum];
-	static constexpr Vector3 FindColSize = Vector3(800, 200, 800);	// プレイヤーを見つけるための当たり判定のサイズ
+	static constexpr Vector3 FindColSize = Vector3(900, 200, 900);	// プレイヤーを見つけるための当たり判定のサイズ
 	static constexpr Vector3 AttackColSize = Vector3(300, 200, 300);	// 攻撃判定のサイズ
 	static constexpr Vector3 ColOffset = Vector3(0, 100, 0);	// コライダーのオフセット
 	static constexpr int Power = 10;		// 攻撃力

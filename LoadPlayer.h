@@ -39,7 +39,7 @@ private:
 	static constexpr float Gravity = 9.8f;		// 重力加速度
 	static constexpr Vector3 SpawnPos = Vector3(850, 100, 850);	// ステージにスポーンする場所
 	static constexpr Vector3 ColOffset = Vector3(0, 90, 0);	// コライダーのオフセット
-	static constexpr Vector3 ColSize = Vector3(70, 180, 70);	// コライダーのサイズ
+	static constexpr Vector3 ColSize = Vector3(150, 180, 150);	// コライダーのサイズ
 	static constexpr float TheWorldCoolDown = 30;		//スキルのクールダウン
 	static constexpr int MaxHp = 100;	// 体力の最大値
 

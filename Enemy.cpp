@@ -186,9 +186,10 @@ void Enemy::MoveCombat()
 	{
 		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
 
-		// ある程度移動ができたら || プレイヤーに攻撃したら 再探索
+		// ある程度移動ができたら || プレイヤーに攻撃したら || プレイヤーと同じポリゴンに乗ったら　再探索
 		if (m_polyCount <= 0 || 
-			m_pastAttackFlg != m_isAttack
+			m_pastAttackFlg != m_isAttack ||
+			m_checkRoot->CheckPlayerPoly(this->GetPosition(), m_player->GetPosition())
 			)
 		{
 			// 今回の探索情報を削除
