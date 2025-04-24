@@ -367,7 +367,7 @@ bool CheckRoot::SetPathPlan(Vector3 startPos, Vector3 goalPos, int* polyCount, b
 	{
 		*polyCount = count / 2;
 	}
-	else if (count >= 5)
+	else if (count >= 2)
 	{
 		*polyCount = count;
 	}
