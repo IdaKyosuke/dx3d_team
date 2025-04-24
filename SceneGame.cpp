@@ -171,6 +171,11 @@ SceneBase* SceneGame::Update()
 	// ノードの更新
 	m_rootNode->TreeUpdate();
 
+	m_limitTime -= Time::GetInstance()->GetDeltaTime();
+	if (m_limitTime <= 0)
+	{
+		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
+	}
 	
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_T))
 	{

@@ -30,6 +30,7 @@ class SceneGame : public SceneBase
 {
 private:
 	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
+	static constexpr float LimitTime = 90.0f;	// 制限時間
 
 	Node* m_rootNode;
 
@@ -57,6 +58,7 @@ private:
 	std::vector<Item> m_chestItem;
 
 	float m_resultTransitionTime;
+	float m_limitTime;
 	bool m_isFinish;
 
 	int m_maxHaveInventory;
@@ -73,6 +75,7 @@ public:
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
 		m_resultTransitionTime(ResultTransitionTime),
+		m_limitTime(LimitTime),
 		m_collision3D(nullptr),
 		m_itemfactory(nullptr),
 		m_enemyFactory(nullptr),
