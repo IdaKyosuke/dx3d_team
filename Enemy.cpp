@@ -186,9 +186,8 @@ void Enemy::MoveCombat()
 	{
 		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
 
-		// ある程度移動ができたら || プレイヤーが同じポリゴン上にいるとき 再探索
+		// ある程度移動ができたら || プレイヤーに攻撃したら 再探索
 		if (m_polyCount <= 0 || 
-			m_checkRoot->CheckPlayerPoly(this->GetPosition(), m_player->GetPosition()) || 
 			m_pastAttackFlg != m_isAttack
 			)
 		{
@@ -326,6 +325,10 @@ void Enemy::Release()
 {
 	// モデルを削除
 	MV1DeleteModel(m_model);
+
+	// threadを破棄
+	delete m_thread;
+	m_thread = nullptr;
 
 	// もともとのreleaseを実行
 	Actor3D::Release();
