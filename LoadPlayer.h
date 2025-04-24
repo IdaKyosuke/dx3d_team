@@ -32,8 +32,8 @@ private:
 
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
 
-	static constexpr float WalkSpeed = 5.0f;	// 歩く速度
-	static constexpr float RunSpeed = 15.0f;	// 走る速度
+	static constexpr float WalkSpeed = 4.0f;	// 歩く速度
+	static constexpr float RunSpeed = 12.0f;	// 走る速度
 	static constexpr float RotateSpeed = 10.0f;	// 回転速度
 	static constexpr float DurationTime = 1.0f;
 	static constexpr float JumpPower = 4.0f;	// 初速度
