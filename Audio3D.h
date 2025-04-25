@@ -6,7 +6,7 @@ class Enemy;
 class Audio3D : public Actor3D
 {
 private:
-	static constexpr float SoundRange = 1200.0f;		// ‰¹‚Ì•·‚±‚¦‚é”ÍˆÍ
+	static constexpr float SoundRange = 2000.0f;		// ‰¹‚Ì•·‚±‚¦‚é”ÍˆÍ
 	static constexpr int MinPlayCoolTime = 5;		// ‰¹‚ğÄ¶‚·‚é‚Ü‚Å‚ÌŠÔ‚ÌÅ¬’l
 	static constexpr int RangePlayCoolTime = 10;		// ‰¹‚ğÄ¶‚·‚é‚Ü‚Å‚ÌŠÔ‚Ì”ÍˆÍ
 
