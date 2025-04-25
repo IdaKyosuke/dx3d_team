@@ -67,8 +67,8 @@ SceneBase* SceneTitle::Update()
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
+		return new SceneGame(m_chest->GetItemList(), m_enhanceType, 0, m_moneyCount);
 		PlaySoundMem(m_seClick, DX_PLAYTYPE_BACK);	
-
 	}
 	soundTime = GetSoundCurrentTime(m_seClick);
 
