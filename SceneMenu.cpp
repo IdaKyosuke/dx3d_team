@@ -11,6 +11,7 @@
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
 #include "EnhanceTheWorldTime.h"
+#include "EnhanceStamina.h"
 #include "MoneyCount.h"
 
 #include"Inventory.h"
@@ -32,7 +33,7 @@ void SceneMenu::Initialize()
 	//強化の種類
 	m_maxHaveItem = m_inventory->GetMaxHaveItem();
 	m_maxTheWorldTime = m_enhanceType->GetMaxTheWorldTime();
-	m_enhanceType = new EnhanceType(m_maxHaveItem, m_maxTheWorldTime, 0);
+	m_enhanceType = new EnhanceType(m_maxHaveItem, m_maxTheWorldTime, 0,0,0);
 
 	//チェスト
 	m_chest = new Chest();
@@ -54,12 +55,16 @@ void SceneMenu::Initialize()
 	m_shop = new Shop(m_chest,m_wallet,m_sellButton);
 	uiLayer->AddChild(m_shop);
 	
-	//強化ボタン
+	//強化ボタンインベントリの最大
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
-	
+	//強化ボタンザワールド
 	m_enhanceWorldTime = new EnhanceTheWorldTime(m_chest,m_wallet,m_enhanceType);
 	uiLayer->AddChild(m_enhanceWorldTime);
+	//強化ボタンスタミナ
+	m_enhanceStamina = new EnhanceStamina(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceStamina);
+
 
 	m_restDays = m_moneyCount->GetRestDays();
 	m_clearCount = m_moneyCount->GetClearCount();

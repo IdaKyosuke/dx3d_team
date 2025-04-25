@@ -79,7 +79,7 @@ void EnhanceStamina::OnClick()
 //ボタンが有効かどうかチェック
 bool EnhanceStamina::CheckCondition()
 {
-	//15まで強化したら終わり
+	//決めた値まで強化したら終了
 	if (m_enhanceType->GetAddStaminaRecovery() < EndEnhanceCount)
 	{
 		//持ち物あるかお金あるかの判定
@@ -93,10 +93,10 @@ bool EnhanceStamina::CheckCondition()
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
-				if (m_enhanceType->OnButton())
+				if (m_enhanceType->OnStaminaButton())
 				{
 					m_canEnhance = false;
-					m_enhanceType->ButtonReset();
+					m_enhanceType->StaminaButtonReset();
 				}
 			}
 		}

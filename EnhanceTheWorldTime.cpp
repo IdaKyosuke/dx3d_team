@@ -7,7 +7,7 @@ EnhanceTheWorldTime::EnhanceTheWorldTime(Chest* chest, Wallet* wallet, EnhanceTy
 	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceTheWorldTime::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
-	m_needItemNum(0),
+	m_needItemNum(NeedItemNumber),
 	m_useItemNum(0),
 	m_enhanceCount(0),
 	m_needMoney(FirstNeedMoney),
@@ -15,7 +15,6 @@ EnhanceTheWorldTime::EnhanceTheWorldTime(Chest* chest, Wallet* wallet, EnhanceTy
 	m_wallet(wallet),
 	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceTheWorldTime)
 {
-	m_needItemNum = 3;
 }
 
 //更新
@@ -25,15 +24,15 @@ void EnhanceTheWorldTime::Update()
 	Actor::Update();
 
 	//強化していくごとに必要素材を増やす
-	if (m_enhanceType->GetMaxHaveInventory() >= 5)
+	if (m_enhanceType->GetMaxTheWorldTime() >= 7)
 	{
 		m_needMoney = NeedMoney[0];
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 7)
+	if (m_enhanceType->GetMaxTheWorldTime() >= 9)
 	{
 		m_needMoney = NeedMoney[1];
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 9)
+	if (m_enhanceType->GetMaxTheWorldTime() >= 12)
 	{
 		m_needMoney = NeedMoney[2];
 	}
@@ -79,8 +78,8 @@ void EnhanceTheWorldTime::OnClick()
 //ボタンが有効かどうかチェック
 bool EnhanceTheWorldTime::CheckCondition()
 {
-	//10まで強化したら終わり
-	if (m_enhanceType->GetMaxHaveInventory() < 10)
+	//決めた値まで強化したら終了
+	if (m_enhanceType->GetMaxHaveInventory() < EndEnhanceCount)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
@@ -94,9 +93,9 @@ bool EnhanceTheWorldTime::CheckCondition()
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
-				if (m_enhanceType->OnButton())
+				if (m_enhanceType->OnTheWorldButton())
 				{
-					m_enhanceType->ButtonReset();
+					m_enhanceType->TheWorldButtonReset();
 					m_canEnhance = false;
 				}
 			}

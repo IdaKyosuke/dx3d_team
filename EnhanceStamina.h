@@ -13,11 +13,12 @@ class Wallet;
 class EnhanceStamina : public Actor
 {
 private:
-	static constexpr Vector2 Position = Vector2(500, 400);
+	static constexpr Vector2 Position = Vector2(420, 400);
 	static constexpr Vector2 Size = Vector2(250, 100);
 	static constexpr int FirstNeedMoney = 100;				//必要なお金の初期金
 	static constexpr int NeedMoney[3] = { 150,200,300 };	//強化していくごとに上がっていく必要なお金
 	static constexpr int EndEnhanceCount = 10;		//ここまでの数値強化したら終わり
+	static constexpr int NeedItemNumber = 2;	//必要なアイテムの番号
 
 	int m_needMoney;		//必要なお金
 

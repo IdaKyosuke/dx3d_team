@@ -16,6 +16,7 @@ class EnhanceType;
 
 class EnhanceInventory;
 class EnhanceTheWorldTime;
+class EnhanceStamina;
 
 class SceneMenu : public SceneBase
 {
@@ -35,6 +36,7 @@ private:
 
 	EnhanceInventory* m_enhanceInventory;
 	EnhanceTheWorldTime* m_enhanceWorldTime;
+	EnhanceStamina* m_enhanceStamina;
 
 	std::vector<Item> m_chestItem;
 
@@ -63,7 +65,8 @@ public:
 		m_moneyCount(moneyCount),
 		m_restDays(0),
 		m_clearCount(0),
-		m_enhanceWorldTime(nullptr){};
+		m_enhanceWorldTime(nullptr),
+		m_enhanceStamina(nullptr){};
 	
 
 	virtual void Initialize() override;		// èâä˙âª

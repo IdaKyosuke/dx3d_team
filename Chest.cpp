@@ -38,11 +38,6 @@ void Chest::Update()
 	m_chestUi.Update();
 	m_takeItemUi.Update();
 
-	if (m_destroyItemIcon)
-	{
-		m_destroyItemIcon = false;
-	}
-
 	m_haveItemCount = static_cast<int>(m_itemList.size());
 
 	//ƒAƒCƒeƒ€‚ðŽû”[‚Å‚«‚é‚©
@@ -116,6 +111,11 @@ void Chest::Update()
 	else
 	{
 		m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem, 0);
+	}
+
+	if (m_destroyItemIcon)
+	{
+		m_destroyItemIcon = false;
 	}
 }
 

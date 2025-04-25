@@ -62,8 +62,10 @@ private:
 	bool m_isFinish;
 
 	int m_maxHaveInventory;
-	int m_theWorldTime;
+	float m_theWorldTime;
 	int m_useCountTheWorld;
+	float m_staminaRecovery;	//スタミナの回復量
+	float m_staminaDecrease;	//スタミナの消費量
 
 	int m_haveMoney;
 	int m_restDays;
@@ -100,7 +102,9 @@ public:
 		m_wallet(nullptr),
 		m_restDays(0),
 		m_screenFilter(nullptr),
-		m_enhanceType(enhanceType) {};
+		m_enhanceType(enhanceType),
+		m_staminaRecovery(0),
+		m_staminaDecrease(0){};
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

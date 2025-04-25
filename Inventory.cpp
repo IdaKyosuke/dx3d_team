@@ -140,4 +140,8 @@ void Inventory::ItemListSet()
 
 		m_advanceItemList.erase(std::next(m_advanceItemList.begin(), m_advanceItemList.size() - 1));
 	}
+	if (m_itemList.size() > m_maxHaveItem)	
+	{
+		m_itemList.erase(std::next(m_itemList.begin(), m_itemList.size() - 1));
+	}
 }

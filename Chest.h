@@ -41,12 +41,12 @@ protected:
 public:
 	Chest();
 
-	bool DestoryItemIcon() const
+	bool DestoryItemIcon()
 	{
 		return m_destroyItemIcon;
 	}
 
-	int DestroyTakeItem() const
+	int DestroyTakeItem()
 	{
 		return m_destroyTakeItem;
 	}

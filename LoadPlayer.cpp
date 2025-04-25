@@ -9,6 +9,7 @@
 #include"CollisionStage.h"
 #include"BoxCollider3D.h"
 #include "Inventory.h"
+#include "EnhanceType.h"
 #include<math.h>
 
 // アニメーションリスト
@@ -24,7 +25,7 @@ const char* LoadPlayer::AnimList[AnimNum] =
 	"Man/Floating.mv1",
 };
 
-LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory) :
+LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,EnhanceType* enhanceType) :
 	Actor3D("Player", SpawnPos),
 	m_model(MV1LoadModel("Resource/Man/Man.mv1")),
 	m_animIndex(0),
@@ -49,7 +50,10 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory) :
 	m_nowStopTime(0),
 	m_isGetting(false),
 	m_inventory(inventory),
-	m_isDeath(false)
+	m_isDeath(false),
+	m_enhanceType(enhanceType),
+	m_staminaRecovery(StaminaRecoveryAmount),
+	m_staminaDecrease(StaminaDecreaseAmount)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -421,8 +425,10 @@ void LoadPlayer::StaminaManagement()
 {
 	if (m_isDash)
 	{
+		m_staminaDecrease = m_staminaDecrease + m_enhanceType->GetAlleviationStaminaDecrease();
+
 		// 走っている間はスタミナを減らす
-		m_stamina -= StaminaDecreaseAmount * Time::GetInstance()->GetDeltaTime();
+		m_stamina -= m_staminaDecrease * Time::GetInstance()->GetDeltaTime();
 		m_duration = 0;
 		if (m_stamina <= 0)
 		{
@@ -431,6 +437,8 @@ void LoadPlayer::StaminaManagement()
 	}
 	else
 	{
+		m_staminaRecovery = m_staminaRecovery + m_enhanceType->GetAddStaminaRecovery();
+
 		// すでにスタミナが最大の時
 		if (m_stamina == MaxStamina) return;
 
@@ -440,7 +448,7 @@ void LoadPlayer::StaminaManagement()
 		if (m_duration >= TimeToRecoverStamina)
 		{
 			// スタミナ回復までの時間を超えたら回復を始める
-			m_stamina += StaminaRecoveryAmount * Time::GetInstance()->GetDeltaTime();
+			m_stamina += m_staminaRecovery * Time::GetInstance()->GetDeltaTime();
 		}
 
 		if (m_stamina >= MaxStamina)

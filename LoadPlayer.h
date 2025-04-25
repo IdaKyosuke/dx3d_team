@@ -8,6 +8,7 @@ class Camera;
 class Animation3D;
 class CollisionStage;
 class Inventory;
+class EnhanceType;
 
 class LoadPlayer : public Actor3D
 {
@@ -80,6 +81,7 @@ private:
 	CollisionStage* m_collisionStage;
 
 	Inventory* m_inventory;
+	EnhanceType* m_enhanceType;
 
 	Vector3 m_playerPastPos;
 	Vector3 m_playerRotate;
@@ -101,6 +103,8 @@ private:
 	float m_stamina;	// プレイヤーの現在のスタミナ	
 	bool m_isDash;		// 走っているか
 	float m_duration;	// 時間経過をカウントする用
+	float m_staminaRecovery;	// スタミナの回復量
+	float m_staminaDecrease;	// スタミナの消費量
 
 	// プレイヤーのジャンプ処理
 	void Jumping();		// 自分でジャンプする処理
@@ -114,7 +118,7 @@ protected:
 	virtual void OnCollision(const Actor3D* other) override;
 
 public:
-	LoadPlayer(CollisionStage* collisionStage, Inventory* inventory);
+	LoadPlayer(CollisionStage* collisionStage, Inventory* inventory, EnhanceType* enhanceType);
 
 	// アニメーションを切り替える(Lerp)
 	void ChangeAnimLerp();

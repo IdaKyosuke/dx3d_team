@@ -38,7 +38,7 @@ void Shop::Update()
 	{	
 		m_wallet->InWalletMoney(std::next(m_chest->GetItemList().begin(), m_takeItem)->GetSellMoney());
 
-		m_chest->LostItem(m_takeItem);
+		m_chest->LostItem(m_chest->GetTakeItem());
 	}
 }
 
@@ -48,18 +48,18 @@ void Shop::Draw()
 	
 	if (!m_chest->GetItemList().empty())
 	{
-		DrawString(750, 300,
+		DrawString(1100, 300,
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemName()
 			, GetColor(255, 255, 255));
 
-		DrawFormatString(750, 350,
+		DrawFormatString(1100, 350,
 			GetColor(255, 255, 255),
-			" %d $", 
+			"%d $", 
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetSellMoney());
 
-		DrawFormatString(750, 400,
+		DrawFormatString(1100, 400,
 			GetColor(255, 255, 255),
-			" %d kg",
+			"%d kg",
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemWeight());
 
 		SetFontSize(35);
