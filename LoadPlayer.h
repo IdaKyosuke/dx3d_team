@@ -74,6 +74,8 @@ private:
 
 	int m_seDamage;	// 攻撃を受けたときのSE
 
+	bool m_isDeath;	// 死亡フラグ
+
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
 
@@ -172,6 +174,12 @@ public:
 	void GetEnd()
 	{
 		m_isGetting = false;
+	}
+
+	// 死亡フラグを取得
+	bool GetIsDeath()
+	{
+		return m_isDeath;
 	}
 
 	// スタミナ管理

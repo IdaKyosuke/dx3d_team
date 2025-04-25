@@ -48,7 +48,8 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory) :
 	m_theWorldCoolDown(0),
 	m_nowStopTime(0),
 	m_isGetting(false),
-	m_inventory(inventory)
+	m_inventory(inventory),
+	m_isDeath(false)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -139,11 +140,20 @@ void LoadPlayer::Finalize()
 
 void LoadPlayer::Update()
 {
-	// 死 -> リスポーン or press "r" => リスタート
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R) || m_hp <= 0)
+#ifdef _DEBUG
+	// press "r" => リスタート
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_R))
 	{
 		m_transform.position = SpawnPos;
-		m_hp = 100;
+		m_hp = MaxHp;
+	}
+#endif // _DEBUG
+
+	// 死亡したらフラグを立てる
+	if (m_hp <= 0)
+	{
+		m_isDeath = true;
+		return;
 	}
 
 	// プレイヤーの移動

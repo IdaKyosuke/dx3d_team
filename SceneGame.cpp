@@ -172,7 +172,7 @@ SceneBase* SceneGame::Update()
 	m_rootNode->TreeUpdate();
 
 	m_limitTime -= Time::GetInstance()->GetDeltaTime();
-	if (m_limitTime <= 0)
+	if (m_limitTime <= 0 || m_loadPlayer->GetIsDeath())
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
