@@ -261,8 +261,11 @@ void LoadPlayer::NormalMove()
 	// 移動
 	if (m_stamina > 0)
 	{
-		// ダッシュフラグの管理
-		m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+		if (m_moveDirection != Vector3(0, 0, 0))
+		{
+			// ダッシュフラグの管理
+			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+		}
 
 		// スタミナがある時の移動
 		m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);

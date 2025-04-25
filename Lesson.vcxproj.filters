@@ -166,10 +166,19 @@
     <ClCompile Include="MoneyCount.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="EnhanceStamina.cpp">
+    <ClCompile Include="UiTime.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="UiTime.cpp">
+    <ClCompile Include="Audio3D.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnhanceStaminaDecrease.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnhanceStaminaRecovery.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="EnhanceUseTheWorld.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -381,10 +390,19 @@
     <ClInclude Include="MoneyCount.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="EnhanceStamina.h">
+    <ClInclude Include="UiTime.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="UiTime.h">
+    <ClInclude Include="Audio3D.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnhanceStaminaDecrease.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnhanceStaminaRecovery.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnhanceUseTheWorld.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

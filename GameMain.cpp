@@ -35,6 +35,7 @@ void GameMain::Run()
 	ChangeWindowMode(GameConfig::WindowMode);	// ウィンドウモードで起動
 	SetGraphMode(Screen::Width, Screen::Height, GameConfig::ColorBit);	// ウィンドウサイズ
 	SetBackgroundColor(150, 150, 120, 255);
+	Set3DSoundOneMetre(100.0f);	// 3D座標での１メートルの設定を変更（3D音源用）
 
 	// DXライブラリの初期化
 	if (DxLib_Init())

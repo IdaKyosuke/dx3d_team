@@ -144,6 +144,7 @@
     <ClCompile Include="ActorCollision.cpp" />
     <ClCompile Include="ActorCollision3D.cpp" />
     <ClCompile Include="Animation3D.cpp" />
+    <ClCompile Include="Audio3D.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CheckRoot.cpp" />
@@ -156,8 +157,10 @@
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="EnhanceInventory.cpp" />
-    <ClCompile Include="EnhanceStamina.cpp" />
+    <ClCompile Include="EnhanceStaminaDecrease.cpp" />
+    <ClCompile Include="EnhanceStaminaRecovery.cpp" />
     <ClCompile Include="EnhanceTheWorldTime.cpp" />
+    <ClCompile Include="EnhanceUseTheWorld.cpp" />
     <ClCompile Include="EscapePoint.cpp" />
     <ClCompile Include="Fade.cpp" />
     <ClCompile Include="GameMain.cpp" />
@@ -204,6 +207,7 @@
     <ClInclude Include="ActorCollision3D.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Animation3D.h" />
+    <ClInclude Include="Audio3D.h" />
     <ClInclude Include="BoxCollider2D.h" />
     <ClInclude Include="BoxCollider3D.h" />
     <ClInclude Include="Button.h" />
@@ -221,8 +225,10 @@
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="EnhanceInventory.h" />
-    <ClInclude Include="EnhanceStamina.h" />
+    <ClInclude Include="EnhanceStaminaDecrease.h" />
+    <ClInclude Include="EnhanceStaminaRecovery.h" />
     <ClInclude Include="EnhanceTheWorldTime.h" />
+    <ClInclude Include="EnhanceUseTheWorld.h" />
     <ClInclude Include="EscapePoint.h" />
     <ClInclude Include="Fade.h" />
     <ClInclude Include="GameConfig.h" />
