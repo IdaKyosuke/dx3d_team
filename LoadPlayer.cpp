@@ -169,6 +169,7 @@ void LoadPlayer::Update()
 		{
 			// 死亡アニメーションを再生
 			ChangeAnimQuick(Anim::Death);
+			m_camNode->ModeChange();
 		}
 
 		if (m_attachAnimList[static_cast<int>(m_nowAnim)]->FinishAnim())

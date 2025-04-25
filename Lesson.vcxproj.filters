@@ -169,6 +169,9 @@
     <ClCompile Include="EnhanceStamina.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="UiTime.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -379,6 +382,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="EnhanceStamina.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="UiTime.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,8 @@ Camera::Camera(LoadPlayer* player) :
 	m_pastTerning(false),
 	m_diffY(DiffY),
 	m_sightMode(SightMode::First),
-	m_isLocked(true)
+	m_isLocked(true),
+	m_isChange(false)
 {
 	Vector3 playerPos = Vector3(m_loadPlayerNode->GetPosition());
 
@@ -196,16 +197,23 @@ void Camera::FirstPerson(const Vector3& playerPos)
 void Camera::ChangeSightMode(const Vector3& playerPos)
 {
 	Vector3 pos;
+	Vector3 dir;
 
 	switch (m_sightMode)
 	{
 	case SightMode::First:
 		// 1人称視点 => 3人称視点
-		// プレイヤーと一定距離を保つ
-		pos = Vector3(m_camTarget - CamFrontPlaneVec() * CamDiff);
-		m_transform.position = Vector3(pos.x, playerPos.y + DiffY, pos.z);
+		// 変更前の方向を保持
+		dir = CamFrontPlaneVec();
+
 		// カメラの注視点を変更
 		m_camTarget = Vector3(playerPos.x, m_transform.position.y, playerPos.z);
+
+		// プレイヤーと一定距離を保つ
+		pos = Vector3(m_camTarget - dir * CamDiff);
+		m_transform.position = Vector3(pos.x, playerPos.y + DiffY, pos.z);
+
+		// 視点モードを変更
 		m_sightMode = SightMode::Third;
 		break;
 
@@ -213,19 +221,27 @@ void Camera::ChangeSightMode(const Vector3& playerPos)
 		// 3人称視点 => 1人称視点
 		// カメラの位置をプレイヤーと同じにする
 		m_transform.position = playerPos;
+
 		// 自身の正面が注視点になる
 		m_camTarget = Vector3(m_transform.position.x * 2, m_transform.position.y + DiffY, m_transform.position.z * 2);
+
+		// 視点モードを変更
 		m_sightMode = SightMode::First;
 		break;
 	}
+
+	m_isChange = false;
 }
 
 void Camera::Update()
 {
-	// カメラを動かす
-	MoveCam(m_loadPlayerNode->GetPosition());
-
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_B))
+	if (!m_isChange)
+	{
+		// カメラを動かす
+		MoveCam(m_loadPlayerNode->GetPosition());
+	}
+	
+	if(m_isChange || Input::GetInstance()->IsKeyDown(KEY_INPUT_B))
 	{
 		ChangeSightMode(m_loadPlayerNode->GetPosition());
 	}

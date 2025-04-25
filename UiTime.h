@@ -10,7 +10,7 @@ private:
 	static constexpr Vector2 FontSize = Vector2(20, 35);	// 数字1文字の幅・高さ
 	static constexpr Vector2 Offset = Vector2(-50, 25);		// 画面右上からの差分
 	static constexpr int FontMargin = 5;
-	static constexpr float LimitTime = 10.0f;	// 制限時間
+	static constexpr float LimitTime = 90.0f;	// 制限時間
 
 	int m_fontTextureId;	// 数字フォント
 	Transform m_transform;	// 姿勢

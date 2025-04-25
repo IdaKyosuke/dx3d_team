@@ -35,6 +35,7 @@ private:
 	SightMode m_sightMode;	// 今の視点モード
 
 	bool m_isLocked;
+	bool m_isChange;	// カメラのモード切り替え中か
 
 protected:
 	virtual void Update() override;
@@ -66,4 +67,10 @@ public:
 
 	// カメラのモードを変える
 	void ChangeSightMode(const Vector3& playerPos);
+
+	// カメラのモードを切り替える予約
+	void ModeChange()
+	{
+		m_isChange = true;
+	}
 };
