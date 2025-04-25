@@ -29,9 +29,11 @@ private:
 	bool m_canGetItem;			//アイテムを拾えるか
 	bool m_gettingItem;			//アイテムを拾ったか
 	bool m_dropItem;			//アイテムを落としたか
-	bool m_dropItemHoge;
+	bool m_dropItemCompletion;
 
 	int m_itemNum;		//アイテムの番号格納用
+
+	int m_seInventory;	//サウンド
 
 	//アイテム格納用
 	std::vector<Item> m_itemList;
@@ -90,9 +92,9 @@ public:
 		return m_dropItemNum;
 	}
 
-	void GetDropItemHoge()
+	void GetDropItemCompletion()
 	{
-		m_dropItemHoge = true;
+		m_dropItemCompletion = true;
 	}
 
 	std::vector<Item> GetItemList()

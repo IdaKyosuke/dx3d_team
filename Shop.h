@@ -19,6 +19,8 @@ private:
 
 	bool m_dontSellFlag;
 
+	int m_seSell;
+
 	Sprite m_shopUi;
 	Transform m_shopTransform;
 

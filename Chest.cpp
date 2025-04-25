@@ -14,7 +14,8 @@ Chest::Chest() :
 	m_destroyItemIcon(false),
 	m_canStorageItem(true),
 	m_isChest(false),
-	m_storagingItem(false)
+	m_storagingItem(false),
+	m_seChest(0)
 {
 	m_transform.position = Screen::Center + Vector2(0, 170);
 	m_chestUi.Register("chest_ui.png");
@@ -23,12 +24,18 @@ Chest::Chest() :
 
 void Chest::Load()
 {
+	//seを設定
+	m_seChest = LoadSoundMem("Resource/sound/move_takeUi.mp3");
+	ChangeVolumeSoundMem(128, m_seChest);
+
 	m_chestUi.Load();
 	m_takeItemUi.Load();
 }
 
 void Chest::Release()
 {
+	DeleteSoundMem(m_seChest);
+
 	m_chestUi.Release();
 	m_takeItemUi.Release();
 }
@@ -60,24 +67,31 @@ void Chest::Update()
 		m_storagingItem = false;
 	}
 
-	if (m_isChest)
+	if (m_haveItemCount >= 0)
 	{
-		//アイテム選択
-		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_A))
+		if (m_isChest)
 		{
-			m_takeItem--;
-		}
-		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
-		{
-			m_takeItem++;
-		}
-		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_S))
-		{
-			m_takeItem += 10;
-		}
-		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_W))
-		{
-			m_takeItem -= 10;
+			//アイテム選択
+			if (Input::GetInstance()->IsKeyDown(KEY_INPUT_A))
+			{
+				m_takeItem--;
+				PlaySoundMem(m_seChest, DX_PLAYTYPE_BACK);
+			}
+			else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
+			{
+				m_takeItem++;
+				PlaySoundMem(m_seChest, DX_PLAYTYPE_BACK);
+			}
+			else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_S))
+			{
+				m_takeItem += 10;
+				PlaySoundMem(m_seChest, DX_PLAYTYPE_BACK);
+			}
+			else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_W))
+			{
+				m_takeItem -= 10;
+				PlaySoundMem(m_seChest, DX_PLAYTYPE_BACK);
+			}
 		}
 	}
 

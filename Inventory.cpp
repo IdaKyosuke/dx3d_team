@@ -14,21 +14,29 @@ Inventory::Inventory(int maxHaveItem) :
 	m_gettingItem(false),
 	m_takeItem(0),
 	m_dropItem(false),
-	m_canHaveWeight(0)
+	m_canHaveWeight(0),
+	m_dropItemNum(0),
+	m_dropItemCompletion(false),
+	m_seInventory(0)
 {
-	
 	m_inventoryUi.Register("inventory_ui.png");
 	m_takeItemUi.Register("take_item.png");
 }
 
 void Inventory::Load()
 {
+	//seを設定
+	m_seInventory = LoadSoundMem("Resource/sound/move_takeUi.mp3");
+	ChangeVolumeSoundMem(128, m_seInventory);
+
 	m_inventoryUi.Load();
 	m_takeItemUi.Load();
 }
 
 void Inventory::Release()
 {
+	DeleteSoundMem(m_seInventory);
+
 	m_inventoryUi.Release();
 	m_takeItemUi.Release();
 }
@@ -57,24 +65,22 @@ void Inventory::Update()
 		m_canGetItem = false;
 	}
 
-
-	//拾ったアイテムを認識する
-	//認識してアイコンを生成
-	
-	//アイテム選択
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
-	{
-		m_takeItem--;
-	}
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_E))
-	{
-		m_takeItem++;
-	}
-
-	m_takeItem = m_takeItem % m_maxHaveItem;
-
 	if (m_haveItemCount > 0)
 	{
+		//アイテム選択
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_Q))
+		{
+			m_takeItem--;
+
+			PlaySoundMem(m_seInventory, DX_PLAYTYPE_BACK);
+		}
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_E))
+		{
+			m_takeItem++;
+
+			PlaySoundMem(m_seInventory, DX_PLAYTYPE_BACK);
+		}
+
 		//アイテムを捨てる
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_G))
 		{
@@ -83,13 +89,15 @@ void Inventory::Update()
 
 			m_dropItemNum = m_takeItem;			
 		}
-		if (m_dropItemHoge)
+		if (m_dropItemCompletion)
 		{
 			m_itemList.erase(m_itemList.begin() + m_takeItem);
 
-			m_dropItemHoge = false;
+			m_dropItemCompletion = false;
 		}
 	}
+
+	m_takeItem = m_takeItem % m_maxHaveItem;
 
 	//持っていないアイテムとかを選択できないようにしたりなど
 	if (m_takeItem < 0)

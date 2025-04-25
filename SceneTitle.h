@@ -13,6 +13,7 @@ class SceneTitle : public SceneBase
 private:
 	Node* m_rootNode;
 	int m_bgm;
+	int m_seClick;
 
 	Chest* m_chest;
 	MoneyCount* m_moneyCount;
@@ -29,6 +30,7 @@ public:
 	SceneTitle() :
 		m_rootNode(nullptr),
 		m_bgm(0),
+		m_seClick(0),
 		m_chest(nullptr),
 		m_wallet(nullptr),
 		m_moneyCount(nullptr),

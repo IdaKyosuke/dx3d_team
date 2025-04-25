@@ -31,6 +31,14 @@ void SceneMenu::Initialize()
 	// UIƒŒƒCƒ„[
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
+	/*
+	// ”wŒi
+	m_rootNode->AddChild(new Actor(
+		"Background",
+		"menu_background.png",
+		Screen::Center
+	));
+	*/
 
 	//‹­‰»‚ÌŽí—Þ{‹­‰»‚µ‚½“à—e‚Ì•ÛŽ
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();

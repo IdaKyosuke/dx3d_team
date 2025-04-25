@@ -42,6 +42,9 @@ void SceneTitle::Initialize()
 	m_bgm = LoadSoundMem("Resource/sound/title_bgm.mp3");
 	ChangeVolumeSoundMem(70, m_bgm);
 	PlaySoundMem(m_bgm, DX_PLAYTYPE_LOOP);
+
+	m_seClick = LoadSoundMem("Resource/sound/title_click.mp3");
+	ChangeVolumeSoundMem(70, m_bgm);
 }
 
 // 終了
@@ -53,16 +56,28 @@ void SceneTitle::Finalize()
 
 	// BGM
 	DeleteSoundMem(m_bgm);
+	DeleteSoundMem(m_seClick);
 }
 
 // 更新
 SceneBase* SceneTitle::Update()
 {
+	int soundTime = 0;
+
 	// いずれかのキーが押されたらゲームシーンへ遷移
 	if (Input::GetInstance()->IsAnyKeyDown())
 	{
-		return new SceneGame(m_chest->GetItemList(), m_enhanceType,0,m_moneyCount);
+		PlaySoundMem(m_seClick, DX_PLAYTYPE_BACK);	
+
 	}
+	soundTime = GetSoundCurrentTime(m_seClick);
+
+	if (soundTime >= 2)
+	{
+		return new SceneGame(m_chest->GetItemList(), m_enhanceType, 0, m_moneyCount);
+	}
+
+
 
 	// ノードの更新
 	m_rootNode->TreeUpdate();

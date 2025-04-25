@@ -362,7 +362,7 @@ void LoadPlayer::NormalMove()
 			m_inventory, 
 			this));
 
-		m_inventory->GetDropItemHoge();
+		m_inventory->GetDropItemCompletion();
 
 		//vectorの中から捨てたアイテムのデータを消す
 		//m_inventory->GetItemList().erase(m_inventory->GetItemList().begin() + m_inventory->GetTakeItem());

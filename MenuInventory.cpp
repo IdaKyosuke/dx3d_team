@@ -19,7 +19,8 @@ MenuInventory::MenuInventory(Chest* chest,EnhanceType* enhanceType) :
 	m_chest(chest),
 	m_gettingItem(false),
 	m_maxHaveItem(0),
-	m_enhanceType(enhanceType)
+	m_enhanceType(enhanceType), 
+	m_seInventory(0)
 {
 	m_transform.position = Screen::BottomCenter + Vector2(0, -70);
 	m_menuInventoryUi.Register("inventory_ui.png");
@@ -28,12 +29,18 @@ MenuInventory::MenuInventory(Chest* chest,EnhanceType* enhanceType) :
 
 void MenuInventory::Load()
 {
+	// seを設定
+	m_seInventory = LoadSoundMem("Resource/sound/move_takeUi.mp3");
+	ChangeVolumeSoundMem(128, m_seInventory);
+
 	m_menuInventoryUi.Load();
 	m_takeItemUi.Load();
 }
 
 void MenuInventory::Release()
 {
+	DeleteSoundMem(m_seInventory);
+
 	m_menuInventoryUi.Release();
 	m_takeItemUi.Release();
 }
@@ -77,10 +84,12 @@ void MenuInventory::Update()
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_A))
 		{
 			m_takeItem--;
+			PlaySoundMem(m_seInventory, DX_PLAYTYPE_BACK);
 		}
 		else if (Input::GetInstance()->IsKeyDown(KEY_INPUT_D))
 		{
 			m_takeItem++;
+			PlaySoundMem(m_seInventory, DX_PLAYTYPE_BACK);
 		}
 
 		//インベントリからチェストへ変更

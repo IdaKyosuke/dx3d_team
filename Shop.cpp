@@ -10,7 +10,8 @@ Shop::Shop(Chest* chest,Wallet* wallet,SellButton* sellButton) :
 	m_wallet(wallet),
 	m_sellButton(sellButton),
 	m_takeItem(0),
-	m_dontSellFlag(false)
+	m_dontSellFlag(false),
+	m_seSell(0)
 {
 	//Ui‚Ì“o˜^
 	m_shopUi.Register("shop_ui.png");
@@ -20,11 +21,16 @@ Shop::Shop(Chest* chest,Wallet* wallet,SellButton* sellButton) :
 
 void Shop::Load()
 {
+	//se‚ðÝ’è
+	m_seSell = LoadSoundMem("Resource/sound/sell_se.mp3");
+	ChangeVolumeSoundMem(128, m_seSell);
+
 	m_shopUi.Load();
 }
 
 void Shop::Release()
 {
+	DeleteSoundMem(m_seSell);
 	m_shopUi.Release();
 }
 
@@ -39,6 +45,8 @@ void Shop::Update()
 		m_wallet->InWalletMoney(std::next(m_chest->GetItemList().begin(), m_takeItem)->GetSellMoney());
 
 		m_chest->LostItem(m_chest->GetTakeItem());
+
+		PlaySoundMem(m_seSell, DX_PLAYTYPE_BACK);
 	}
 }
 

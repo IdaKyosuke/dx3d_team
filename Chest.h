@@ -24,6 +24,9 @@ private:
 	int m_itemNum;				//アイテムの番号格納用
 	bool m_destroyItemIcon;		//アイコンを消すか
 
+
+	int m_seChest;	//サウンド
+
 	std::vector<Item> m_itemList;
 	std::vector<Item> m_lostItemList;
 
