@@ -23,6 +23,7 @@ const char* LoadPlayer::AnimList[AnimNum] =
 	"Man/fall.mv1",
 	"Man/landing.mv1",
 	"Man/Floating.mv1",
+	"Man/Die.mv1",
 };
 
 LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,EnhanceType* enhanceType) :
@@ -59,8 +60,17 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,Enhan
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
 	{
-		m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i]));
-		AddChild(m_attachAnimList[i]);
+		if (i < AnimNum - 1)
+		{
+			m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i]));
+			AddChild(m_attachAnimList[i]);
+		}
+		else
+		{
+			// ループしないアニメーション
+			m_attachAnimList.push_back(new Animation3D(m_model, AnimList[i], false));
+			AddChild(m_attachAnimList[i]);
+		}
 	}
 
 	// ダメージボイスを設定
@@ -87,7 +97,7 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,Enhan
 	m_collider = new BoxCollider3D(ColSize, ColOffset);
 
 	// 体力の初期値を設定
-	m_hp = MaxHp;
+	m_hp = 10;
 }
 
 // アニメーションを切り替える(Lerp)
@@ -153,15 +163,26 @@ void LoadPlayer::Update()
 	}
 #endif // _DEBUG
 
-	// 死亡したらフラグを立てる
 	if (m_hp <= 0)
 	{
-		m_isDeath = true;
-		return;
+		if (m_nowAnim != Anim::Death)
+		{
+			// 死亡アニメーションを再生
+			ChangeAnimQuick(Anim::Death);
+		}
+
+		if (m_attachAnimList[static_cast<int>(m_nowAnim)]->FinishAnim())
+		{
+			// 死亡アニメーションが終了したら死亡フラグを立てる
+			m_isDeath = true;
+		}
+	}
+	else
+	{
+		// プレイヤーの移動
+		NormalMove();
 	}
 
-	// プレイヤーの移動
-	NormalMove();
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();

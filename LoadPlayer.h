@@ -25,6 +25,8 @@ public:
 		Landing,
 		Floating,
 
+		Death,
+
 		Length,
 	};
 

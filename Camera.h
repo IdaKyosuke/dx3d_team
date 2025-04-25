@@ -63,4 +63,7 @@ public:
 
 	// 1人称視点
 	void FirstPerson(const Vector3& playerPos);
+
+	// カメラのモードを変える
+	void ChangeSightMode(const Vector3& playerPos);
 };

@@ -192,10 +192,43 @@ void Camera::FirstPerson(const Vector3& playerPos)
 	m_transform.position = Vector3(playerPos.x, playerPos.y + DiffY, playerPos.z);
 }
 
+// カメラのモードを変える
+void Camera::ChangeSightMode(const Vector3& playerPos)
+{
+	Vector3 pos;
+
+	switch (m_sightMode)
+	{
+	case SightMode::First:
+		// 1人称視点 => 3人称視点
+		// プレイヤーと一定距離を保つ
+		pos = Vector3(m_camTarget - CamFrontPlaneVec() * CamDiff);
+		m_transform.position = Vector3(pos.x, playerPos.y + DiffY, pos.z);
+		// カメラの注視点を変更
+		m_camTarget = Vector3(playerPos.x, m_transform.position.y, playerPos.z);
+		m_sightMode = SightMode::Third;
+		break;
+
+	case SightMode::Third:
+		// 3人称視点 => 1人称視点
+		// カメラの位置をプレイヤーと同じにする
+		m_transform.position = playerPos;
+		// 自身の正面が注視点になる
+		m_camTarget = Vector3(m_transform.position.x * 2, m_transform.position.y + DiffY, m_transform.position.z * 2);
+		m_sightMode = SightMode::First;
+		break;
+	}
+}
+
 void Camera::Update()
 {
 	// カメラを動かす
 	MoveCam(m_loadPlayerNode->GetPosition());
+
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_B))
+	{
+		ChangeSightMode(m_loadPlayerNode->GetPosition());
+	}
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
