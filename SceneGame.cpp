@@ -15,7 +15,7 @@
 #include"EnemyFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
-#include "UiTime.h"
+#include"UiTime.h"
 #include"Inventory.h"
 #include"CollisionStage.h"
 #include"NavMesh.h"
@@ -45,7 +45,7 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-
+	
 	// ステージの見た目を描画
 	m_drawStageView = new DrawStageView("favorite_stage.mv1");
 	uiLayer->AddChild(m_drawStageView);
@@ -57,10 +57,12 @@ void SceneGame::Initialize()
 	// navMesh
 	m_navMesh = new NavMesh(m_collisionStage);
 
+	//強化の種類＋強化した内容の保持
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
-	m_useCountTheWorld = 0;
-
+	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
+	m_staminaRecovery = m_enhanceType->GetAddStaminaRecovery();
+	m_staminaDecrease = m_enhanceType->GetAlleviationStaminaDecrease();
 	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
 
 	//インベントリ

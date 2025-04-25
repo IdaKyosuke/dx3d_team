@@ -45,13 +45,16 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,Enhan
 	m_isFall(false),
 	m_fallStartY(0),
 	m_hit(false),
-	m_stopTime(10),
+	m_stopTime(0),
+	m_useTheWorldCount(0),
 	m_isStop(false),
 	m_theWorldCoolDown(0),
 	m_nowStopTime(0),
 	m_isGetting(false),
 	m_inventory(inventory),
 	m_isDeath(false),
+	m_isDash(false),
+	m_stamina(MaxStamina),
 	m_enhanceType(enhanceType),
 	m_staminaRecovery(StaminaRecoveryAmount),
 	m_staminaDecrease(StaminaDecreaseAmount)
@@ -183,7 +186,6 @@ void LoadPlayer::Update()
 		// プレイヤーの移動
 		NormalMove();
 	}
-
 
 	// アニメーションの切り替え
 	ChangeAnimLerp();
@@ -426,12 +428,15 @@ void LoadPlayer::TheWorld()
 {
 	m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
 
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0)
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0
+		&& m_useTheWorldCount >= m_enhanceType->GetMaxUseTheWorldCount())
 	{
 		m_isStop = true;
 	}
 	if (m_isStop)
 	{
+		m_stopTime = m_enhanceType->GetMaxTheWorldTime();
+
 		m_nowStopTime += Time::GetInstance()->GetDeltaTime();
 
 		if (m_nowStopTime >= m_stopTime)

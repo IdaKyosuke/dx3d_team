@@ -16,7 +16,9 @@ class EnhanceType;
 
 class EnhanceInventory;
 class EnhanceTheWorldTime;
-class EnhanceStamina;
+class EnhanceUseTheWorld;
+class EnhanceStaminaRecovery;
+class EnhanceStaminaDecrease;
 
 class SceneMenu : public SceneBase
 {
@@ -35,13 +37,19 @@ private:
 	EnhanceType* m_enhanceType;
 
 	EnhanceInventory* m_enhanceInventory;
-	EnhanceTheWorldTime* m_enhanceWorldTime;
-	EnhanceStamina* m_enhanceStamina;
+	EnhanceTheWorldTime* m_enhanceTheWorldTime;
+	EnhanceStaminaRecovery* m_enhanceStaminaRecovery;
+	EnhanceStaminaDecrease* m_enhanceStaminaDecrease;
+	EnhanceUseTheWorld* m_enhanceUseTheWorld;
 
 	std::vector<Item> m_chestItem;
 
-	int m_maxHaveItem;
-	int m_maxTheWorldTime;
+	int m_maxHaveInventory;
+	int m_theWorldTime;
+	int m_useCountTheWorld;
+	int m_staminaRecovery;
+	int m_staminaDecrease;
+
 	int m_haveMoney;
 
 	int m_restDays;
@@ -59,14 +67,19 @@ public:
 		m_chestItem(itemList),
 		m_enhanceInventory(nullptr),
 		m_enhanceType(enhanceType),
-		m_maxHaveItem(0),
-		m_maxTheWorldTime(0),
+		m_maxHaveInventory(0),
+		m_theWorldTime(0),
+		m_useCountTheWorld(0),
+		m_staminaRecovery(0),
+		m_staminaDecrease(0),
 		m_haveMoney(haveMoney),
 		m_moneyCount(moneyCount),
 		m_restDays(0),
 		m_clearCount(0),
-		m_enhanceWorldTime(nullptr),
-		m_enhanceStamina(nullptr){};
+		m_enhanceTheWorldTime(nullptr),
+		m_enhanceUseTheWorld(nullptr),
+		m_enhanceStaminaRecovery(nullptr),
+		m_enhanceStaminaDecrease(nullptr){};
 	
 
 	virtual void Initialize() override;		// èâä˙âª

@@ -24,7 +24,6 @@ public:
 		JumpIdle,
 		Landing,
 		Floating,
-
 		Death,
 
 		Length,
@@ -68,10 +67,12 @@ private:
 	bool m_isFloating;
 	float m_fallStartY;	// —‰º‚µn‚ß‚Ì‚‚³
 
+	//ŠÔ’â~‚ÉŠÖ‚·‚é•Ï”
+	int m_useTheWorldCount;	//‰½‰ñg‚Á‚½‚©
 	float m_theWorldCoolDown;
-	float m_nowStopTime;//ŠÔ’â~‚µ‚Ä‚©‚ç‰½•bŒo‚Á‚½‚©
-	float m_stopTime;	//ŠÔ’â~‚Å‚«‚éŠÔ
-	bool m_isStop;		//ŠÔ’â~‚µ‚Ä‚é‚©
+	float m_nowStopTime;	//ŠÔ’â~‚µ‚Ä‚©‚ç‰½•bŒo‚Á‚½‚©
+	float m_stopTime;		//ŠÔ’â~‚Å‚«‚éŠÔ
+	bool m_isStop;			//ŠÔ’â~‚µ‚Ä‚é‚©
 
 	bool m_isGetting;	//ƒAƒCƒeƒ€‚ğE‚Á‚½‚©
 

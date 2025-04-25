@@ -11,7 +11,9 @@
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
 #include "EnhanceTheWorldTime.h"
-#include "EnhanceStamina.h"
+#include "EnhanceUseTheWorld.h"
+#include "EnhanceStaminaRecovery.h"
+#include "EnhanceStaminaDecrease.h"
 #include "MoneyCount.h"
 
 #include"Inventory.h"
@@ -30,10 +32,13 @@ void SceneMenu::Initialize()
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
 
-	//強化の種類
-	m_maxHaveItem = m_inventory->GetMaxHaveItem();
-	m_maxTheWorldTime = m_enhanceType->GetMaxTheWorldTime();
-	m_enhanceType = new EnhanceType(m_maxHaveItem, m_maxTheWorldTime, 0,0,0);
+	//強化の種類＋強化した内容の保持
+	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
+	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
+	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
+	m_staminaRecovery = m_enhanceType->GetAddStaminaRecovery();
+	m_staminaDecrease = m_enhanceType->GetAlleviationStaminaDecrease();
+	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_theWorldTime, m_useCountTheWorld, m_staminaRecovery, m_staminaDecrease);
 
 	//チェスト
 	m_chest = new Chest();
@@ -58,12 +63,18 @@ void SceneMenu::Initialize()
 	//強化ボタンインベントリの最大
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
-	//強化ボタンザワールド
-	m_enhanceWorldTime = new EnhanceTheWorldTime(m_chest,m_wallet,m_enhanceType);
-	uiLayer->AddChild(m_enhanceWorldTime);
+	//強化ボタンザワールド(時間)
+	m_enhanceTheWorldTime = new EnhanceTheWorldTime(m_chest,m_wallet,m_enhanceType);
+	uiLayer->AddChild(m_enhanceTheWorldTime);
+	//強化ボタンザワールド(回数)
+	m_enhanceUseTheWorld = new EnhanceUseTheWorld(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceUseTheWorld);
 	//強化ボタンスタミナ
-	m_enhanceStamina = new EnhanceStamina(m_chest, m_wallet, m_enhanceType);
-	uiLayer->AddChild(m_enhanceStamina);
+	m_enhanceStaminaRecovery = new EnhanceStaminaRecovery(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceStaminaRecovery);
+	//強化ボタンスタミナ
+	m_enhanceStaminaDecrease = new EnhanceStaminaDecrease(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceStaminaDecrease);
 
 
 	m_restDays = m_moneyCount->GetRestDays();

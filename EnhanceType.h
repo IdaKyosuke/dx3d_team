@@ -7,12 +7,14 @@ class EnhanceType
 {
 private:
 	bool m_onInventoryButton;
-	bool m_onTheWorldButton;
-	bool m_onStaminaButton;
+	bool m_onTheWorldTimeButton;
+	bool m_onUseTheWorldButton;
+	bool m_onStaminaRecoveryButton;
+	bool m_onStaminaDecreaseButton;
 
 	int m_maxHaveInventory;	//インベントリの最大容量
 
-	int m_maxTheWorldTime;	//時を止めれる最大時間
+	float m_maxTheWorldTime;	//時を止めれる最大時間
 	int m_maxUseTheWorld;	//時を止めれる最大回数
 
 	float m_addStaminaRecovery;			//追加されるスタミナの回復量
@@ -21,13 +23,15 @@ private:
 public:
 
 	EnhanceType(int maxHaveInventory,
-		int maxTheWorldTime,
+		float maxTheWorldTime,
 		int maxUseTheWorld,
 		float addStaminaRecovery,
 		float alleviationStaminaDecrease) :
 		m_onInventoryButton(false),
-		m_onTheWorldButton(false),
-		m_onStaminaButton(false),
+		m_onTheWorldTimeButton(false),
+		m_onUseTheWorldButton(false),
+		m_onStaminaRecoveryButton(false),
+		m_onStaminaDecreaseButton(false),
 		m_maxHaveInventory(maxHaveInventory),
 		m_maxTheWorldTime(maxTheWorldTime),
 		m_maxUseTheWorld(maxUseTheWorld),
@@ -38,7 +42,9 @@ public:
 	{
 		EnhanceInventory,
 		EnhanceTheWorldTime,
-		EnhanceStamina,
+		EnhanceUseTheWorld,
+		EnhanceStaminaRecovery,
+		EnhanceStaminaDecrease,
 
 		Lenght
 	};
@@ -55,53 +61,86 @@ public:
 
 		case EnhanceTypeChoice::EnhanceTheWorldTime:
 			m_maxTheWorldTime += 2;
-			m_onTheWorldButton = true;
+			m_onTheWorldTimeButton = true;
 			break;
 
-		case EnhanceTypeChoice::EnhanceStamina:
+		case EnhanceTypeChoice::EnhanceUseTheWorld:
+			m_maxUseTheWorld++;
+			m_onUseTheWorldButton = true;
+			break;
+
+		case EnhanceTypeChoice::EnhanceStaminaRecovery:
 			m_addStaminaRecovery += 2;
 			m_alleviationStaminaDecrease -= 2;
-			m_onStaminaButton = true;
+			m_onStaminaRecoveryButton = true;
+			break;
+
+		case EnhanceTypeChoice::EnhanceStaminaDecrease:
+			m_alleviationStaminaDecrease -= 2;
+			m_onStaminaDecreaseButton = true;
 			break;
 		}
 	};
 
+	//ボタン押されたのを返す
 	bool OnInventoryButton()
 	{
 		return m_onInventoryButton;
 	}
 
-	bool OnTheWorldButton()
+	bool OnTheWorldTimeButton()
 	{
-		return m_onTheWorldButton;
+		return m_onTheWorldTimeButton;
 	}
 
-	bool OnStaminaButton()
+	bool OnUseTheWorldButton()
 	{
-		return m_onStaminaButton;
+		return m_onUseTheWorldButton;
 	}
 
+	bool OnStaminaRecoveryButton()
+	{
+		return m_onStaminaRecoveryButton;
+	}
+
+	bool OnStaminaDecreaseButton()
+	{
+		return m_onStaminaDecreaseButton;
+	}
+
+	//ボタンリセット用
 	void InventoryButtonReset()
 	{
 		m_onInventoryButton = false;
 	}
 
-	void TheWorldButtonReset()
+	void TheWorldButtonTimeReset()
 	{
-		m_onTheWorldButton = false;
+		m_onTheWorldTimeButton = false;
 	}
 
-	void StaminaButtonReset()
+	void UseTheWorldButtonReset()
 	{
-		m_onStaminaButton = false;
+		m_onUseTheWorldButton = false;
 	}
 
+	void StaminaRecoveryButtonReset()
+	{
+		m_onStaminaRecoveryButton = false;
+	}
+
+	void StaminaDecreaseButtonReset()
+	{
+		m_onStaminaDecreaseButton = false;
+	}
+
+	//強化した値を返す
 	int GetMaxHaveInventory() const
 	{
 		return m_maxHaveInventory;
 	}
 
-	int GetMaxTheWorldTime() const
+	float GetMaxTheWorldTime() const
 	{
 		return m_maxTheWorldTime;
 	}

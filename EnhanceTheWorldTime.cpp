@@ -7,7 +7,7 @@ EnhanceTheWorldTime::EnhanceTheWorldTime(Chest* chest, Wallet* wallet, EnhanceTy
 	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceTheWorldTime::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
-	m_needItemNum(NeedItemNumber),
+	m_needItemNum(NeedItemNum),
 	m_useItemNum(0),
 	m_enhanceCount(0),
 	m_needMoney(FirstNeedMoney),
@@ -93,9 +93,9 @@ bool EnhanceTheWorldTime::CheckCondition()
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
-				if (m_enhanceType->OnTheWorldButton())
+				if (m_enhanceType->OnTheWorldTimeButton())
 				{
-					m_enhanceType->TheWorldButtonReset();
+					m_enhanceType->TheWorldButtonTimeReset();
 					m_canEnhance = false;
 				}
 			}

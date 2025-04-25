@@ -1,10 +1,10 @@
-#include "EnhanceInventory.h"
+#include "EnhanceStaminaRecovery.h"
 #include "Chest.h"
 #include "Wallet.h"
 
-EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
-	Actor("Enhance", "ehance_inventory.png", Position),
-	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceInventory::OnClick, this)),
+EnhanceStaminaRecovery::EnhanceStaminaRecovery(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
+	Actor("Enhance", "enhance_stamina.png", Position),
+	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceStaminaRecovery::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
 	m_needItemNum(NeedItemNum),
@@ -13,38 +13,36 @@ EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* en
 	m_needMoney(FirstNeedMoney),
 	m_enhanceType(enhanceType),
 	m_wallet(wallet),
-	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceInventory)
+	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceStaminaRecovery)
 {
 }
 
 //更新
-void EnhanceInventory::Update()
+void EnhanceStaminaRecovery::Update()
 {
 	//本来の更新処理
 	Actor::Update();
 
 	//強化していくごとに必要素材を増やす
-	if (m_enhanceType->GetMaxHaveInventory() >= 5)
+	if (m_enhanceType->GetAddStaminaRecovery() >= 2)
 	{
 		m_needMoney = NeedMoney[0];
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 7)
+	if (m_enhanceType->GetAddStaminaRecovery() >= 6)
 	{
 		m_needMoney = NeedMoney[1];
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 8)
+	if (m_enhanceType->GetAddStaminaRecovery() >= 8)
 	{
 		m_needMoney = NeedMoney[2];
 	}
-
-	OnTouchMouse();
 
 	//ボタン
 	m_button.Update(m_transform.position);
 }
 
 //描画　
-void EnhanceInventory::Draw()
+void EnhanceStaminaRecovery::Draw()
 {
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
@@ -65,7 +63,7 @@ void EnhanceInventory::Draw()
 }
 
 //ボタンが押された時に呼ばれるコールバック関数
-void EnhanceInventory::OnClick()
+void EnhanceStaminaRecovery::OnClick()
 {
 	if (!CheckCondition()) return;
 
@@ -78,10 +76,10 @@ void EnhanceInventory::OnClick()
 }
 
 //ボタンが有効かどうかチェック
-bool EnhanceInventory::CheckCondition()
+bool EnhanceStaminaRecovery::CheckCondition()
 {
 	//決めた値まで強化したら終了
-	if (m_enhanceType->GetMaxTheWorldTime() < 10)
+	if (m_enhanceType->GetAddStaminaRecovery() < EndEnhanceCount)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
@@ -94,10 +92,10 @@ bool EnhanceInventory::CheckCondition()
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
-				if (m_enhanceType->OnInventoryButton())
+				if (m_enhanceType->OnStaminaRecoveryButton())
 				{
-					m_enhanceType->InventoryButtonReset();
 					m_canEnhance = false;
+					m_enhanceType->StaminaRecoveryButtonReset();
 				}
 			}
 		}
@@ -108,22 +106,4 @@ bool EnhanceInventory::CheckCondition()
 	}
 
 	return m_canEnhance;
-}
-
-void EnhanceInventory::OnTouchMouse()
-{
-	int mouseX;
-	int mouseY;
-
-	GetMousePoint(&mouseX, &mouseY);
-
-	if (Position.x - Size.x / 2 <=  mouseX >= Position.x + Size.x / 2)
-	{
-		if (Position.y - Size.y / 2 <=  mouseY >= Position.y + Size.y / 2)
-		{
-			DrawString(1000, 100,
-				std::next("AAAAAAAAAA")
-				, GetColor(255, 255, 255));
-		}
-	}
 }
