@@ -64,14 +64,14 @@ void SceneGame::Initialize()
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
 	m_useCountTheWorld = 0;
 
-	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld);
+	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
 
 	//インベントリ
 	m_inventory = new Inventory(m_maxHaveInventory);
 	uiLayer->AddChild(m_inventory);
 
 	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory);
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType);
 	actorLayer->AddChild(m_loadPlayer);
 
 	/*
