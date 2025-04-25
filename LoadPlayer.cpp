@@ -101,6 +101,9 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,Enhan
 
 	// 体力の初期値を設定
 	m_hp = 10;
+
+	// 音を聞くポイントを更新
+	Set3DSoundListenerPosAndFrontPos_UpVecY(this->GetPosition(), m_camNode->CamFrontPlaneVec());
 }
 
 // アニメーションを切り替える(Lerp)
@@ -192,6 +195,9 @@ void LoadPlayer::Update()
 
 	// 1フレーム前の位置を更新
 	m_playerPastPos = m_transform.position;
+
+	// 音を聞くポイントを更新
+	Set3DSoundListenerPosAndFrontPos_UpVecY(this->GetPosition(), m_camNode->CamFrontPlaneVec());
 }
 
 // ジャンプ処理

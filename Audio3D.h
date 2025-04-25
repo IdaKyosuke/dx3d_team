@@ -3,12 +3,14 @@
 
 class Enemy;
 
-class Audio3D : Actor3D
+class Audio3D : public Actor3D
 {
 private:
-	static constexpr float SoundRange = 800.0f;		// 音の聞こえる範囲
-	static constexpr int MinPlayCoolTime = 10;		// 音を再生するまでの時間の最小値
+	static constexpr float SoundRange = 1200.0f;		// 音の聞こえる範囲
+	static constexpr int MinPlayCoolTime = 5;		// 音を再生するまでの時間の最小値
 	static constexpr int RangePlayCoolTime = 10;		// 音を再生するまでの時間の範囲
+
+	const char* m_audioHundle;
 
 	int m_sound;	// 音源ハンドル
 	Enemy* m_enemy;	// 自身の親（座標取得用）
@@ -19,6 +21,8 @@ private:
 
 protected:
 	virtual void Update() override;
+	virtual void Load() override;
+	virtual void Release() override;
 
 public:
 	Audio3D(const char* audioHundle, Enemy* enemy);

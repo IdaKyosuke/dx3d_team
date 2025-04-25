@@ -8,6 +8,7 @@
 #include"LoadPlayer.h"
 #include"CheckRoot.h"
 #include"Quaternion.h"
+#include"Audio3D.h"
 #include"NavMesh.h"
 #include "Input.h"
 #include "Lerp.h"
@@ -41,9 +42,6 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_isCheck(false),
 	m_pastAttackFlg(false)
 {
-
-
-
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
 	{
@@ -60,6 +58,9 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 			AddChild(m_attachAnimList[i]);
 		}
 	}
+
+	// 敵の音
+	AddChild(new Audio3D("Resource/sound/zombie_voice.mp3", this));
 
 	// モデルを指定場所に描画
 	MV1SetPosition(m_model, pos);
