@@ -11,6 +11,7 @@ class ItemFactory;
 class EnemyFactory;
 class UiScore;
 class UiResult;
+class UiTime;
 class CollisionStage;
 class Inventory;
 class Chest;
@@ -29,9 +30,6 @@ class EnhanceType;
 class SceneGame : public SceneBase
 {
 private:
-	static constexpr float ResultTransitionTime = 2.0f;// プレイヤーが死んでからリザルト画面に遷移するまでの時間
-	static constexpr float LimitTime = 90.0f;	// 制限時間
-
 	Node* m_rootNode;
 
 	LoadPlayer* m_loadPlayer;
@@ -41,6 +39,7 @@ private:
 	EnemyFactory* m_enemyFactory;
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
+	UiTime* m_uiTime;
 	CollisionStage* m_collisionStage;
 	Inventory* m_inventory;
 	Chest* m_chest;
@@ -57,10 +56,6 @@ private:
 
 	std::vector<Item> m_chestItem;
 
-	float m_resultTransitionTime;
-	float m_limitTime;
-	bool m_isFinish;
-
 	int m_maxHaveInventory;
 	float m_theWorldTime;
 	int m_useCountTheWorld;
@@ -76,13 +71,12 @@ public:
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
-		m_resultTransitionTime(ResultTransitionTime),
-		m_limitTime(LimitTime),
 		m_collision3D(nullptr),
 		m_itemfactory(nullptr),
 		m_enemyFactory(nullptr),
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
+		m_uiTime(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
 		m_collisionStage(nullptr),
@@ -96,7 +90,6 @@ public:
 		m_useCountTheWorld(0),
 		m_haveMoney(haveMoney),
 		m_drawStageView(nullptr),
-		m_isFinish(false),
 		m_escapePoint(nullptr),
 		m_moneyCount(moneyCount),
 		m_wallet(nullptr),

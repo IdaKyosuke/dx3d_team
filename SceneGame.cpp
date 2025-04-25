@@ -15,6 +15,7 @@
 #include"EnemyFactory.h"
 #include"UiScore.h"
 #include"UiResult.h"
+#include "UiTime.h"
 #include"Inventory.h"
 #include"CollisionStage.h"
 #include"NavMesh.h"
@@ -44,11 +45,7 @@ void SceneGame::Initialize()
 	// UIレイヤー
 	Node* uiLayer = new Node();
 	m_rootNode->AddChild(uiLayer);
-	/*
-	// ステージの見た目を描画
-	m_drawStageView = new DrawStageView("nav_stage_test_view.mv1");
-	uiLayer->AddChild(m_drawStageView);
-	*/
+
 	// ステージの見た目を描画
 	m_drawStageView = new DrawStageView("favorite_stage.mv1");
 	uiLayer->AddChild(m_drawStageView);
@@ -74,29 +71,6 @@ void SceneGame::Initialize()
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType);
 	actorLayer->AddChild(m_loadPlayer);
 
-	/*
-	//アイテム
-	m_item = new Item(0, Vector3(100, 50, 100),m_inventory);
-	actorLayer->AddChild(m_item);
-	//アイテム
-	m_item = new Item(0, Vector3(500, 50, 100),m_inventory);
-	actorLayer->AddChild(m_item);
-	//アイテム
-	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
-	actorLayer->AddChild(m_item);
-	//アイテム
-	m_item = new Item(0, Vector3(500, 50, 100), m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(1, Vector3(400, 50, 100),m_inventory);
-	actorLayer->AddChild(m_item);
-
-	//アイテム
-	m_item = new Item(1, Vector3(400, 50, 300), m_inventory);
-	actorLayer->AddChild(m_item);
-	*/
-
 	//アイテム
 	m_item = new Item(1, Vector3(300, 0, 0),m_inventory,m_loadPlayer);
 	actorLayer->AddChild(m_item);//アイテム
@@ -113,6 +87,10 @@ void SceneGame::Initialize()
 	// スコア
 	m_uiScore = new UiScore();
 	uiLayer->AddChild(m_uiScore);
+
+	// 制限時間
+	m_uiTime = new UiTime();
+	uiLayer->AddChild(m_uiTime);
 
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh, m_loadPlayer);
@@ -171,8 +149,7 @@ SceneBase* SceneGame::Update()
 	// ノードの更新
 	m_rootNode->TreeUpdate();
 
-	m_limitTime -= Time::GetInstance()->GetDeltaTime();
-	if (m_limitTime <= 0 || m_loadPlayer->GetIsDeath())
+	if (m_uiTime->IsFinsh() || m_loadPlayer->GetIsDeath())
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}

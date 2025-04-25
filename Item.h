@@ -47,7 +47,7 @@ private:
 	};
 
 	const char* IconName[static_cast<int>(ItemNameList::Length)] = 
-	{ "goldbar_icon1.png","diamond_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
+	{ "goldbar_icon.png","diamond_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
 
 	Inventory* m_inventory;
 	LoadPlayer* m_player;
