@@ -181,6 +181,9 @@
     <ClCompile Include="EnhanceUseTheWorld.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="UiStamina.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -403,6 +406,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="EnhanceUseTheWorld.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="UiStamina.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>
