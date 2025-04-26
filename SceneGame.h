@@ -12,7 +12,6 @@ class EnemyFactory;
 class UiScore;
 class UiResult;
 class UiTime;
-class UiStamina;
 class CollisionStage;
 class Inventory;
 class Chest;
@@ -41,7 +40,6 @@ private:
 	UiScore* m_uiScore;
 	UiResult* m_uiResult;
 	UiTime* m_uiTime;
-	UiStamina* m_uiStamina;
 	CollisionStage* m_collisionStage;
 	Inventory* m_inventory;
 	Chest* m_chest;
@@ -79,7 +77,6 @@ public:
 		m_uiScore(nullptr),
 		m_uiResult(nullptr),
 		m_uiTime(nullptr),
-		m_uiStamina(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
 		m_collisionStage(nullptr),

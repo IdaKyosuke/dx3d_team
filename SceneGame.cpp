@@ -16,7 +16,6 @@
 #include"UiScore.h"
 #include"UiResult.h"
 #include"UiTime.h"
-#include "UiStamina.h"
 #include"Inventory.h"
 #include"CollisionStage.h"
 #include"NavMesh.h"
@@ -94,10 +93,6 @@ void SceneGame::Initialize()
 	// 制限時間
 	m_uiTime = new UiTime();
 	uiLayer->AddChild(m_uiTime);
-
-	//スタミナ
-	m_uiStamina = new UiStamina();
-	uiLayer->AddChild(m_uiStamina);
 
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh, m_loadPlayer);
