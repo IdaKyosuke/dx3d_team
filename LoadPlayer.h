@@ -121,7 +121,12 @@ protected:
 	virtual void OnCollision(const Actor3D* other) override;
 
 public:
-	LoadPlayer(CollisionStage* collisionStage, Inventory* inventory, EnhanceType* enhanceType);
+	LoadPlayer(
+		CollisionStage* collisionStage, 
+		Inventory* inventory, 
+		EnhanceType* enhanceType,
+		const Vector3& pos
+	);
 
 	// アニメーションを切り替える(Lerp)
 	void ChangeAnimLerp();

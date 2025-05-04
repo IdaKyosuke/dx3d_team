@@ -4,20 +4,18 @@
 #include"Quaternion.h"
 #include"Math.h"
 
-EscapePoint::EscapePoint() :
+EscapePoint::EscapePoint(const Vector3& pos, const float rot) :
 	Actor3D("Exit"),
 	m_isEscape(false)
 {
-	// 脱出地点の座標を設定
-	int index = rand() % PointNum;
-	m_transform.position = pos[index];
+	m_transform.position = pos;
 
 	m_collider = new BoxCollider3D(ColSize, ColOffset);
 
 	m_model = ModelLoader::LoadModel(m_stairPath);
 
 	// モデルの回転
-	MV1SetRotationXYZ(m_model, Vector3(0, Math::DegtoRad(Rotate[index]), 0));
+	MV1SetRotationXYZ(m_model, Vector3(0, Math::DegtoRad(rot), 0));
 
 	// モデルの座標指定
 	MV1SetPosition(m_model, m_transform.position);

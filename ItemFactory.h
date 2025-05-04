@@ -2,7 +2,6 @@
 #include"Node.h"
 #include"Vector3.h"
 
-class UiScore;
 class NavMesh;
 class Inventory;
 class LoadPlayer;
@@ -10,11 +9,10 @@ class LoadPlayer;
 class ItemFactory : public Node
 {
 private:
-	static constexpr int ItemNum = 6;
+	static constexpr int ItemNum = 10;
 
 	bool m_isFinish;		// アイテムをすべて集め終えたか
 	int m_getNum;		// 集め終えたアイテム数
-	UiScore* m_uiScore;	// スコア表示用
 
 protected:
 	virtual void Update() override;
@@ -22,14 +20,10 @@ protected:
 
 public:
 	ItemFactory(
-		UiScore* uiScore,
 		Inventory* inventory,
 		NavMesh* navMesh,
 		LoadPlayer* player
 	);
-
-	// 獲得されたアイテム数をカウントアップ
-	void ItemCount();
 
 	// クリアフラグを返す
 	bool IsFinish()

@@ -13,7 +13,6 @@
 #include"Collision3D.h"
 #include"ItemFactory.h"
 #include"EnemyFactory.h"
-#include"UiScore.h"
 #include"UiResult.h"
 #include"UiTime.h"
 #include "UiStamina.h"
@@ -25,6 +24,7 @@
 #include"ScreenFilter.h"
 #include "MoneyCount.h"
 #include "EnhanceType.h"
+#include"LightFactory.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -70,10 +70,19 @@ void SceneGame::Initialize()
 	m_inventory = new Inventory(m_maxHaveInventory);
 	uiLayer->AddChild(m_inventory);
 
+
+	// プレイヤーのスポーン地点を作成
+	int index = rand() % PointNum;
+	m_escapePointIndex = index;
+
 	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType);
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
 	actorLayer->AddChild(m_loadPlayer);
 
+	// ライトを作成
+	m_lightFactory = new LightFactory(m_loadPlayer);
+	actorLayer->AddChild(m_lightFactory);
+#ifdef _DEBUG
 	//アイテム
 	m_item = new Item(1, Vector3(300, 0, 0),m_inventory,m_loadPlayer);
 	actorLayer->AddChild(m_item);//アイテム
@@ -86,10 +95,7 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 	m_item = new Item(0, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-
-	// スコア
-	m_uiScore = new UiScore();
-	uiLayer->AddChild(m_uiScore);
+#endif // _DEBUG
 
 	// 制限時間
 	m_uiTime = new UiTime();
@@ -100,14 +106,21 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_uiStamina);
 
 	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_uiScore, m_inventory, m_navMesh, m_loadPlayer);
+	m_itemfactory = new ItemFactory(m_inventory, m_navMesh, m_loadPlayer);
 	actorLayer->AddChild(m_itemfactory);
 	
 	// 敵の生成
 	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);
 	
+
+	// 脱出地点を作成
+	do
+	{
+		index = rand() % PointNum;
+	} while (m_escapePointIndex == index);
+
 	// 脱出地点の作成
-	m_escapePoint = new EscapePoint();
+	m_escapePoint = new EscapePoint(pos[index], Rotate[index]);
 	actorLayer->AddChild(m_escapePoint);
 
 	// リザルト画面

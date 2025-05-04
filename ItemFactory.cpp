@@ -1,20 +1,17 @@
 #include"ItemFactory.h"
 #include"Item.h"
 #include"NavMesh.h"
-#include"UiScore.h"
 #include"LoadPlayer.h"
 #include <cstdlib>
 #include <ctime>
 
 ItemFactory::ItemFactory(
-	UiScore* uiScore,
 	Inventory* inventory,
 	NavMesh* navMesh,
 	LoadPlayer* player
 ) :
 	m_isFinish(false),
-	m_getNum(0),
-	m_uiScore(uiScore)
+	m_getNum(0)
 {
 	srand(static_cast<unsigned int>(time(NULL)));
 	// アイテムを生成する
@@ -23,9 +20,6 @@ ItemFactory::ItemFactory(
 		int itemNum = rand() % Item::GetItemTypeNum();
 		AddChild(new Item(itemNum, navMesh->GetPos(), inventory, player));
 	}
-
-	// 表示用スコアの設定
-	m_uiScore->SetNum(ItemNum);
 }
 
 void ItemFactory::Update()
@@ -39,10 +33,4 @@ void ItemFactory::Update()
 void ItemFactory::Draw()
 {
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "HIT:%d", m_getNum);
-}
-
-void ItemFactory::ItemCount()
-{
-	m_getNum++;
-	m_uiScore->GetItem(1);
 }

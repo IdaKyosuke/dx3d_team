@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneBase.h"
 #include "Item.h"
+#include"Vector3.h"
 #include <vector>
 
 class Node;
@@ -9,7 +10,6 @@ class Camera;
 class Collision3D;
 class ItemFactory;
 class EnemyFactory;
-class UiScore;
 class UiResult;
 class UiTime;
 class UiStamina;
@@ -26,19 +26,20 @@ class MoneyCount;
 class Wallet;
 class ScreenFilter;
 class EnhanceType;
+class LightFactory;
 
 // ゲームシーン
 class SceneGame : public SceneBase
 {
 private:
-	Node* m_rootNode;
+	static constexpr int PointNum = 8;
 
+	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
 	Camera* m_cam;
 	Collision3D* m_collision3D;
 	ItemFactory* m_itemfactory;
 	EnemyFactory* m_enemyFactory;
-	UiScore* m_uiScore;
 	UiResult* m_uiResult;
 	UiTime* m_uiTime;
 	UiStamina* m_uiStamina;
@@ -55,6 +56,7 @@ private:
 	Wallet* m_wallet;
 	ScreenFilter* m_screenFilter;
 	EnhanceType* m_enhanceType;
+	LightFactory* m_lightFactory;
 
 	std::vector<Item> m_chestItem;
 
@@ -67,6 +69,33 @@ private:
 	int m_haveMoney;
 	int m_restDays;
 
+	// 脱出地点とプレイヤーのスポーン座標用
+	Vector3 pos[PointNum] =
+	{
+		Vector3(9694, 0, -1876),	// 90
+		Vector3(9699, 0, -256),		// 180
+		Vector3(-3696, 0, 4381),	// -90
+		Vector3(-8741, 0, 598),		// 180
+		Vector3(-9671, 0, -1576),	// 0
+		Vector3(4020, 0, -9387),	// 90
+		Vector3(6068, 0, -9649),	// 180
+		Vector3(9055, 0, -4712),	// 0
+	};
+
+	float Rotate[PointNum] =
+	{
+		-90.0f,
+		180.0f,
+		90.0f,
+		180.0f,
+		0.0f,
+		90.0f,
+		180.0f,
+		0.0f,
+	};
+
+	int m_escapePointIndex;
+
 public:
 	// コンストラクタ
 	SceneGame(std::vector<Item> itemList, EnhanceType* enhanceType, int haveMoney, MoneyCount* moneyCount) :
@@ -76,7 +105,6 @@ public:
 		m_collision3D(nullptr),
 		m_itemfactory(nullptr),
 		m_enemyFactory(nullptr),
-		m_uiScore(nullptr),
 		m_uiResult(nullptr),
 		m_uiTime(nullptr),
 		m_uiStamina(nullptr),
@@ -100,7 +128,9 @@ public:
 		m_screenFilter(nullptr),
 		m_enhanceType(enhanceType),
 		m_staminaRecovery(0),
-		m_staminaDecrease(0){};
+		m_staminaDecrease(0),
+		m_escapePointIndex(0),
+		m_lightFactory(nullptr){};
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

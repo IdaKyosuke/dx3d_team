@@ -52,9 +52,6 @@
     <ClCompile Include="Quaternion.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Sphere.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Sprite.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
@@ -62,9 +59,6 @@
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="UiResult.cpp">
-      <Filter>ソースファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="UiScore.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
@@ -184,6 +178,9 @@
     <ClCompile Include="UiStamina.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="LightFactory.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -249,9 +246,6 @@
     <ClInclude Include="Screen.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Sphere.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Sprite.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
@@ -268,9 +262,6 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="UiResult.h">
-      <Filter>ヘッダーファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="UiScore.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
@@ -409,6 +400,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="UiStamina.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="LightFactory.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

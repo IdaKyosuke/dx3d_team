@@ -26,8 +26,13 @@ const char* LoadPlayer::AnimList[AnimNum] =
 	"Man/Die.mv1",
 };
 
-LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,EnhanceType* enhanceType) :
-	Actor3D("Player", SpawnPos),
+LoadPlayer::LoadPlayer(
+	CollisionStage* collisionStage,
+	Inventory* inventory,
+	EnhanceType* enhanceType,
+	const Vector3& pos
+) :
+	Actor3D("Player", pos),
 	m_model(MV1LoadModel("Resource/Man/Man.mv1")),
 	m_animIndex(0),
 	m_moving(false),
@@ -91,16 +96,13 @@ LoadPlayer::LoadPlayer(CollisionStage* collisionStage,Inventory* inventory,Enhan
 	m_camNode = new Camera(this);
 	AddChild(m_camNode);
 
-	// ディレクショナルライトを作成
-	m_lightHandle = CreateDirLightHandle(Vector3(0, 100.0f, 0));
-
 	// 最初のアニメーションを指定
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
 	m_collider = new BoxCollider3D(ColSize, ColOffset);
 
 	// 体力の初期値を設定
-	m_hp = 10;
+	m_hp = MaxHp;
 
 	// 音を聞くポイントを更新
 	Set3DSoundListenerPosAndFrontPos_UpVecY(this->GetPosition(), m_camNode->CamFrontPlaneVec());
@@ -152,8 +154,6 @@ void LoadPlayer::PlayAnim()
 // モデル関係を削除
 void LoadPlayer::Finalize()
 {
-	// ライトハンドルを削除
-	DeleteLightHandle(m_lightHandle);
 	// プレイヤーのモデルを削除
 	MV1DeleteModel(m_model);
 }
@@ -363,9 +363,6 @@ void LoadPlayer::NormalMove()
 			this));
 
 		m_inventory->GetDropItemCompletion();
-
-		//vectorの中から捨てたアイテムのデータを消す
-		//m_inventory->GetItemList().erase(m_inventory->GetItemList().begin() + m_inventory->GetTakeItem());
 	}
 
 

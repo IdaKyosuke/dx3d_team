@@ -185,7 +185,7 @@ void Enemy::MoveCombat()
 	}
 	else
 	{
-		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeed, Width, &m_polyCount);
+		m_transform.position = m_checkRoot->Move(this->GetPosition(), MoveSpeedCombat, Width, &m_polyCount);
 
 		// ある程度移動ができたら || プレイヤーに攻撃したら || プレイヤーと同じポリゴンに乗ったら　再探索
 		if (m_polyCount <= 0 || 
