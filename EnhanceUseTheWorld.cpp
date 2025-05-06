@@ -9,7 +9,7 @@ EnhanceUseTheWorld::EnhanceUseTheWorld(Chest* chest, Wallet* wallet, EnhanceType
 	m_canEnhance(false),
 	m_needItemNum(NeedItemNum),
 	m_useItemNum(0),
-	m_enhanceCount(0),
+	m_enhanceStep(0),
 	m_needMoney(FirstNeedMoney),
 	m_enhanceType(enhanceType),
 	m_wallet(wallet),
@@ -26,16 +26,18 @@ void EnhanceUseTheWorld::Update()
 	//強化していくごとに必要素材を増やす
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 2)
 	{
-		m_needMoney = NeedMoney[0];
+		m_enhanceStep++;
 	}
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 3)
 	{
-		m_needMoney = NeedMoney[1];
+		m_enhanceStep++;
 	}
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 4)
 	{
-		m_needMoney = NeedMoney[2];
+		m_enhanceStep++;
 	}
+
+	m_needMoney = NeedMoney[m_enhanceStep];
 
 	//ボタン
 	m_button.Update(m_transform.position);
@@ -44,6 +46,11 @@ void EnhanceUseTheWorld::Update()
 //描画　
 void EnhanceUseTheWorld::Draw()
 {
+	DrawFormatString(940, 270,
+		GetColor(255, 255, 255),
+		"%d $",
+		NeedMoney[m_enhanceStep]);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{

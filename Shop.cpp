@@ -54,6 +54,13 @@ void Shop::Draw()
 {
 	m_shopUi.Draw(m_shopTransform);
 	
+
+	SetFontSize(35);
+
+	DrawString(5, 920,
+		"WASD:移動　R:インベントリからチェストへ　C:操作切り替え",
+		GetColor(255, 255, 255));
+
 	if (!m_chest->GetItemList().empty())
 	{
 		DrawString(1100, 300,
@@ -69,7 +76,5 @@ void Shop::Draw()
 			GetColor(255, 255, 255),
 			"%d kg",
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemWeight());
-
-		SetFontSize(35);
 	}
 }

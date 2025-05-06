@@ -12,8 +12,8 @@ class MenuInventory : public Node
 {
 private:
 	static constexpr int MaxHaveItem = 5;
-	static constexpr Vector2 TakeItemUiPos = Vector2(460,890);
-	static constexpr Vector2 InventoryUiPos = Vector2(460, 890);
+	static constexpr Vector2 TakeItemUiPos = Vector2(460,870);
+	static constexpr Vector2 InventoryUiPos = Vector2(460, 870);
 
 	static constexpr int SquareSize = 90;
 

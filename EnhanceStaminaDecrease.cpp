@@ -3,13 +3,13 @@
 #include "Wallet.h"
 
 EnhanceStaminaDecrease::EnhanceStaminaDecrease(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
-	Actor("Enhance", "enhance_stamina.png", Position),
+	Actor("Enhance", "enhacne_stamina_decrease.png", Position),
 	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceStaminaDecrease::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
 	m_needItemNum(NeedItemNum),
 	m_useItemNum(0),
-	m_enhanceCount(0),
+	m_enhanceStep(0),
 	m_needMoney(FirstNeedMoney),
 	m_enhanceType(enhanceType),
 	m_wallet(wallet),
@@ -26,16 +26,18 @@ void EnhanceStaminaDecrease::Update()
 	//強化していくごとに必要素材を増やす
 	if (m_enhanceType->GetAlleviationStaminaDecrease() >= 2)
 	{
-		m_needMoney = NeedMoney[0];
+		m_enhanceStep++;
 	}
 	if (m_enhanceType->GetAlleviationStaminaDecrease() >= 6)
 	{
-		m_needMoney = NeedMoney[1];
+		m_enhanceStep++;
 	}
 	if (m_enhanceType->GetAlleviationStaminaDecrease() >= 8)
 	{
-		m_needMoney = NeedMoney[2];
+		m_enhanceStep++;
 	}
+
+	m_needMoney = NeedMoney[m_enhanceStep];
 
 	//ボタン
 	m_button.Update(m_transform.position);
@@ -44,6 +46,11 @@ void EnhanceStaminaDecrease::Update()
 //描画　
 void EnhanceStaminaDecrease::Draw()
 {
+	DrawFormatString(940, 420,
+		GetColor(255, 255, 255),
+		"%d $",
+		NeedMoney[m_enhanceStep]);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{
