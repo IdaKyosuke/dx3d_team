@@ -37,8 +37,6 @@ void EnhanceInventory::Update()
 		m_needMoney = NeedMoney[2];
 	}
 
-	OnTouchMouse();
-
 	//ƒ{ƒ^ƒ“
 	m_button.Update(m_transform.position);
 }
@@ -108,22 +106,4 @@ bool EnhanceInventory::CheckCondition()
 	}
 
 	return m_canEnhance;
-}
-
-void EnhanceInventory::OnTouchMouse()
-{
-	int mouseX;
-	int mouseY;
-
-	GetMousePoint(&mouseX, &mouseY);
-
-	if (Position.x - Size.x / 2 <=  mouseX >= Position.x + Size.x / 2)
-	{
-		if (Position.y - Size.y / 2 <=  mouseY >= Position.y + Size.y / 2)
-		{
-			DrawString(1000, 100,
-				std::next("AAAAAAAAAA")
-				, GetColor(255, 255, 255));
-		}
-	}
 }

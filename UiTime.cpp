@@ -36,7 +36,7 @@ void UiTime::Draw()
 {
 	Vector2 dest = m_transform.position + TimeSize / 2;
 	dest.y += FontMargin;
-	int score = m_limitTime;
+	int score = static_cast<int>(m_limitTime);
 	int digit = 1;
 	do
 	{

@@ -62,7 +62,8 @@ LoadPlayer::LoadPlayer(
 	m_stamina(MaxStamina),
 	m_enhanceType(enhanceType),
 	m_staminaRecovery(StaminaRecoveryAmount),
-	m_staminaDecrease(StaminaDecreaseAmount)
+	m_staminaDecrease(StaminaDecreaseAmount),
+	m_lightHandle(0)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する

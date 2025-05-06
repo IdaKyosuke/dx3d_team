@@ -42,9 +42,6 @@ protected:
 	//ボタンが押された時に呼ばれるコールバック関数
 	void OnClick();
 
-	//ボタンにマウスカーソルが触れたら
-	void OnTouchMouse();
-
 	//ボタンが有効かどうかをチェック
 	virtual bool CheckCondition();
 

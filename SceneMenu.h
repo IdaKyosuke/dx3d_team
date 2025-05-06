@@ -45,10 +45,10 @@ private:
 	std::vector<Item> m_chestItem;
 
 	int m_maxHaveInventory;
-	int m_theWorldTime;
+	float m_theWorldTime;
 	int m_useCountTheWorld;
-	int m_staminaRecovery;
-	int m_staminaDecrease;
+	float m_staminaRecovery;
+	float m_staminaDecrease;
 
 	int m_haveMoney;
 

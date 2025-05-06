@@ -70,7 +70,7 @@ SceneBase* SceneTitle::Update()
 		return new SceneGame(m_chest->GetItemList(), m_enhanceType, 0, m_moneyCount);
 		PlaySoundMem(m_seClick, DX_PLAYTYPE_BACK);	
 	}
-	soundTime = GetSoundCurrentTime(m_seClick);
+	soundTime = static_cast<int>(GetSoundCurrentTime(m_seClick));
 
 	if (soundTime >= 2)
 	{
