@@ -102,7 +102,7 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_uiTime);
 
 	//スタミナ
-	m_uiStamina = new UiStamina();
+	m_uiStamina = new UiStamina(m_loadPlayer);
 	uiLayer->AddChild(m_uiStamina);
 
 	// アイテムの生成
@@ -184,10 +184,13 @@ SceneBase* SceneGame::Update()
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_enhanceType,m_haveMoney,m_moneyCount);
 	}
+#ifdef _DEBUG
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
+#endif // _DEBUG
+
 
 	return this;
 }

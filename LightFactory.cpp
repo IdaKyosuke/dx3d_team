@@ -11,8 +11,9 @@ LightFactory::LightFactory(LoadPlayer* loadPlayer) :
 
 void LightFactory::Update()
 {
+	Vector3 playerPos = m_player->GetPosition();
 	// ライトの位置をプレイヤーに合わせる
-	SetLightPositionHandle(m_lightHundle, m_player->GetPosition());
+	SetLightPositionHandle(m_lightHundle,Vector3(playerPos.x, playerPos.y + 150, playerPos.z));
 }
 
 void LightFactory::Release()

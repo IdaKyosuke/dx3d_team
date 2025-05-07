@@ -1,35 +1,37 @@
 #include "UiStamina.h"
-#include "Time.h"
-#include "Screen.h"
-#include "ImageLoader.h"
-#include "Input.h"
-#include "DxLib.h"
+#include "LoadPlayer.h"
 
-UiStamina::UiStamina() :
-	m_topLeft(LeftEdge),
-	m_bottomRight(RightEdge),
-	m_color(0)
+UiStamina::UiStamina(LoadPlayer* player) :
+	m_leftX(GaugeLeft),
+	m_rightX(GaugeRight),
+	m_player(player),
+	m_staminaRatio(0),
+	m_halfWidth(0)
 {
 }
 
 void UiStamina::Update()
 {
-	if (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT))
-	{
-		m_topLeft++;
-		m_bottomRight--;
-	}
-	else
-	{
-		if (m_topLeft >= LeftEdge) m_topLeft--;
-		if (m_bottomRight <= RightEdge) m_bottomRight++;
-		
-	}
+	// 現在のスタミナ÷スタミナの最大値で残スタミナの比率を計算
+	m_staminaRatio = m_player->GetStamina() / m_player->GetMaxStamina();
+
+	// 左右で半分ずつの幅を計算
+	m_halfWidth = (GaugeWidth * m_staminaRatio) / 2;
+
+	// スタミナゲージの拡縮（中央に縮む）
+	m_leftX = GaugeCenter - m_halfWidth;
+	m_rightX = GaugeCenter + m_halfWidth;
 }
 
 void UiStamina::Draw()
 {
-	m_color = GetColor(200, 200, 200);
+	// 現在のスタミナが最大値じゃないとき
+	if (m_player->GetStamina() != m_player->GetMaxStamina())
+	{
+		// スタミナゲージの背景
+		DrawBox(GaugeLeft, GaugeY, GaugeRight, GaugeY + GaugeHeight, GetColor(100, 100, 100), true);
 
-	DrawBox(m_topLeft, 800, m_bottomRight, 819, m_color, TRUE);    // 四角形を描画
+		// 現在のスタミナゲージ（中央に縮む）
+		DrawBox(m_leftX, GaugeY, m_rightX, GaugeY + GaugeHeight, GetColor(200, 200, 0), true);
+	}
 }

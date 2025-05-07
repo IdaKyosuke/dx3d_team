@@ -1,27 +1,30 @@
 #pragma once
 #include "Node.h"
-#include "Transform.h"
-#include "Sprite.h"
+
+class LoadPlayer;
 
 class UiStamina : public Node
 {
 private:
-	static constexpr int LeftEdge = 200;	// 四角形の左端の座標
-	static constexpr int RightEdge = 1079;	// 四角形の右端の座標
+	static constexpr int GaugeLeft = 200;	// ゲージの左端の座標
+	static constexpr int GaugeRight = 1080;	// ゲージの右端の座標
+	static constexpr int GaugeY = 800;		// ゲージのY座標
+	static constexpr int GaugeHeight = 20;	// ゲージの高さ
+	static constexpr int GaugeCenter = (GaugeLeft + GaugeRight) / 2;	// ゲージの中央
+	static constexpr int GaugeWidth = GaugeRight - GaugeLeft;	// ゲージの幅
 
-	int m_topLeft;
-	int m_bottomRight;
-	//static constexpr int Offset;
+	int m_leftX;	// ゲージの左のX座標
+	int m_rightX;	// ゲージの右のX座標
 
-	unsigned int m_color;
-	Transform m_transform;	// 姿勢
+	LoadPlayer* m_player;
+
+	float m_staminaRatio;	// スタミナの残りの比率
+	int m_halfWidth;		// スタミナゲージの半分の幅
 
 protected:
-	//virtual void Load() override;
-	//virtual void Release() override;
 	virtual void Update() override;
 	virtual void Draw() override;
 
 public:
-	UiStamina();
+	UiStamina(LoadPlayer* player);
 };

@@ -196,4 +196,16 @@ public:
 
 	// スタミナ管理
 	void StaminaManagement();
+
+	// 現在のスタミナを取得
+	float GetStamina()
+	{
+		return m_stamina;
+	}
+
+	// スタミナの最大値を取得
+	float GetMaxStamina()
+	{
+		return MaxStamina;
+	}
 };

@@ -55,10 +55,10 @@ void Shop::Draw()
 	m_shopUi.Draw(m_shopTransform);
 	
 
-	SetFontSize(35);
+	SetFontSize(30);
 
 	DrawString(5, 920,
-		"WASD:移動　R:インベントリからチェストへ　C:操作切り替え",
+		"WASD:移動　R:インベントリからチェストへ　C:操作切り替え　M:メニュー閉じる",
 		GetColor(255, 255, 255));
 
 	if (!m_chest->GetItemList().empty())
