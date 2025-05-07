@@ -132,14 +132,6 @@ void Inventory::Draw()
 	m_takeItemUi.Draw(m_takeItemTransform);
 }
 
-void Inventory::TakeItem(int itemNum)
-{
-	if (m_haveItemCount <= m_maxHaveItem)
-	{
-		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
-	}
-}
-
 void Inventory::ItemListSet()
 {
 	if (m_advanceItemList.size() <= m_maxHaveItem)
@@ -151,5 +143,13 @@ void Inventory::ItemListSet()
 	if (m_itemList.size() > m_maxHaveItem)	
 	{
 		m_itemList.erase(std::next(m_itemList.begin(), m_itemList.size() - 1));
+	}
+}
+
+void Inventory::TakeItem(int itemNum)
+{
+	if (m_haveItemCount <= m_maxHaveItem)
+	{
+		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
 	}
 }

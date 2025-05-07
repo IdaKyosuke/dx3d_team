@@ -36,7 +36,7 @@ void SceneTitle::Initialize()
 	m_chest = new Chest();
 	m_wallet = new Wallet();
 	m_moneyCount = new MoneyCount(m_wallet, 3, 0);
-	m_enhanceType = new EnhanceType(FirstMaxHaveItem, FirstTheWorldTime, FirstTheWorldCount, 0, 0);
+	m_enhanceType = new EnhanceType(FirstMaxHaveItem, FirstTheWorldTime, FirstTheWorldCount, StaminaRecoveryAmount, StaminaDecreaseAmount);
 
 	// BGM
 	m_bgm = LoadSoundMem("Resource/sound/title_bgm.mp3");

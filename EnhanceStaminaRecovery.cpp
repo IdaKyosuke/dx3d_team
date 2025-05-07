@@ -24,17 +24,17 @@ void EnhanceStaminaRecovery::Update()
 	Actor::Update();
 
 	//強化していくごとに必要素材を増やす
-	if (m_enhanceType->GetAddStaminaRecovery() >= 2)
+	if (m_enhanceType->GetStaminaRecovery() >= 12)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 0;
 	}
-	if (m_enhanceType->GetAddStaminaRecovery() >= 6)
+	if (m_enhanceType->GetStaminaRecovery() >= 16)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 1;
 	}
-	if (m_enhanceType->GetAddStaminaRecovery() >= 8)
+	if (m_enhanceType->GetStaminaRecovery() >= 18)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 2;
 	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
@@ -86,13 +86,22 @@ void EnhanceStaminaRecovery::OnClick()
 bool EnhanceStaminaRecovery::CheckCondition()
 {
 	//決めた値まで強化したら終了
-	if (m_enhanceType->GetAddStaminaRecovery() < EndEnhanceCount)
+	if (m_enhanceType->GetStaminaRecovery() < EndEnhanceCount)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
 		{
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
+				for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
+				{
+					if (m_needItemNum != std::next(m_chest->GetItemList().begin(), i)->GetItemNum() ||
+						m_needMoney >= m_wallet->HaveMoney())
+					{
+						m_canEnhance = false;
+					}
+				}
+
 				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() &&
 					m_needMoney <= m_wallet->HaveMoney())
 				{

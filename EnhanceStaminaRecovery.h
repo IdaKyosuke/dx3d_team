@@ -17,8 +17,8 @@ private:
 	static constexpr Vector2 Size = Vector2(320, 100);
 	static constexpr int FirstNeedMoney = 100;				//必要なお金の初期金
 	static constexpr int NeedMoney[3] = { 150,200,300 };	//強化していくごとに上がっていく必要なお金
-	static constexpr int EndEnhanceCount = 10;		//ここまでの数値強化したら終わり
-	static constexpr int NeedItemNum = 1;	//必要なアイテムの番号
+	static constexpr int EndEnhanceCount = 20;		//ここまでの数値強化したら終わり
+	static constexpr int NeedItemNum = 0;	//必要なアイテムの番号
 
 	int m_needMoney;		//必要なお金
 	int m_enhanceStep;		//どれだけ強化したか

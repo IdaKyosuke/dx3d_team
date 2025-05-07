@@ -61,8 +61,8 @@ LoadPlayer::LoadPlayer(
 	m_isDash(false),
 	m_stamina(MaxStamina),
 	m_enhanceType(enhanceType),
-	m_staminaRecovery(StaminaRecoveryAmount),
-	m_staminaDecrease(StaminaDecreaseAmount),
+	m_staminaRecovery(0),
+	m_staminaDecrease(0),
 	m_lightHandle(0)
 {
 	//-----アニメーションの作成-----
@@ -392,9 +392,8 @@ void LoadPlayer::OnCollision(const Actor3D* other)
 					m_inventory->SetItemList(other->GetItemNum());
 					m_inventory->AddItemCount();
 					m_inventory->ItemListSet();
+					m_inventory->GettingItem();
 					m_inventory->TakeItem(other->GetItemNum());
-					m_inventory->GettingItem();				
-
 				}
 			}
 		}
@@ -459,7 +458,7 @@ void LoadPlayer::StaminaManagement()
 {
 	if (m_isDash)
 	{
-		m_staminaDecrease = m_staminaDecrease + m_enhanceType->GetAlleviationStaminaDecrease();
+		m_staminaDecrease =  m_enhanceType->GetStaminaDecrease();
 
 		// 走っている間はスタミナを減らす
 		m_stamina -= m_staminaDecrease * Time::GetInstance()->GetDeltaTime();
@@ -471,7 +470,7 @@ void LoadPlayer::StaminaManagement()
 	}
 	else
 	{
-		m_staminaRecovery = m_staminaRecovery + m_enhanceType->GetAddStaminaRecovery();
+		m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
 
 		// すでにスタミナが最大の時
 		if (m_stamina == MaxStamina) return;

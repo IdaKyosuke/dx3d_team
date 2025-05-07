@@ -62,8 +62,8 @@ void SceneGame::Initialize()
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
 	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
-	m_staminaRecovery = m_enhanceType->GetAddStaminaRecovery();
-	m_staminaDecrease = m_enhanceType->GetAlleviationStaminaDecrease();
+	m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
+	m_staminaDecrease = m_enhanceType->GetStaminaDecrease();
 	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
 
 	//インベントリ
@@ -76,7 +76,13 @@ void SceneGame::Initialize()
 	m_escapePointIndex = index;
 
 	// プレイヤー
+	/*
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
+	actorLayer->AddChild(m_loadPlayer);
+	*/
+
+	// プレイヤーデバック用
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(310,10,0));
 	actorLayer->AddChild(m_loadPlayer);
 
 	// ライトを作成
@@ -95,6 +101,9 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 	m_item = new Item(0, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
+	m_item = new Item(2, Vector3(500, 0, 200), m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
+
 #endif // _DEBUG
 
 	// 制限時間

@@ -26,15 +26,15 @@ void EnhanceInventory::Update()
 	//‹­‰»‚µ‚Ä‚¢‚­‚²‚Æ‚É•K—v‘fÞ‚ð‘‚â‚·
 	if (m_enhanceType->GetMaxHaveInventory() >= 5)
 	{
-		m_enhanceStep ++;
+		m_enhanceStep = 0;
 	}
 	if (m_enhanceType->GetMaxHaveInventory() >= 7)
 	{
-		m_enhanceStep ++;
+		m_enhanceStep = 1;
 	}
 	if (m_enhanceType->GetMaxHaveInventory() >= 8)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 2;
 	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
@@ -93,18 +93,31 @@ bool EnhanceInventory::CheckCondition()
 		{
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
+				if (m_needItemNum != std::next(m_chest->GetItemList().begin(), i)->GetItemNum() ||
+					m_needMoney >= m_wallet->HaveMoney())
+				{
+					m_canEnhance = false;
+				}
+			}
+
+			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
+			{
 				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() &&
 					m_needMoney <= m_wallet->HaveMoney())
 				{
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
+				
+
 				if (m_enhanceType->OnInventoryButton())
 				{
 					m_enhanceType->InventoryButtonReset();
 					m_canEnhance = false;
 				}
 			}
+
+			
 		}
 		else
 		{

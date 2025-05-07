@@ -17,16 +17,16 @@ private:
 	float m_maxTheWorldTime;	//時を止めれる最大時間
 	int m_maxUseTheWorld;	//時を止めれる最大回数
 
-	float m_addStaminaRecovery;			//追加されるスタミナの回復量
-	float m_alleviationStaminaDecrease;	//軽減されるされるスタミナの消費用
+	float m_staminaRecovery;	//追加されるスタミナの回復量
+	float m_staminaDecrease;	//軽減されるされるスタミナの消費用
 
 public:
 
 	EnhanceType(int maxHaveInventory,
 		float maxTheWorldTime,
 		int maxUseTheWorld,
-		float addStaminaRecovery,
-		float alleviationStaminaDecrease) :
+		float staminaRecovery,
+		float staminaDecrease) :
 		m_onInventoryButton(false),
 		m_onTheWorldTimeButton(false),
 		m_onUseTheWorldButton(false),
@@ -35,8 +35,8 @@ public:
 		m_maxHaveInventory(maxHaveInventory),
 		m_maxTheWorldTime(maxTheWorldTime),
 		m_maxUseTheWorld(maxUseTheWorld),
-		m_addStaminaRecovery(addStaminaRecovery),
-		m_alleviationStaminaDecrease(alleviationStaminaDecrease){};
+		m_staminaRecovery(staminaRecovery),
+		m_staminaDecrease(staminaDecrease){};
 
 	enum class EnhanceTypeChoice
 	{
@@ -70,13 +70,12 @@ public:
 			break;
 
 		case EnhanceTypeChoice::EnhanceStaminaRecovery:
-			m_addStaminaRecovery += 2;
-			m_alleviationStaminaDecrease -= 2;
+			m_staminaRecovery += 2;
 			m_onStaminaRecoveryButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceStaminaDecrease:
-			m_alleviationStaminaDecrease -= 2;
+			m_staminaDecrease -= 2;
 			m_onStaminaDecreaseButton = true;
 			break;
 		}
@@ -150,13 +149,13 @@ public:
 		return m_maxUseTheWorld;
 	}
 
-	float GetAddStaminaRecovery() const
+	float GetStaminaRecovery() const
 	{
-		return m_addStaminaRecovery;
+		return m_staminaRecovery;
 	}
 
-	float GetAlleviationStaminaDecrease() const
+	float GetStaminaDecrease() const
 	{
-		return m_alleviationStaminaDecrease;
+		return m_staminaDecrease;
 	}
 };

@@ -26,15 +26,15 @@ void EnhanceUseTheWorld::Update()
 	//‹­‰»‚µ‚Ä‚¢‚­‚²‚Æ‚É•K—v‘fÞ‚ð‘‚â‚·
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 2)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 0;
 	}
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 3)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 1;
 	}
 	if (m_enhanceType->GetMaxUseTheWorldCount() >= 4)
 	{
-		m_enhanceStep++;
+		m_enhanceStep = 2;
 	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
@@ -91,6 +91,15 @@ bool EnhanceUseTheWorld::CheckCondition()
 		//Ž‚¿•¨‚ ‚é‚©‚¨‹à‚ ‚é‚©‚Ì”»’è
 		if (!m_chest->GetItemList().empty())
 		{
+			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
+			{
+				if (m_needItemNum != std::next(m_chest->GetItemList().begin(), i)->GetItemNum() ||
+					m_needMoney >= m_wallet->HaveMoney())
+				{
+					m_canEnhance = false;
+				}
+			}
+
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
 				//‚ ‚Á‚½‚ç‹­‰»

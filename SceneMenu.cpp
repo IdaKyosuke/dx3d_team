@@ -44,8 +44,8 @@ void SceneMenu::Initialize()
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
 	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
-	m_staminaRecovery = m_enhanceType->GetAddStaminaRecovery();
-	m_staminaDecrease = m_enhanceType->GetAlleviationStaminaDecrease();
+	m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
+	m_staminaDecrease = m_enhanceType->GetStaminaDecrease();
 	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_theWorldTime, m_useCountTheWorld, m_staminaRecovery, m_staminaDecrease);
 
 	//チェスト

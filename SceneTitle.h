@@ -23,6 +23,8 @@ private:
 	static constexpr int FirstMaxHaveItem = 3;		//最初にアイテムを持てる数の最大量
 	static constexpr float FirstTheWorldTime = 5;	//最初のザワールドの継続時間
 	static constexpr int FirstTheWorldCount = 1;	//最初にザワールドできる回数
+	static constexpr float StaminaRecoveryAmount = 10;	// スタミナの回復量
+	static constexpr float StaminaDecreaseAmount = 20;	// スタミナの消費量
 
 
 public:
