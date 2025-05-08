@@ -15,6 +15,7 @@ class MoneyCount;
 class EnhanceType;
 
 class EnhanceInventory;
+class EnhanceHaveWeight;
 class EnhanceTheWorldTime;
 class EnhanceUseTheWorld;
 class EnhanceStaminaRecovery;
@@ -37,6 +38,7 @@ private:
 	EnhanceType* m_enhanceType;
 
 	EnhanceInventory* m_enhanceInventory;
+	EnhanceHaveWeight* m_enhanceHaveWeight;
 	EnhanceTheWorldTime* m_enhanceTheWorldTime;
 	EnhanceStaminaRecovery* m_enhanceStaminaRecovery;
 	EnhanceStaminaDecrease* m_enhanceStaminaDecrease;
@@ -45,6 +47,7 @@ private:
 	std::vector<Item> m_chestItem;
 
 	int m_maxHaveInventory;
+	int m_maxHaveWeight;
 	float m_theWorldTime;
 	int m_useCountTheWorld;
 	float m_staminaRecovery;
@@ -65,9 +68,9 @@ public:
 		m_wallet(nullptr),
 		m_sellButton(nullptr),
 		m_chestItem(itemList),
-		m_enhanceInventory(nullptr),
 		m_enhanceType(enhanceType),
 		m_maxHaveInventory(0),
+		m_maxHaveWeight(0),
 		m_theWorldTime(0),
 		m_useCountTheWorld(0),
 		m_staminaRecovery(0),
@@ -76,6 +79,8 @@ public:
 		m_moneyCount(moneyCount),
 		m_restDays(0),
 		m_clearCount(0),
+		m_enhanceInventory(nullptr),
+		m_enhanceHaveWeight(nullptr),
 		m_enhanceTheWorldTime(nullptr),
 		m_enhanceUseTheWorld(nullptr),
 		m_enhanceStaminaRecovery(nullptr),

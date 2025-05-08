@@ -36,6 +36,7 @@ private:
 
 	static constexpr float WalkSpeed = 4.0f;	// 歩く速度
 	static constexpr float RunSpeed = 12.0f;	// 走る速度
+	static constexpr float WeightOverSpeed = 6.0f;	//容量オーバーしたときの走る速度
 	static constexpr float RotateSpeed = 10.0f;	// 回転速度
 	static constexpr float DurationTime = 1.0f;
 	static constexpr float JumpPower = 4.0f;	// 初速度
@@ -60,12 +61,16 @@ private:
 
 	int m_animIndex;	// 再生中のアニメーション
 
+	float m_runSpeed;
 	int m_lightHandle;	// 光源を作成する
 	bool m_isJump;
 	bool m_isJumping;
 	bool m_isFall;	// 現在落下しているか
 	bool m_isFloating;
 	float m_fallStartY;	// 落下し始めの高さ
+
+	int m_maxHaveWeight;	//持てる最大容量
+	bool m_weightOver;		//持てる最大容量が超えたか
 
 	//時間停止に関する変数
 	int m_useTheWorldCount;	//何回使ったか

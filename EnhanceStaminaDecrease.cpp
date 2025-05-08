@@ -26,15 +26,15 @@ void EnhanceStaminaDecrease::Update()
 	//強化していくごとに必要素材を増やす
 	if (m_enhanceType->GetStaminaDecrease() <= 18)
 	{
-		m_enhanceStep = 0;
+		m_enhanceStep = 1;
 	}
 	if (m_enhanceType->GetStaminaDecrease() <= 14)
 	{
-		m_enhanceStep = 1;
+		m_enhanceStep = 2;
 	}
 	if (m_enhanceType->GetStaminaDecrease() <= 12)
 	{
-		m_enhanceStep = 2;
+		m_enhanceStep = 3;
 	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
@@ -46,9 +46,10 @@ void EnhanceStaminaDecrease::Update()
 //描画　
 void EnhanceStaminaDecrease::Draw()
 {
-	DrawFormatString(940, 420,
+	SetFontSize(30);
+	DrawFormatString(840, 420,
 		GetColor(255, 255, 255),
-		"%d $",
+		"%d$",
 		NeedMoney[m_enhanceStep]);
 
 	//条件を満たしてない場合はボタンを暗化させる

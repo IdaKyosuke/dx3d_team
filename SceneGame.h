@@ -61,6 +61,7 @@ private:
 	std::vector<Item> m_chestItem;
 
 	int m_maxHaveInventory;
+	int m_maxHaveWeight;
 	float m_theWorldTime;
 	int m_useCountTheWorld;
 	float m_staminaRecovery;	//スタミナの回復量
@@ -117,6 +118,7 @@ public:
 		m_keepMoneyCount(nullptr),
 		m_chestItem(itemList),
 		m_maxHaveInventory(0),
+		m_maxHaveWeight(0),
 		m_theWorldTime(0),
 		m_useCountTheWorld(0),
 		m_haveMoney(haveMoney),

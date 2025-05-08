@@ -1,10 +1,10 @@
-#include "EnhanceInventory.h"
+#include "EnhanceHaveWeight.h"
 #include "Chest.h"
 #include "Wallet.h"
 
-EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
-	Actor("Enhance", "enhance_inventory.png", Position),
-	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceInventory::OnClick, this)),
+EnhanceHaveWeight::EnhanceHaveWeight(Chest* chest, Wallet* wallet, EnhanceType* enhanceType) :
+	Actor("Enhance", "enhance_have_weight.png", Position),
+	m_button(Size, MOUSE_INPUT_LEFT, std::bind(&EnhanceHaveWeight::OnClick, this)),
 	m_chest(chest),
 	m_canEnhance(false),
 	m_needItemNum(NeedItemNum),
@@ -13,26 +13,26 @@ EnhanceInventory::EnhanceInventory(Chest* chest, Wallet* wallet, EnhanceType* en
 	m_enhanceType(enhanceType),
 	m_wallet(wallet),
 	m_enhanceStep(0),
-	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceInventory)
-{	
+	m_enhanceTypeChoice(EnhanceType::EnhanceTypeChoice::EnhanceHaveWeight)
+{
 }
 
 //更新
-void EnhanceInventory::Update()
+void EnhanceHaveWeight::Update()
 {
 	//本来の更新処理
 	Actor::Update();
 
 	//強化していくごとに必要素材を増やす
-	if (m_enhanceType->GetMaxHaveInventory() >= 5)
+	if (m_enhanceType->GetMaxHaveWeight() >= 70)
 	{
 		m_enhanceStep = 1;
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 7)
+	if (m_enhanceType->GetMaxHaveWeight() >= 90)
 	{
 		m_enhanceStep = 2;
 	}
-	if (m_enhanceType->GetMaxHaveInventory() >= 8)
+	if (m_enhanceType->GetMaxHaveWeight() >= 130)
 	{
 		m_enhanceStep = 3;
 	}
@@ -44,14 +44,14 @@ void EnhanceInventory::Update()
 }
 
 //描画　
-void EnhanceInventory::Draw()
+void EnhanceHaveWeight::Draw()
 {
 	SetFontSize(30);
-	DrawFormatString(510, 120, 
+	DrawFormatString(840, 120,
 		GetColor(255, 255, 255),
 		"%d$",
 		NeedMoney[m_enhanceStep]);
-	
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{
@@ -71,7 +71,7 @@ void EnhanceInventory::Draw()
 }
 
 //ボタンが押された時に呼ばれるコールバック関数
-void EnhanceInventory::OnClick()
+void EnhanceHaveWeight::OnClick()
 {
 	if (!CheckCondition()) return;
 
@@ -84,10 +84,10 @@ void EnhanceInventory::OnClick()
 }
 
 //ボタンが有効かどうかチェック
-bool EnhanceInventory::CheckCondition()
+bool EnhanceHaveWeight::CheckCondition()
 {
 	//決めた値まで強化したら終了
-	if (m_enhanceType->GetMaxHaveInventory() < 10)
+	if (m_enhanceType->GetMaxHaveWeight() < 150)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
@@ -109,16 +109,14 @@ bool EnhanceInventory::CheckCondition()
 					m_canEnhance = true;
 					m_useItemNum = i;
 				}
-				
 
-				if (m_enhanceType->OnInventoryButton())
+
+				if (m_enhanceType->OnHaveWeightButton())
 				{
-					m_enhanceType->InventoryButtonReset();
+					m_enhanceType->HaveWeightButtonReset();
 					m_canEnhance = false;
 				}
 			}
-
-			
 		}
 		else
 		{

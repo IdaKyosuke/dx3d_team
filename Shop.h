@@ -11,7 +11,7 @@ class SellButton;
 class Shop : public Node
 {
 private:
-	static constexpr Vector2 ShopUiPos = Vector2(750, 260);
+	static constexpr Vector2 ShopUiPos = Vector2(760, 260);
 
 	int m_takeItem;
 

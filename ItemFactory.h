@@ -9,7 +9,7 @@ class LoadPlayer;
 class ItemFactory : public Node
 {
 private:
-	static constexpr int ItemNum = 10;
+	static constexpr int ItemNum = 40;
 
 	bool m_isFinish;		// アイテムをすべて集め終えたか
 	int m_getNum;		// 集め終えたアイテム数

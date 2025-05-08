@@ -26,15 +26,15 @@ void EnhanceTheWorldTime::Update()
 	//強化していくごとに必要素材を増やす
 	if (m_enhanceType->GetMaxTheWorldTime() >= 7)
 	{
-		m_enhanceStep = 0;
+		m_enhanceStep = 1;
 	}
 	if (m_enhanceType->GetMaxTheWorldTime() >= 9)
 	{
-		m_enhanceStep = 1;
+		m_enhanceStep = 2;
 	}
 	if (m_enhanceType->GetMaxTheWorldTime() >= 12)
 	{
-		m_enhanceStep = 2;
+		m_enhanceStep = 3;
 	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
@@ -46,11 +46,10 @@ void EnhanceTheWorldTime::Update()
 //描画　
 void EnhanceTheWorldTime::Draw()
 {
-	SetFontSize(35);
-
-	DrawFormatString(560, 270,
+	SetFontSize(30);
+	DrawFormatString(510, 270,
 		GetColor(255, 255, 255),
-		"%d $",
+		"%d$",
 		NeedMoney[m_enhanceStep]);
 
 	//条件を満たしてない場合はボタンを暗化させる

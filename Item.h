@@ -12,6 +12,7 @@ private:
 	int m_itemNumber;	//アイテムを識別するための番号格納用
 	int m_model;		//アイテムのモデル
 	const char* m_itemName;
+	const char* m_flavorText;
 	int m_sellMoney;	//売った時の金額
 	int m_itemWeight;	//アイテムの重さ
 
@@ -38,12 +39,18 @@ private:
 	//アイテムの情報
 	struct ItemDate itemDate[static_cast<int>(ItemNameList::Length)] =
 	{
-		ItemDate("Resource/Item/gold.mv1","Gold",100,30),
-		ItemDate("Resource/Item/diamond.mv1","Diamond",200,30),
-		ItemDate("Resource/Item/potion.mv1","Potion",10,20),
-		ItemDate("Resource/Item/bag.mv1","Bag",40, 25),
-		ItemDate("Resource/Item/coin.mv1","Coin",20,10),
-		ItemDate("Resource/Item/watch.mv1","Watch",60,15),
+		ItemDate("Resource/Item/gold.mv1","Gold",100,30,
+			"ただの金の延べ棒。ずっしりと重い"),
+		ItemDate("Resource/Item/diamond.mv1","Diamond",200,30,
+			"キラキラと光るダイヤモンド。"),
+		ItemDate("Resource/Item/potion.mv1","Potion",10,20,
+			"謎のポーション。匂いはここに来る\n前に飲んだエナジードリンクの匂い\nがする。"),
+		ItemDate("Resource/Item/bag.mv1","Bag",40, 25,
+			"布で出来た巾着。\n中には何にも入っていない。"),
+		ItemDate("Resource/Item/coin.mv1","Coin",20,10,
+			"どこの国の硬貨なのかわからない\nコイン。"),
+		ItemDate("Resource/Item/watch.mv1","Watch",60,15,
+			"もう動いていない時計。\n随分と前のものだ。"),
 	};
 
 	const char* IconName[static_cast<int>(ItemNameList::Length)] = 
@@ -85,6 +92,11 @@ public:
 	const char* GetItemIconName()
 	{
 		return m_iconName;
+	}
+
+	const char* GetFlavorText()
+	{
+		return m_flavorText;
 	}
 
 	virtual void OnCollision(const Actor3D* other);

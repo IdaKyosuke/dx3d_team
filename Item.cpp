@@ -38,6 +38,8 @@ Item::Item(int itemNumber, Vector3 spownPos, Inventory* inventory, LoadPlayer* p
 	m_itemWeight = itemDate[static_cast<int>(itemList)].m_weight;
 	//アイコンのテクスチャID
 	m_iconName = IconName[static_cast<int>(itemList)];
+	//フレーバーテキストの設定
+	m_flavorText = itemDate[static_cast<int>(itemList)].m_flavorText;
 }
 
 void Item::Release()

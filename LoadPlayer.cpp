@@ -63,7 +63,10 @@ LoadPlayer::LoadPlayer(
 	m_enhanceType(enhanceType),
 	m_staminaRecovery(0),
 	m_staminaDecrease(0),
-	m_lightHandle(0)
+	m_lightHandle(0),
+	m_maxHaveWeight(0),
+	m_runSpeed(RunSpeed),
+	m_weightOver(false)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -101,6 +104,9 @@ LoadPlayer::LoadPlayer(
 	m_attachAnimList[static_cast<int>(Anim::Idle)]->FadeIn();
 
 	m_collider = new BoxCollider3D(ColSize, ColOffset);
+
+	//持てる最大容量の設定
+	m_maxHaveWeight = m_enhanceType->GetMaxHaveWeight();
 
 	// 体力の初期値を設定
 	m_hp = MaxHp;
@@ -189,6 +195,17 @@ void LoadPlayer::Update()
 	{
 		// プレイヤーの移動
 		NormalMove();
+
+		TheWorld();
+	}
+
+	if (m_maxHaveWeight <= m_inventory->GetHaveWeight())
+	{
+		m_weightOver = true;
+	}
+	else
+	{
+		m_weightOver = false;
 	}
 
 	// アニメーションの切り替え
@@ -274,8 +291,18 @@ void LoadPlayer::NormalMove()
 			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
 		}
 
+		//容量を超えたとき足の速度を変更
+		if (m_weightOver)
+		{
+			m_runSpeed = WeightOverSpeed;
+		}
+		else
+		{
+			m_runSpeed = RunSpeed;
+		}
+
 		// スタミナがある時の移動
-		m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+		m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
 	}
 	else
 	{
@@ -365,9 +392,6 @@ void LoadPlayer::NormalMove()
 
 		m_inventory->GetDropItemCompletion();
 	}
-
-
-	TheWorld();
 }
 
 void LoadPlayer::Draw()
@@ -435,10 +459,11 @@ void LoadPlayer::TheWorld()
 	m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
 
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0
-		&& m_useTheWorldCount >= m_enhanceType->GetMaxUseTheWorldCount())
+		&& m_useTheWorldCount < m_enhanceType->GetMaxUseTheWorldCount())
 	{
 		m_isStop = true;
 	}
+
 	if (m_isStop)
 	{
 		m_stopTime = m_enhanceType->GetMaxTheWorldTime();
@@ -447,8 +472,9 @@ void LoadPlayer::TheWorld()
 
 		if (m_nowStopTime >= m_stopTime)
 		{
-			m_isStop = false;
 			m_theWorldCoolDown = TheWorldCoolDown;
+			m_useTheWorldCount+=1;
+			m_isStop = false;
 		}
 	}
 }
@@ -459,6 +485,11 @@ void LoadPlayer::StaminaManagement()
 	if (m_isDash)
 	{
 		m_staminaDecrease =  m_enhanceType->GetStaminaDecrease();
+
+		if (m_weightOver)
+		{
+			m_staminaDecrease = m_staminaDecrease * 2;
+		}
 
 		// 走っている間はスタミナを減らす
 		m_stamina -= m_staminaDecrease * Time::GetInstance()->GetDeltaTime();
@@ -471,6 +502,11 @@ void LoadPlayer::StaminaManagement()
 	else
 	{
 		m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
+
+		if (m_weightOver)
+		{
+			m_staminaRecovery = m_staminaRecovery / 2;
+		}
 
 		// すでにスタミナが最大の時
 		if (m_stamina == MaxStamina) return;

@@ -23,7 +23,7 @@ MenuInventory::MenuInventory(Chest* chest,EnhanceType* enhanceType) :
 	m_seInventory(0)
 {
 	m_transform.position = Screen::BottomCenter + Vector2(0, -70);
-	m_menuInventoryUi.Register("inventory_ui.png");
+	m_menuInventoryUi.Register("inventory_ui1.png");
 	m_takeItemUi.Register("take_item.png");	
 }
 

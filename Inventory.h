@@ -9,7 +9,6 @@
 class Inventory : public Node
 {
 private:
-	static constexpr float FirstMaxHaveWeight = 50;	//最初に持てるアイテムの重さの最大量
 	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
 	static constexpr Vector2 InventoryUiPos = Vector2(60, 890);
 
@@ -17,14 +16,13 @@ private:
 	static constexpr int SquareSize = 90;
 
 	int m_maxHaveItem;
-	float m_maxHaveWeight;
 
 	int m_haveItemCount;	//アイテムを持ってる数
 
 	int m_takeItem;			//今何のアイテムを持っているか
 	int m_dropItemNum;			//捨てたアイテムの番号
 
-	float m_canHaveWeight;	//どれぐらいの重さまで持てるか
+	int m_nowHaveWeight;	//今どれぐらいの重さ持っているか
 
 	bool m_canGetItem;			//アイテムを拾えるか
 	bool m_gettingItem;			//アイテムを拾ったか
@@ -122,8 +120,18 @@ public:
 		return m_haveItemCount;
 	}
 
+	int GetHaveWeight()
+	{
+		return m_nowHaveWeight;
+	}
+
 	void AddItemCount()
 	{
 		m_haveItemCount++;
+	}
+
+	void ItemClear()
+	{
+		m_itemList.clear();
 	}
 };

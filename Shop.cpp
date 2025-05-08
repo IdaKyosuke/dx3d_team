@@ -63,18 +63,27 @@ void Shop::Draw()
 
 	if (!m_chest->GetItemList().empty())
 	{
-		DrawString(1100, 300,
+
+		DrawString(920, 70,
+			"アイテム名"
+			, GetColor(255, 255, 255));
+		DrawString(920, 100,
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemName()
 			, GetColor(255, 255, 255));
 
-		DrawFormatString(1100, 350,
+		DrawFormatString(920, 200,
 			GetColor(255, 255, 255),
-			"%d $", 
+			"金額\n%d $", 
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetSellMoney());
 
-		DrawFormatString(1100, 400,
+		DrawFormatString(920, 300,
 			GetColor(255, 255, 255),
-			"%d kg",
+			"重さ\n%d kg",
 			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetItemWeight());
+
+		SetFontSize(20);
+		DrawString(920, 400,
+			std::next(m_chest->GetItemList().begin(), m_chest->GetTakeItem())->GetFlavorText()
+			, GetColor(255, 255, 255));
 	}
 }

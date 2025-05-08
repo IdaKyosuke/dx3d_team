@@ -7,14 +7,13 @@
 
 Inventory::Inventory(int maxHaveItem) :
 	m_maxHaveItem(maxHaveItem),
-	m_maxHaveWeight(FirstMaxHaveWeight),
 	m_haveItemCount(0),
 	m_canGetItem(false),
 	m_itemNum(0),
 	m_gettingItem(false),
 	m_takeItem(0),
 	m_dropItem(false),
-	m_canHaveWeight(0),
+	m_nowHaveWeight(0),
 	m_dropItemNum(0),
 	m_dropItemCompletion(false),
 	m_seInventory(0)
@@ -86,6 +85,7 @@ void Inventory::Update()
 		{
 			m_dropItem = true;
 			m_haveItemCount--;
+			m_nowHaveWeight -= std::next(m_itemList.begin(), m_takeItem)->GetItemWeight();
 
 			m_dropItemNum = m_takeItem;			
 		}
@@ -151,5 +151,7 @@ void Inventory::TakeItem(int itemNum)
 	if (m_haveItemCount <= m_maxHaveItem)
 	{
 		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
+
+		m_nowHaveWeight += Item(itemNum).GetItemWeight();
 	}
 }

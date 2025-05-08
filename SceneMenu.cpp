@@ -10,6 +10,7 @@
 #include "SellButton.h"
 #include "EnhanceType.h"
 #include "EnhanceInventory.h"
+#include "EnhanceHaveWeight.h"
 #include "EnhanceTheWorldTime.h"
 #include "EnhanceUseTheWorld.h"
 #include "EnhanceStaminaRecovery.h"
@@ -42,11 +43,12 @@ void SceneMenu::Initialize()
 
 	//強化の種類＋強化した内容の保持
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
+	m_maxHaveWeight = m_enhanceType->GetMaxHaveWeight();
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
 	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
 	m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
 	m_staminaDecrease = m_enhanceType->GetStaminaDecrease();
-	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_theWorldTime, m_useCountTheWorld, m_staminaRecovery, m_staminaDecrease);
+	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_maxHaveWeight, m_theWorldTime, m_useCountTheWorld, m_staminaRecovery, m_staminaDecrease);
 
 	//チェスト
 	m_chest = new Chest();
@@ -71,6 +73,9 @@ void SceneMenu::Initialize()
 	//強化ボタンインベントリの最大
 	m_enhanceInventory = new EnhanceInventory(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceInventory);
+	//強化ボタン持てる最大容量
+	m_enhanceHaveWeight = new EnhanceHaveWeight(m_chest, m_wallet, m_enhanceType);
+	uiLayer->AddChild(m_enhanceHaveWeight);
 	//強化ボタンザワールド(時間)
 	m_enhanceTheWorldTime = new EnhanceTheWorldTime(m_chest,m_wallet,m_enhanceType);
 	uiLayer->AddChild(m_enhanceTheWorldTime);

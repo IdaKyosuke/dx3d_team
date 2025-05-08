@@ -60,11 +60,12 @@ void SceneGame::Initialize()
 
 	//強化の種類＋強化した内容の保持
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
+	m_maxHaveWeight = m_enhanceType->GetMaxHaveWeight();
 	m_theWorldTime = m_enhanceType->GetMaxTheWorldTime();
 	m_useCountTheWorld = m_enhanceType->GetMaxUseTheWorldCount();
 	m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
 	m_staminaDecrease = m_enhanceType->GetStaminaDecrease();
-	m_enhanceType = new EnhanceType(m_maxHaveInventory,m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
+	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_maxHaveWeight, m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
 
 	//インベントリ
 	m_inventory = new Inventory(m_maxHaveInventory);
@@ -75,14 +76,14 @@ void SceneGame::Initialize()
 	int index = rand() % PointNum;
 	m_escapePointIndex = index;
 
-	// プレイヤー
 	/*
+	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
 	actorLayer->AddChild(m_loadPlayer);
 	*/
 
 	// プレイヤーデバック用
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(310,10,0));
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(310,10,20));
 	actorLayer->AddChild(m_loadPlayer);
 
 	// ライトを作成
@@ -143,7 +144,6 @@ void SceneGame::Initialize()
 	//チェストとインベントリ
 	if (!m_chestItem.empty())
 	{
-
 		int haveItemCount = static_cast<int>(m_chestItem.size());
 
 		for (int i = 0; i <= haveItemCount - 1; i++)
@@ -180,6 +180,8 @@ SceneBase* SceneGame::Update()
 
 	if (m_uiTime->IsFinsh() || m_loadPlayer->GetIsDeath())
 	{
+		m_inventory->ItemClear();
+
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
 	

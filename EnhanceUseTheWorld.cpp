@@ -32,10 +32,6 @@ void EnhanceUseTheWorld::Update()
 	{
 		m_enhanceStep = 1;
 	}
-	if (m_enhanceType->GetMaxUseTheWorldCount() >= 4)
-	{
-		m_enhanceStep = 2;
-	}
 
 	m_needMoney = NeedMoney[m_enhanceStep];
 
@@ -46,9 +42,10 @@ void EnhanceUseTheWorld::Update()
 //•`‰æ@
 void EnhanceUseTheWorld::Draw()
 {
-	DrawFormatString(940, 270,
+	SetFontSize(30);
+	DrawFormatString(840, 270,
 		GetColor(255, 255, 255),
-		"%d $",
+		"%d$",
 		NeedMoney[m_enhanceStep]);
 
 	//ğŒ‚ğ–‚½‚µ‚Ä‚È‚¢ê‡‚Íƒ{ƒ^ƒ“‚ğˆÃ‰»‚³‚¹‚é

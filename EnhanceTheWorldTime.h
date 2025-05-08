@@ -13,10 +13,10 @@ class Wallet;
 class EnhanceTheWorldTime : public Actor
 {
 private:
-	static constexpr Vector2 Position = Vector2(470, 250);
+	static constexpr Vector2 Position = Vector2(420, 250);
 	static constexpr Vector2 Size = Vector2(320, 100);
 	static constexpr int FirstNeedMoney = 100;				//必要なお金の初期金
-	static constexpr int NeedMoney[3] = { 150,200,300 };	//強化していくごとに上がっていく必要なお金
+	static constexpr int NeedMoney[4] = { 150,250,350,500 };	//強化していくごとに上がっていく必要なお金
 	static constexpr int EndEnhanceCount = 15;		//ここまでの数値強化したら終わり
 	static constexpr int NeedItemNum = 4;	//必要なアイテムの番号
 
