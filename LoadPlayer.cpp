@@ -63,7 +63,6 @@ LoadPlayer::LoadPlayer(
 	m_enhanceType(enhanceType),
 	m_staminaRecovery(0),
 	m_staminaDecrease(0),
-	m_lightHandle(0),
 	m_maxHaveWeight(0),
 	m_runSpeed(RunSpeed),
 	m_weightOver(false)
@@ -282,33 +281,10 @@ void LoadPlayer::NormalMove()
 		}
 	}
 
-	// 移動
-	if (m_stamina > 0)
+	// 実際の移動先を決める
+	if (!m_moveDirection.IsZero())
 	{
-		if (m_moveDirection != Vector3(0, 0, 0))
-		{
-			// ダッシュフラグの管理
-			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
-		}
-
-		//容量を超えたとき足の速度を変更
-		if (m_weightOver)
-		{
-			m_runSpeed = WeightOverSpeed;
-		}
-		else
-		{
-			m_runSpeed = RunSpeed;
-		}
-
-		// スタミナがある時の移動
-		m_transform.position += Math::Normalized(m_moveDirection) * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
-	}
-	else
-	{
-		// スタミナがないときの移動
-		m_transform.position += Math::Normalized(m_moveDirection) * WalkSpeed;
-		m_isDash = false;
+		CheckMove();
 	}
 
 	// スタミナ管理
@@ -393,6 +369,88 @@ void LoadPlayer::NormalMove()
 		m_inventory->GetDropItemCompletion();
 	}
 }
+
+// 移動先を決める
+void LoadPlayer::CheckMove()
+{
+	// 移動
+	if (m_stamina > 0)
+	{
+		if (!m_moveDirection.IsZero())
+		{
+			// ダッシュフラグの管理
+			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+		}
+
+		Vector3 nextPos = m_transform.position + m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+
+		// 球が壁に当たっていたら
+		if (m_collisionStage->CapsuleCollider(nextPos) != 0)
+		{
+			// 移動できる方向を調整
+			Vector3 dir = Vector3(0, 0, 0);
+
+			// 壁の方向だけ進めないようにする
+			for (int i = 0; i < m_collisionStage->CapsuleCollider(nextPos); i++)
+			{
+				// 当たったポリゴン分だけ回す
+				Vector3 hitPos = m_collisionStage->GetColSphere().Dim[i].HitPosition;
+				Vector3 wallDir = Math::Normalized(this->GetPosition() - hitPos);
+
+				if (std::abs(dir.x) < std::abs(wallDir.x))
+				{
+					dir.x = wallDir.x;
+				}
+				if (std::abs(dir.z) < std::abs(wallDir.z))
+				{
+					dir.z = wallDir.z;
+				}
+			}
+
+			m_moveDirection.x = dir.x - m_moveDirection.x;
+			m_moveDirection.z = dir.z - m_moveDirection.z;
+		}
+
+		m_transform.position += m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+	}
+	else
+	{
+		Vector3 nextPos = m_transform.position + m_moveDirection * WalkSpeed;
+		m_isDash = false;
+
+		// 進む予定先に壁があった時
+		// 球が壁に当たっていたら
+		if (m_collisionStage->CapsuleCollider(nextPos) != 0)
+		{
+			// 移動できる方向を調整
+			Vector3 dir = Vector3(0, 0, 0);
+
+			// 壁の方向だけ進めないようにする
+			for (int i = 0; i < m_collisionStage->CapsuleCollider(nextPos); i++)
+			{
+				// 当たったポリゴン分だけ回す
+				Vector3 hitPos = m_collisionStage->GetColSphere().Dim[i].HitPosition;
+				Vector3 wallDir = Math::Normalized(this->GetPosition() - hitPos);
+
+				if (std::abs(dir.x) < std::abs(wallDir.x))
+				{
+					dir.x = wallDir.x;
+				}
+				if (std::abs(dir.z) < std::abs(wallDir.z))
+				{
+					dir.z = wallDir.z;
+				}
+			}
+
+			m_moveDirection.x = dir.x - m_moveDirection.x;
+			m_moveDirection.z = dir.z - m_moveDirection.z;
+		}
+
+		m_transform.position += m_moveDirection * WalkSpeed;
+	}
+
+}
+
 
 void LoadPlayer::Draw()
 {
@@ -527,4 +585,10 @@ void LoadPlayer::StaminaManagement()
 			m_duration = 0;
 		}
 	}
+}
+
+// プレイヤーの正面を取得
+Vector3 LoadPlayer::GetPlayerFront()
+{
+	return m_camNode->CamFrontVec();
 }

@@ -1,20 +1,7 @@
-﻿  Camera.cpp
-  CheckRoot.cpp
-  Chest.cpp
-  CollisionStage.cpp
-  Enemy.cpp
-  EscapePoint.cpp
-  Inventory.cpp
-  Item.cpp
-  ItemFactory.cpp
-  LightFactory.cpp
-  LoadPlayer.cpp
-  MenuInventory.cpp
-  SceneGame.cpp
-  ScreenFilter.cpp
+﻿  SceneGame.cpp
   コード生成しています。
-  8 of 1510 functions ( 0.5%) were compiled, the rest were copied from previous compilation.
+  1 of 1572 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    21 functions had inline decision re-evaluated but remain unchanged
+    2 functions had inline decision re-evaluated but remain unchanged
   コード生成が終了しました。
-  Lesson.vcxproj -> D:\GitHub\dx3d_team_vol1\x64\Release\Lesson.exe
+  Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Release\Lesson.exe

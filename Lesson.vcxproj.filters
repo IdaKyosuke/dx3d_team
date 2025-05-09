@@ -181,6 +181,9 @@
     <ClCompile Include="LightFactory.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="EnhanceHaveWeight.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -403,6 +406,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="LightFactory.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="EnhanceHaveWeight.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

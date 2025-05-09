@@ -156,6 +156,7 @@
     <ClCompile Include="DrawStageView.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
+    <ClCompile Include="EnhanceHaveWeight.cpp" />
     <ClCompile Include="EnhanceInventory.cpp" />
     <ClCompile Include="EnhanceStaminaDecrease.cpp" />
     <ClCompile Include="EnhanceStaminaRecovery.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="DrawStageView.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyFactory.h" />
+    <ClInclude Include="EnhanceHaveWeight.h" />
     <ClInclude Include="EnhanceInventory.h" />
     <ClInclude Include="EnhanceStaminaDecrease.h" />
     <ClInclude Include="EnhanceStaminaRecovery.h" />

@@ -11,14 +11,18 @@ private:
 	static constexpr Vector3 CheckLineLength = Vector3(0, 3000, 0);	// 足場があるかどうかを確認するレイの長さ
 	static constexpr Vector3 DiffGetLine = Vector3(0, 60, 0);	// プレイヤーの足元までのレイの長さ
 	static constexpr Vector3 ModelHeight = Vector3(0, 180, 0);		// 使用しているモデルの高さ
-	static constexpr float Radius = 30.0f;		// カプセルに使う球の半径
+	static constexpr float Radius = 60.0f;		// カプセルに使う球の半径
 	static constexpr float CapsuleLength = 180.0f;	// カプセルの長さ（球同士の距離）
 	static constexpr float DiffCapsule = 10.0f;	// カプセルが足元と頭上の判定をとらないための差分
 
-	int m_model;	// 読み込まれたモデルハンドル
+	int m_modelFloor;	// 床モデルハンドル
+	int m_modelWall;	// 壁モデルハンドル
 	MV1_COLL_RESULT_POLY m_stagePoly;	// レイの先にあるメッシュの情報
 	MV1_COLL_RESULT_POLY m_polyHeight;	// レイの先にあるメッシュの情報
-	MV1_REF_POLYGONLIST m_refPoly;	// ステージモデル全体の参照用メッシュ情報
+	MV1_REF_POLYGONLIST m_refPolyFloor;	// ステージモデル全体の参照用メッシュ情報（床）
+	MV1_REF_POLYGONLIST m_refPolyWall;	// ステージモデル全体の参照用メッシュ情報（壁）
+
+	MV1_COLL_RESULT_POLY_DIM m_spherePoly;	// 球の当たり判定
 
 	// 移動可能範囲のチェック用(プレイヤーの足元より下に長く)
 	Vector3 m_checkMoveStart;
@@ -28,15 +32,15 @@ private:
 	Vector3 m_getHeightStart;
 	Vector3 m_getHeightEnd;
 
+	// デバッグ用
 	Vector3 m_cap1;
-	Vector3 m_cap2;
 
 protected:
 	virtual void Release() override;	// リソースの解放
 	virtual void Draw() override;
 
 public:
-	CollisionStage(const char* modelPath, const Vector3& pos);
+	CollisionStage(const char* floorModelPath, const char* wallModelPath, const Vector3& pos);
 
 	// 移動予定先に足場があるかどうか
 	int CheckStage(const Vector3& pos);
@@ -45,7 +49,7 @@ public:
 	MV1_COLL_RESULT_POLY GetHeight(const Vector3& pos);
 
 	// プレイヤーのカプセルとステージの当たり判定をとる
-	int CapsuleCollider(const Vector3& pos, bool terning);
+	int CapsuleCollider(const Vector3& pos);
 
 	// 使用しているレイの長さを取得（反転状態のy座標取得用）
 	Vector3 RayLength()
@@ -53,15 +57,16 @@ public:
 		return DiffGetLine;
 	}
 
-	// ステージのメッシュ情報を取得する
-	MV1_REF_POLYGONLIST GetStageMesh()
-	{
-		return m_refPoly;
-	}
-	// メッシュモデルを取得
+	// 床のメッシュモデルを取得
 	int GetMeshModel()
 	{
-		return m_model;
+		return m_modelFloor;
+	}
+
+	// 球とステージの壁の当たり判定情報
+	MV1_COLL_RESULT_POLY_DIM GetColSphere()
+	{
+		return m_spherePoly;
 	}
 
 	// 指定の座標の直下、若しくは直上にあるポリゴンの番号を取得する

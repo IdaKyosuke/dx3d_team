@@ -62,7 +62,6 @@ private:
 	int m_animIndex;	// 再生中のアニメーション
 
 	float m_runSpeed;
-	int m_lightHandle;	// 光源を作成する
 	bool m_isJump;
 	bool m_isJumping;
 	bool m_isFall;	// 現在落下しているか
@@ -148,6 +147,10 @@ public:
 	// プレイヤーの通常移動
 	void NormalMove();
 
+	// 移動先を決める
+	void CheckMove();
+
+
 	// 落下した高さを計算する
 	void CountFallHeight();
 
@@ -213,4 +216,7 @@ public:
 	{
 		return MaxStamina;
 	}
+
+	// プレイヤーの正面を取得
+	Vector3 GetPlayerFront();
 };

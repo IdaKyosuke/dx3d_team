@@ -48,11 +48,11 @@ void SceneGame::Initialize()
 	m_rootNode->AddChild(uiLayer);
 	
 	// ステージの見た目を描画
-	m_drawStageView = new DrawStageView("favorite_stage.mv1");
+	m_drawStageView = new DrawStageView("stage_test_view.mv1");
 	uiLayer->AddChild(m_drawStageView);
 
 	// ステージの当たり判定を作成
-	m_collisionStage = new CollisionStage("Resource/nav_test_stage.mv1", Vector3(0, 0, 0));
+	m_collisionStage = new CollisionStage("Resource/nav_test_stage.mv1", "Resource/stage_wall.mv1", Vector3(0, 0, 0));
 	uiLayer->AddChild(m_collisionStage);
 
 	// navMesh
@@ -75,7 +75,6 @@ void SceneGame::Initialize()
 	// プレイヤーのスポーン地点を作成
 	int index = rand() % PointNum;
 	m_escapePointIndex = index;
-
 	/*
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
@@ -83,7 +82,7 @@ void SceneGame::Initialize()
 	*/
 
 	// プレイヤーデバック用
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(310,10,20));
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(850, 10, 850));
 	actorLayer->AddChild(m_loadPlayer);
 
 	// ライトを作成

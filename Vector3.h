@@ -16,6 +16,11 @@ public:
 		y(0),
 		z(0) {}
 
+	constexpr Vector3(const VECTOR& other) :
+		x(other.x),
+		y(other.y),
+		z(other.z) {}
+
 	template<typename T1, typename T2, typename T3>
 	constexpr Vector3(T1 x, T2 y, T3 z) :
 		x(static_cast<float>(x)),
@@ -68,6 +73,32 @@ public:
 		return Vector3(x - other.x, y - other.y, z - other.z);
 	}
 	constexpr Vector3& operator -= (const Vector3& other)		// Vector3 -= Vector3
+	{
+		x -= other.x;
+		y -= other.y;
+		z -= other.z;
+		return *this;
+	}
+
+	// ‰ÁŽZ
+	constexpr Vector3 operator + (const VECTOR& other) const	// Vector3 + VECTOR
+	{
+		return Vector3(x + other.x, y + other.y, z + other.z);
+	}
+	constexpr Vector3& operator += (const VECTOR& other)		// Vector3 += VECTOR
+	{
+		x += other.x;
+		y += other.y;
+		z += other.z;
+		return *this;
+	}
+
+	// Œ¸ŽZ
+	constexpr Vector3 operator - (const VECTOR& other) const	// Vector3 - VECTOR
+	{
+		return Vector3(x - other.x, y - other.y, z - other.z);
+	}
+	constexpr Vector3& operator -= (const VECTOR& other)		// Vector3 -= VECTOR
 	{
 		x -= other.x;
 		y -= other.y;

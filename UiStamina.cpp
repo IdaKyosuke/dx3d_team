@@ -16,7 +16,7 @@ void UiStamina::Update()
 	m_staminaRatio = m_player->GetStamina() / m_player->GetMaxStamina();
 
 	// 左右で半分ずつの幅を計算
-	m_halfWidth = (GaugeWidth * m_staminaRatio) / 2;
+	m_halfWidth = static_cast<int>((GaugeWidth * m_staminaRatio) / 2);
 
 	// スタミナゲージの拡縮（中央に縮む）
 	m_leftX = GaugeCenter - m_halfWidth;

@@ -2,19 +2,30 @@
 #include"LoadPlayer.h"
 
 // ステージの当たり判定を作成
-CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
-	m_cap1(Vector3(0, 0, 0)),
-	m_cap2(Vector3(0, 0, 0))
+CollisionStage::CollisionStage(const char* floorModelPath, const char* wallModelPath, const Vector3& pos) :
+	m_cap1(Vector3(0, 0, 0))
 {
 	// ステージの読み込み
-	m_model = MV1LoadModel(modelPath);
+	// 床
+	m_modelFloor = MV1LoadModel(floorModelPath);
+	// 壁
+	m_modelWall = MV1LoadModel(wallModelPath);
 
-	MV1SetPosition(m_model, Vector3(0, 0, 0));
+	// 座標を決定
+	MV1SetPosition(m_modelFloor, Vector3(0, 0, 0));
+	MV1SetPosition(m_modelWall, Vector3(0, 0, 0));
+
 	// モデル全体のコリジョン情報を構築
-	MV1SetupCollInfo(m_model, -1, 8, 8, 8);
-	MV1SetupReferenceMesh(m_model, -1, true);
+	// 床
+	MV1SetupCollInfo(m_modelFloor, -1, 8, 8, 8);
+	MV1SetupReferenceMesh(m_modelFloor, -1, true);
+	// 壁
+	MV1SetupCollInfo(m_modelWall, -1, 8, 8, 8);
+	MV1SetupReferenceMesh(m_modelWall, -1, true);
+
 #ifdef _DEBUG
-	m_refPoly = MV1GetReferenceMesh(m_model, -1, true);
+	m_refPolyFloor = MV1GetReferenceMesh(m_modelFloor, -1, true);
+	m_refPolyWall = MV1GetReferenceMesh(m_modelWall, -1, true);
 #endif // _DEBUG
 
 	// レイの設定
@@ -25,13 +36,14 @@ CollisionStage::CollisionStage(const char* modelPath, const Vector3& pos) :
 	m_getHeightEnd = Vector3(0, 0, 0);
 
 	// 構造体の初期化
-	m_stagePoly = MV1CollCheck_Line(m_model, -1, m_checkMoveStart, m_checkMoveEnd);
-	m_polyHeight = MV1CollCheck_Line(m_model, -1, m_getHeightStart, m_getHeightEnd);
+	m_stagePoly = MV1CollCheck_Line(m_modelFloor, -1, m_checkMoveStart, m_checkMoveEnd);
+	m_polyHeight = MV1CollCheck_Line(m_modelFloor, -1, m_getHeightStart, m_getHeightEnd);
 }
 
 void CollisionStage::Release()
 {
-	MV1DeleteModel(m_model);
+	MV1DeleteModel(m_modelFloor);
+	MV1DeleteModel(m_modelWall);
 }
 
 // 移動予定先に足場があるかどうか
@@ -41,7 +53,7 @@ int CollisionStage::CheckStage(const Vector3& pos)
 	m_checkMoveEnd = pos - CheckLineLength;
 
 	// モデルと線分（プレイヤー）との当たり判定
-	m_stagePoly = MV1CollCheck_Line(m_model, -1, m_checkMoveStart, m_checkMoveEnd);
+	m_stagePoly = MV1CollCheck_Line(m_modelFloor, -1, m_checkMoveStart, m_checkMoveEnd);
 
 	return m_stagePoly.HitFlag;
 }
@@ -52,28 +64,20 @@ MV1_COLL_RESULT_POLY CollisionStage::GetHeight(const Vector3& pos)
 	m_getHeightStart = pos + DiffGetLine;
 	m_getHeightEnd = pos;
 	m_getHeightEnd.y -= 1;
-	
-	m_polyHeight = MV1CollCheck_Line(m_model, -1, m_getHeightStart, m_getHeightEnd);
+
+	m_polyHeight = MV1CollCheck_Line(m_modelFloor, -1, m_getHeightStart, m_getHeightEnd);
 
 	return m_polyHeight;
 }
 
 // プレイヤーのカプセルとステージの当たり判定をとる(カプセルとモデルの当たったポリゴン数)
-int CollisionStage::CapsuleCollider(const Vector3& pos, bool terning)
+int CollisionStage::CapsuleCollider(const Vector3& pos)
 {
-	if (!terning)
-	{
-		m_cap1 = pos + Vector3(0, Radius + DiffCapsule, 0);			// 球の半径分 + 余剰分中心を上にあげる
-		m_cap2 = pos + Vector3(0, CapsuleLength - Radius - DiffCapsule, 0);	// 球の距離分中心を上げて、半径分下げる
-	}
-	else
-	{
-		m_cap1 = pos - Vector3(0, Radius + DiffCapsule, 0);			// 球の半径分 + 余剰分中心を上にあげる
-		m_cap2 = pos - Vector3(0, CapsuleLength - Radius - DiffCapsule, 0);	// 球の距離分中心を上げて、半径分下げる
-	}
+	// 壁との当たり判定を球で取る（ガクつくので修正予定）
+	m_cap1 = pos;
+	m_spherePoly = MV1CollCheck_Sphere(m_modelWall, -1, Vector3(pos.x, pos.y + 100, pos.z), Radius);
 
-	return MV1CollCheck_Capsule(m_model, -1, m_cap1, m_cap2, Radius).HitNum;
-
+	return m_spherePoly.HitNum;
 }
 
 // 指定の座標の直下、若しくは直上にあるポリゴンの番号を取得する
@@ -99,7 +103,7 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 			polyList.Vertexs[refPoly->VIndex[0]].Position,
 			polyList.Vertexs[refPoly->VIndex[1]].Position,
 			polyList.Vertexs[refPoly->VIndex[2]].Position
-			);
+		);
 
 		if (hitRes.HitFlag) return i;
 	}
@@ -110,27 +114,52 @@ int CollisionStage::CheckOnPolyIndex(const Vector3& pos, const MV1_REF_POLYGONLI
 
 void CollisionStage::Draw()
 {
-	
+
 #ifdef _DEBUG
 	//MV1DrawModel(m_model);
 	// ポリゴンの数だけ繰り返し
-	for (int i = 0; i < m_refPoly.PolygonNum; i++)
+	for (int i = 0; i < m_refPolyFloor.PolygonNum; i++)
 	{
 		// ポリゴンを形成する三頂点を使用してワイヤーフレームを描画する
 		DrawLine3D(
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[0]].Position,
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[1]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[0]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[1]].Position,
 			GetColor(255, 255, 0));
 
 		DrawLine3D(
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[1]].Position,
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[2]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[1]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[2]].Position,
 			GetColor(255, 255, 0));
 
 		DrawLine3D(
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[2]].Position,
-			m_refPoly.Vertexs[m_refPoly.Polygons[i].VIndex[0]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[2]].Position,
+			m_refPolyFloor.Vertexs[m_refPolyFloor.Polygons[i].VIndex[0]].Position,
 			GetColor(255, 255, 0));
 	}
+
+	// ポリゴンの数だけ繰り返し
+	for (int i = 0; i < m_refPolyWall.PolygonNum; i++)
+	{
+		// ポリゴンを形成する三頂点を使用してワイヤーフレームを描画する
+		DrawLine3D(
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[0]].Position,
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[1]].Position,
+			GetColor(255, 255, 0));
+
+		DrawLine3D(
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[1]].Position,
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[2]].Position,
+			GetColor(255, 255, 0));
+
+		DrawLine3D(
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[2]].Position,
+			m_refPolyWall.Vertexs[m_refPolyWall.Polygons[i].VIndex[0]].Position,
+			GetColor(255, 255, 0));
+	}
+
+	//DrawCapsule3D(m_cap1, m_cap2, Radius, 8, GetColor(255, 255, 0), GetColor(255, 255, 0), FALSE);
+
+	Vector3 pos = m_cap1;
+	DrawSphere3D(Vector3(pos.x, pos.y + 100, pos.z), Radius, 8, GetColor(255, 255, 0), GetColor(255, 255, 255), FALSE);
 #endif // DEBUG
 }
