@@ -32,6 +32,8 @@ private:
 		Bag,
 		Coin,
 		Watch,
+		Powder,
+		Scroll,
 
 		Length,
 	};
@@ -46,15 +48,19 @@ private:
 		ItemDate("Resource/Item/potion.mv1","Potion",10,20,
 			"謎のポーション。匂いはここに来る\n前に飲んだエナジードリンクの匂い\nがする。"),
 		ItemDate("Resource/Item/bag.mv1","Bag",40, 25,
-			"布で出来た巾着。\n中には何にも入っていない。"),
+			"布で出来た巾着。\n中には何も入っていない。"),
 		ItemDate("Resource/Item/coin.mv1","Coin",20,10,
 			"どこの国の硬貨なのかわからない\nコイン。"),
 		ItemDate("Resource/Item/watch.mv1","Watch",60,15,
 			"もう動いていない時計。\n随分と前のものだ。"),
+		ItemDate("Resource/Item/powder.mv1","Powder",20,5,
+			"白い粉。これに限る。"),
+		ItemDate("Resource/Item/scroll.mv1","Scroll",50,5,
+			"ただの巻物。\n（この巻を解く者よ。知識は力なれ\nど、代償を伴う。覚悟なき者、ここ\nより先へ進むべからず。ｇじゃいおｊｆｄｈそご")
 	};
 
 	const char* IconName[static_cast<int>(ItemNameList::Length)] = 
-	{ "goldbar_icon.png","diamond_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png" };
+	{ "goldbar_icon.png","diamond_icon.png","potion_icon.png","bag_icon.png","coin_icon.png","watch_icon.png","powder_icon.png","scroll_icon.png"};
 
 	Inventory* m_inventory;
 	LoadPlayer* m_player;

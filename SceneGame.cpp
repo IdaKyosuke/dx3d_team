@@ -103,6 +103,10 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 	m_item = new Item(2, Vector3(500, 0, 200), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
+	m_item = new Item(6, Vector3(500, 0, 500), m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
+	m_item = new Item(7, Vector3(400, 0, 500), m_inventory, m_loadPlayer);
+	actorLayer->AddChild(m_item);
 
 #endif // _DEBUG
 
