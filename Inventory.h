@@ -40,7 +40,7 @@ private:
 	Sprite m_takeItemUi;
 	Transform m_transform;	// 姿勢
 	Transform m_takeItemTransform;	// 姿勢
-
+	std::vector<Item*> m_addItemList;
 
 protected:
 	virtual void Load() override;
@@ -65,8 +65,6 @@ public:
 			m_advanceItemList.push_back(item);
 		}
 	}
-
-	void ItemListSet();
 
 	void TakeItem(int itemNum);
 
@@ -134,4 +132,13 @@ public:
 	{
 		m_itemList.clear();
 	}
+
+	// アイテムが自分をインベントリ追加候補リストに追加する
+	void AddAdvanceItemList(Item* item)
+	{
+		m_addItemList.push_back(item);
+	}
+
+	// アイテムがインベントリに入るかを確認
+	void CheckCanAddItem();
 };

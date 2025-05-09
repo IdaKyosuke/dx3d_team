@@ -470,12 +470,6 @@ void LoadPlayer::OnCollision(const Actor3D* other)
 				if (m_inventory->CanGetItem())
 				{
 					m_isGetting = true;
-
-					m_inventory->SetItemList(other->GetItemNum());
-					m_inventory->AddItemCount();
-					m_inventory->ItemListSet();
-					m_inventory->GettingItem();
-					m_inventory->TakeItem(other->GetItemNum());
 				}
 			}
 		}

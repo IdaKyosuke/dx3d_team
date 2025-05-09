@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Inventory.h"
 #include "BoxCollider3D.h"
+#include "ActorCollision3D.h"
 #include "DxLib.h"
 #include <cmath>
 
@@ -70,7 +71,13 @@ void Item::OnCollision(const Actor3D* other)
 	{
 		if (m_player->GetIsGetting())
 		{
-			Destroy();
+			m_inventory->AddAdvanceItemList(this);
 		}
 	}
+}
+
+void Item::DestroyMine()
+{
+	ActorCollision3D::GetInstance()->Remove(this);
+	Destroy();
 }

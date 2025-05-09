@@ -116,4 +116,7 @@ public:
 	{
 		return *this;
 	}
+
+	// ©•ª‚ğíœ
+	void DestroyMine();
 };

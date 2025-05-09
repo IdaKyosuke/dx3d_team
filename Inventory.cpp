@@ -84,16 +84,15 @@ void Inventory::Update()
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_G))
 		{
 			m_dropItem = true;
-			m_haveItemCount--;
-			m_nowHaveWeight -= std::next(m_itemList.begin(), m_takeItem)->GetItemWeight();
 
-			m_dropItemNum = m_takeItem;			
+			m_dropItemNum = m_takeItem;
 		}
 		if (m_dropItemCompletion)
 		{
-			m_itemList.erase(m_itemList.begin() + m_takeItem);
-
+			m_itemList.erase(m_itemList.begin() + m_dropItemNum);
 			m_dropItemCompletion = false;
+
+			m_haveItemCount--;
 		}
 	}
 
@@ -132,20 +131,6 @@ void Inventory::Draw()
 	m_takeItemUi.Draw(m_takeItemTransform);
 }
 
-void Inventory::ItemListSet()
-{
-	if (m_advanceItemList.size() <= m_maxHaveItem)
-	{
-		m_itemList.push_back(std::next(m_advanceItemList.begin(), m_advanceItemList.size() - 1)->GetItem());
-
-		m_advanceItemList.erase(std::next(m_advanceItemList.begin(), m_advanceItemList.size() - 1));
-	}
-	if (m_itemList.size() > m_maxHaveItem)	
-	{
-		m_itemList.erase(std::next(m_itemList.begin(), m_itemList.size() - 1));
-	}
-}
-
 void Inventory::TakeItem(int itemNum)
 {
 	if (m_haveItemCount <= m_maxHaveItem)
@@ -153,5 +138,33 @@ void Inventory::TakeItem(int itemNum)
 		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
 
 		m_nowHaveWeight += Item(itemNum).GetItemWeight();
+	}
+}
+
+// アイテムがインベントリに入るかを確認
+void Inventory::CheckCanAddItem()
+{
+	// いったんコピー
+	std::vector<Item*> addItemList = m_addItemList;
+	// リストをリセット
+	m_addItemList.clear();
+
+	for (Item* item : addItemList)
+	{
+		// 限界までアイテムを所持している場合はループを抜ける
+		if (m_haveItemCount >= m_maxHaveItem) break;
+
+		// アイテムを追加
+		Item i = *item;
+		m_itemList.push_back(i);
+
+		// カウントアップ
+		AddItemCount();
+
+		// アイコンを追加
+		TakeItem(item->GetItemNum());
+
+		// 追加したアイテムは削除
+		item->DestroyMine();
 	}
 }
