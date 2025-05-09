@@ -37,6 +37,9 @@ void GameMain::Run()
 	SetBackgroundColor(150, 150, 120, 255);
 	Set3DSoundOneMetre(100.0f);	// 3D座標での１メートルの設定を変更（3D音源用）
 
+	// ライティングをピクセル単位で行う場合、ステージの壁のポリゴン数を削れる
+	SetUsePixelLighting(true);	// ライティングの計算をポリゴン単位 -> ピクセル単位に変更（重くなるらしいがそこまで変わらなかった）
+
 	// DXライブラリの初期化
 	if (DxLib_Init())
 	{
