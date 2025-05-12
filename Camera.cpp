@@ -2,11 +2,13 @@
 #include"Math.h"
 #include"LoadPlayer.h"
 #include"Input.h"
+#include"CollisionStage.h"
 #include"Screen.h"
 
-Camera::Camera(LoadPlayer* player) :
+Camera::Camera(LoadPlayer* player ,CollisionStage* collisionStage) :
 	Actor3D("PlayerCam"),
 	m_loadPlayerNode(player),
+	m_collisionStage(collisionStage),
 	m_pastTerning(false),
 	m_diffY(DiffY),
 	m_sightMode(SightMode::First),
@@ -32,6 +34,9 @@ Camera::Camera(LoadPlayer* player) :
 	}
 	// プレイヤーの移動量
 	m_pastPlayerPos = player->GetPosition();
+
+	// カメラの描画距離を設定
+	SetCameraNearFar(CamNearDist, CamFarDist);
 };
 
 // カメラの場所と焦点を設定
@@ -149,14 +154,16 @@ void Camera::ThirdPerson(const Vector3& playerPos)
 // 1人称視点
 void Camera::FirstPerson(const Vector3& playerPos)
 {
-	if (Input::GetInstance()->GetMousePoint().x != Screen::Center.x)
+	if (m_isLocked && Input::GetInstance()->GetMousePoint().x != Screen::Center.x)
 	{
 		// マウスを動かすとカメラの注視点が動く(左右)
 		float diffX = (Input::GetInstance()->GetMousePoint().x - Screen::Center.x) / DecMouseDiff;
 		Vector3 rotPos = Math::PointRotate(m_camTarget, playerPos, DX_PI_F / CamRot * diffX);
 		m_camTarget = Vector3(rotPos.x, m_camTarget.y, rotPos.z);
+
 		// カメラと注視点を一定距離に保つ
 		Vector3 pos = Vector3(playerPos + CamFrontPlaneVec() * CamDiff);
+
 		// プレイヤーの上下移動があった時はその分を加算する
 		if (playerPos.y != m_pastPlayerPos.y)
 		{
@@ -171,7 +178,7 @@ void Camera::FirstPerson(const Vector3& playerPos)
 	}
 
 	// 視点の上下移動
-	if (Input::GetInstance()->GetMousePoint().y != Screen::Center.y)
+	if (m_isLocked && Input::GetInstance()->GetMousePoint().y != Screen::Center.y)
 	{
 		// マウスのy座標の移動量を取得
 		float diffY = (Input::GetInstance()->GetMousePoint().y - Screen::Center.y) / DecMouseDiff;
@@ -233,6 +240,31 @@ void Camera::ChangeSightMode(const Vector3& playerPos)
 	m_isChange = false;
 }
 
+// カメラの描画距離を調整
+void Camera::SetCamClipRange()
+{
+	if (m_collisionStage->CheckCamHitWall(m_transform.position, CamFrontVec()).HitNum > 0)
+	{
+		// カメラの先に壁がある時
+		float diff = 0;
+		for (int i = 0; i < m_collisionStage->CheckCamHitWall(m_transform.position, m_camTarget).HitNum; i++)
+		{
+			float f = (m_collisionStage->GetColCamLine().Dim[i].HitPosition - m_transform.position).SqrMagnitude();
+			if (diff == 0 || diff > f)
+			{
+				diff = f;
+			}
+		}
+
+		diff = std::sqrtf(diff);
+		SetCameraNearFar(CamNearDist, diff);
+	}
+	else
+	{
+		SetCameraNearFar(CamNearDist, CamFarDist);
+	}
+}
+
 void Camera::Update()
 {
 	if (!m_isChange)
@@ -254,6 +286,9 @@ void Camera::Update()
 
 void Camera::Draw()
 {
+	// カメラの描画距離を調整
+	SetCamClipRange();
+
 #ifdef _DEBUG
 	DrawFormatString(0, 0, GetColor(255, 255, 255),
 		"CamTarget Vector3(%.0f, %.0f, %.0f)",

@@ -70,9 +70,30 @@ MV1_COLL_RESULT_POLY CollisionStage::GetHeight(const Vector3& pos)
 	return m_polyHeight;
 }
 
+// カメラが埋まらないよう調整
+MV1_COLL_RESULT_POLY_DIM CollisionStage::CheckCamHitWall(Vector3 camPos, Vector3 camDir)
+{
+	// 当たり判定の結果を削除
+	MV1CollResultPolyDimTerminate(m_camFrontPoly);
+
+	Vector3 camTargetPos = camPos + (camDir * 2.0f);
+
+	m_camFrontPoly = MV1CollCheck_LineDim(m_modelWall, -1, camPos, camTargetPos);
+
+	if (m_camFrontPoly.HitNum > 0)
+	{
+		int i = 0;
+	}
+
+	return m_camFrontPoly;
+}
+
 // プレイヤーのカプセルとステージの当たり判定をとる(カプセルとモデルの当たったポリゴン数)
 int CollisionStage::CapsuleCollider(const Vector3& pos)
 {
+	// 当たり判定の結果を削除
+	MV1CollResultPolyDimTerminate(m_spherePoly);
+
 	// 壁との当たり判定を球で取る（ガクつくので修正予定）
 	m_cap1 = pos;
 	m_spherePoly = MV1CollCheck_Sphere(m_modelWall, -1, Vector3(pos.x, pos.y + 100, pos.z), Radius);

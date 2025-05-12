@@ -19,6 +19,7 @@ private:
 	int m_modelWall;	// 壁モデルハンドル
 	MV1_COLL_RESULT_POLY m_stagePoly;	// レイの先にあるメッシュの情報
 	MV1_COLL_RESULT_POLY m_polyHeight;	// レイの先にあるメッシュの情報
+	MV1_COLL_RESULT_POLY_DIM m_camFrontPoly;	// レイの先にあるメッシュの情報（カメラ用）
 	MV1_REF_POLYGONLIST m_refPolyFloor;	// ステージモデル全体の参照用メッシュ情報（床）
 	MV1_REF_POLYGONLIST m_refPolyWall;	// ステージモデル全体の参照用メッシュ情報（壁）
 
@@ -48,6 +49,9 @@ public:
 	// プレイヤーの足元までのレイ(構造体を返す)
 	MV1_COLL_RESULT_POLY GetHeight(const Vector3& pos);
 
+	// カメラの描画距離を調整する用
+	MV1_COLL_RESULT_POLY_DIM CheckCamHitWall(Vector3 camPos, Vector3 camTargetPos);
+
 	// プレイヤーのカプセルとステージの当たり判定をとる
 	int CapsuleCollider(const Vector3& pos);
 
@@ -67,6 +71,12 @@ public:
 	MV1_COLL_RESULT_POLY_DIM GetColSphere()
 	{
 		return m_spherePoly;
+	}
+
+	// カメラ用線分と壁の当たり判定
+	MV1_COLL_RESULT_POLY_DIM GetColCamLine()
+	{
+		return m_camFrontPoly;
 	}
 
 	// 指定の座標の直下、若しくは直上にあるポリゴンの番号を取得する

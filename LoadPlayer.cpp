@@ -18,11 +18,6 @@ const char* LoadPlayer::AnimList[AnimNum] =
 	"Man/Idle_stand.mv1",
 	"Man/Walking.mv1",
 	"Man/Sprint.mv1",
-	"Man/Jumping_trimed.mv1",
-	"Man/jumpUp.mv1",
-	"Man/fall.mv1",
-	"Man/landing.mv1",
-	"Man/Floating.mv1",
 	"Man/Die.mv1",
 };
 
@@ -96,7 +91,7 @@ LoadPlayer::LoadPlayer(
 	m_transform.angle = Vector3(0, 180, 0);
 
 	// カメラの生成
-	m_camNode = new Camera(this);
+	m_camNode = new Camera(this, collisionStage);
 	AddChild(m_camNode);
 
 	// 最初のアニメーションを指定
@@ -229,7 +224,6 @@ void LoadPlayer::Jumping()
 	{
 		m_isJump = false;
 		m_isJumping = false;
-		m_nextAnim = Anim::Landing;
 
 		CountFallHeight();
 	}
@@ -301,7 +295,6 @@ void LoadPlayer::NormalMove()
 	// ジャンプ
 	if (!m_isJump && m_collisionStage->GetHeight(m_transform.position).HitFlag != 0 && Input::GetInstance()->IsKeyDown(KEY_INPUT_SPACE))
 	{
-		m_nextAnim = Anim::JumpUp;
 		m_isJump = true;
 		m_elapsedTime = 0;
 		// ジャンプのスタート地点を記録
@@ -323,11 +316,7 @@ void LoadPlayer::NormalMove()
 	}
 
 	// ---- 移動アニメーション ----
-	if (m_collisionStage->GetHeight(m_transform.position).HitFlag == 0)
-	{
-		m_nextAnim = Anim::JumpIdle;
-	}
-	else
+	if (m_collisionStage->GetHeight(m_transform.position).HitFlag != 0)
 	{
 		if (!m_isJump)
 		{

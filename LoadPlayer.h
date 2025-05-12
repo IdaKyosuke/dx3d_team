@@ -19,11 +19,6 @@ public:
 		Idle,
 		Walk,
 		Run,
-		Jump,
-		JumpUp,
-		JumpIdle,
-		Landing,
-		Floating,
 		Death,
 
 		Length,

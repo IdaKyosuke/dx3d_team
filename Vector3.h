@@ -85,6 +85,10 @@ public:
 	{
 		return Vector3(x + other.x, y + other.y, z + other.z);
 	}
+	constexpr friend Vector3 operator + (const VECTOR& other, const Vector3& v)	// VECTOR + Vector3
+	{
+		return v + other;
+	}
 	constexpr Vector3& operator += (const VECTOR& other)		// Vector3 += VECTOR
 	{
 		x += other.x;
@@ -97,6 +101,10 @@ public:
 	constexpr Vector3 operator - (const VECTOR& other) const	// Vector3 - VECTOR
 	{
 		return Vector3(x - other.x, y - other.y, z - other.z);
+	}
+	constexpr friend Vector3 operator - (const VECTOR& other, const Vector3& v)	// VECTOR - Vector3
+	{
+		return v - other;
 	}
 	constexpr Vector3& operator -= (const VECTOR& other)		// Vector3 -= VECTOR
 	{
