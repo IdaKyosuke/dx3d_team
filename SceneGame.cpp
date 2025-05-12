@@ -68,7 +68,7 @@ void SceneGame::Initialize()
 	m_enhanceType = new EnhanceType(m_maxHaveInventory, m_maxHaveWeight, m_theWorldTime, m_useCountTheWorld,m_staminaRecovery,m_staminaDecrease);
 
 	//ƒCƒ“ƒxƒ“ƒgƒŠ
-	m_inventory = new Inventory(m_maxHaveInventory);
+	m_inventory = new Inventory(m_enhanceType);
 	uiLayer->AddChild(m_inventory);
 
 

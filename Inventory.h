@@ -6,12 +6,16 @@
 #include <list>
 #include <vector>
 
+class EnhanceType;
+
 class Inventory : public Node
 {
 private:
 	static constexpr Vector2 TakeItemUiPos = Vector2(60,890);
 	static constexpr Vector2 InventoryUiPos = Vector2(60, 890);
-
+	static constexpr Vector2 SlashUiPos = Vector2(105, 823);
+	static constexpr Vector2 FontSize = Vector2(20, 35);	// 数字1文字の幅・高さ
+	static constexpr int FontMargin = 5;					// 数字と数字の間の余白
 
 	static constexpr int SquareSize = 90;
 
@@ -33,14 +37,20 @@ private:
 
 	int m_seInventory;	//サウンド
 
+	int m_fontTextureId;	// 数字フォント
+	Transform m_haveWeightTransform;	// 姿勢
+
 	//アイテム格納用
-	std::vector<Item> m_itemList;
-	std::vector<Item> m_advanceItemList;
+	std::vector<Item> m_itemList;   
+	std::vector<Item*> m_addItemList;
 	Sprite m_inventoryUi;
 	Sprite m_takeItemUi;
-	Transform m_transform;	// 姿勢
+	Sprite m_slashUi;
+	Transform m_inventoryTransform;	// 姿勢
 	Transform m_takeItemTransform;	// 姿勢
-	std::vector<Item*> m_addItemList;
+	Transform m_slashTransform;	// 姿勢
+
+	EnhanceType* m_enhanceType;
 
 protected:
 	virtual void Load() override;
@@ -49,23 +59,14 @@ protected:
 	virtual void Draw() override;
 
 public:
-	Inventory(int maxHaveItem);
+	Inventory(EnhanceType* enhanceType);
 
 	bool CanGetItem()
 	{
 		return m_canGetItem;
 	}
-	
-	void SetItemList(int itemNum)
-	{
-		Item item = Item(itemNum);
 
-		if (m_maxHaveItem >= m_haveItemCount)
-		{
-			m_advanceItemList.push_back(item);
-		}
-	}
-
+	//アイテムを拾ったときのアイコンの生成、重さの追加
 	void TakeItem(int itemNum);
 
 	bool GetItemNow()
@@ -133,12 +134,10 @@ public:
 		m_itemList.clear();
 	}
 
-	// アイテムが自分をインベントリ追加候補リストに追加する
 	void AddAdvanceItemList(Item* item)
 	{
 		m_addItemList.push_back(item);
 	}
 
-	// アイテムがインベントリに入るかを確認
 	void CheckCanAddItem();
 };

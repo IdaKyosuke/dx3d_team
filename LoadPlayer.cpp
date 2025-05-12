@@ -382,7 +382,17 @@ void LoadPlayer::CheckMove()
 			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
 		}
 
-		Vector3 nextPos = m_transform.position + m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+		//重さオーバーしたら移動スピードを下げる。
+		if (m_weightOver)
+		{
+			m_runSpeed = WeightOverSpeed;
+		}
+		else
+		{
+			m_runSpeed = RunSpeed;
+		}
+
+		Vector3 nextPos = m_transform.position + m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
 
 		// 球が壁に当たっていたら
 		if (m_collisionStage->CapsuleCollider(nextPos) != 0)
@@ -411,7 +421,7 @@ void LoadPlayer::CheckMove()
 			m_moveDirection.z = dir.z - m_moveDirection.z;
 		}
 
-		m_transform.position += m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? RunSpeed : WalkSpeed);
+		m_transform.position += m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
 	}
 	else
 	{
@@ -538,6 +548,7 @@ void LoadPlayer::StaminaManagement()
 	{
 		m_staminaDecrease =  m_enhanceType->GetStaminaDecrease();
 
+		//重量オーバーしたらスタミナ消費量を上げる
 		if (m_weightOver)
 		{
 			m_staminaDecrease = m_staminaDecrease * 2;
@@ -555,6 +566,7 @@ void LoadPlayer::StaminaManagement()
 	{
 		m_staminaRecovery = m_enhanceType->GetStaminaRecovery();
 
+		//重量オーバーしたら回復量を下げる
 		if (m_weightOver)
 		{
 			m_staminaRecovery = m_staminaRecovery / 2;
