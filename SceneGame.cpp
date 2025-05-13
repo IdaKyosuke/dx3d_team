@@ -25,6 +25,7 @@
 #include "MoneyCount.h"
 #include "EnhanceType.h"
 #include"LightFactory.h"
+#include"Camera.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -85,8 +86,12 @@ void SceneGame::Initialize()
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(850, 10, 850));
 	actorLayer->AddChild(m_loadPlayer);
 
+	// カメラ
+	m_cam = new Camera(m_loadPlayer, m_collisionStage);
+	actorLayer->AddChild(m_cam);
+
 	// ライトを作成
-	m_lightFactory = new LightFactory(m_loadPlayer);
+	m_lightFactory = new LightFactory(m_cam, m_loadPlayer);
 	actorLayer->AddChild(m_lightFactory);
 #ifdef _DEBUG
 	//アイテム

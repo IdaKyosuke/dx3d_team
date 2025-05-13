@@ -8,7 +8,7 @@ class LoadPlayer;
 class EnemyFactory
 {
 private:
-	static constexpr int EnemyNum = 5;
+	static constexpr int EnemyNum = 15;
 
 public:
 	EnemyFactory(

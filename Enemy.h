@@ -26,7 +26,7 @@ public:
 
 private:
 	static constexpr int AnimNum = static_cast<int>(Anim::Length);	// アニメーションの数
-	static constexpr float MoveSpeedCombat = 5.0f;	// プレイヤー発見時の移動速度
+	static constexpr float MoveSpeedCombat = 5.5f;	// プレイヤー発見時の移動速度
 	static constexpr float MoveSpeed = 2.0f;	// 徘徊時の移動速度
 	static constexpr float Width = 300.0f;	// 敵の幅
 	static const char* AnimList[AnimNum];

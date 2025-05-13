@@ -23,7 +23,7 @@ private:
 	static constexpr float DecMouseDiff = 10;	// マウスの移動量を回転に使うために、値を小さくする割合
 	static constexpr float CamRot = 720.0f;	// マウスの移動量に対するカメラの回転の分母
 	static constexpr float CamNearDist = 10.0f;	// カメラに映る最も近い距離
-	static constexpr float CamFarDist = 10000.0f;// カメラに映る最も遠い距離
+	static constexpr float CamFarDist = 20000.0f;// カメラに映る最も遠い距離
 	// １人称用
 	static constexpr float MaxCamHeight = 500.0f;	// カメラの注視点の最大の高さ差分
 	static constexpr float MinCamHeight = -100.0f;	// カメラの注視点の最低の高さ差分

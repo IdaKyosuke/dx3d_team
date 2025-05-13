@@ -60,7 +60,8 @@ LoadPlayer::LoadPlayer(
 	m_staminaDecrease(0),
 	m_maxHaveWeight(0),
 	m_runSpeed(RunSpeed),
-	m_weightOver(false)
+	m_weightOver(false),
+	m_finish(false)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -168,10 +169,18 @@ void LoadPlayer::Update()
 		m_transform.position = SpawnPos;
 		m_hp = MaxHp;
 	}
+
+	// press "0" => 自殺
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_0))
+	{
+		m_hp = 0;
+	}
 #endif // _DEBUG
 
 	if (m_hp <= 0)
 	{
+		if(!m_finish) m_finish = true;
+
 		if (m_nowAnim != Anim::Death)
 		{
 			// 死亡アニメーションを再生
@@ -580,10 +589,4 @@ void LoadPlayer::StaminaManagement()
 			m_duration = 0;
 		}
 	}
-}
-
-// プレイヤーの正面を取得
-Vector3 LoadPlayer::GetPlayerFront()
-{
-	return m_camNode->CamFrontVec();
 }

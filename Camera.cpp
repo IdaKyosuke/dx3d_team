@@ -272,16 +272,22 @@ void Camera::Update()
 		// ƒJƒƒ‰‚ð“®‚©‚·
 		MoveCam(m_loadPlayerNode->GetPosition());
 	}
-	
-	if(m_isChange || Input::GetInstance()->IsKeyDown(KEY_INPUT_B))
+
+	if(m_isChange)
 	{
 		ChangeSightMode(m_loadPlayerNode->GetPosition());
 	}
-
+#ifdef _DEBUG
+	if(Input::GetInstance()->IsKeyDown(KEY_INPUT_B))
+	{
+		ChangeSightMode(m_loadPlayerNode->GetPosition());
+	}
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
 		m_isLocked = !m_isLocked;
 	}
+#endif // _DEBUG
+
 }
 
 void Camera::Draw()

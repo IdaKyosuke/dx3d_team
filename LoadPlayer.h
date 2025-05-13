@@ -78,6 +78,7 @@ private:
 	int m_seDamage;	// 攻撃を受けたときのSE
 
 	bool m_isDeath;	// 死亡フラグ
+	bool m_finish;	// 体力が0になったかどうか
 
 	Camera* m_camNode;
 	CollisionStage* m_collisionStage;
@@ -100,7 +101,6 @@ private:
 
 	// プレイヤーの体力に関する変数
 	int m_hp;	// プレイヤーの体力
-	static constexpr float m_time = 1.0f;	// 無敵時間
 
 	float m_stamina;	// プレイヤーの現在のスタミナ	
 	bool m_isDash;		// 走っているか
@@ -212,6 +212,9 @@ public:
 		return MaxStamina;
 	}
 
-	// プレイヤーの正面を取得
-	Vector3 GetPlayerFront();
+	// 体力が0になったか
+	bool IsFinsh()
+	{
+		return m_finish;
+	}
 };
