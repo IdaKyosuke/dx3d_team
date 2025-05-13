@@ -20,11 +20,16 @@ MenuInventory::MenuInventory(Chest* chest,EnhanceType* enhanceType) :
 	m_gettingItem(false),
 	m_maxHaveItem(0),
 	m_enhanceType(enhanceType), 
-	m_seInventory(0)
+	m_seInventory(0),
+	m_fontTextureId(0),
+	m_nowHaveWeight(0)
 {
 	m_transform.position = Screen::BottomCenter + Vector2(0, -70);
 	m_menuInventoryUi.Register("inventory_ui1.png");
 	m_takeItemUi.Register("take_item.png");	
+	m_slashUi.Register("slash.png");
+
+	m_slashTransform.position = SlashUiPos;
 }
 
 void MenuInventory::Load()
@@ -33,8 +38,11 @@ void MenuInventory::Load()
 	m_seInventory = LoadSoundMem("Resource/sound/move_takeUi.mp3");
 	ChangeVolumeSoundMem(128, m_seInventory);
 
+	m_fontTextureId = ImageLoader::GetInstance()->Load("score_font.png");
+
 	m_menuInventoryUi.Load();
 	m_takeItemUi.Load();
+	m_slashUi.Load();
 }
 
 void MenuInventory::Release()
@@ -43,12 +51,14 @@ void MenuInventory::Release()
 
 	m_menuInventoryUi.Release();
 	m_takeItemUi.Release();
+	m_slashUi.Release();
 }
 
 void MenuInventory::Update()
 {
 	m_menuInventoryUi.Update();
 	m_takeItemUi.Update();
+	m_slashUi.Update();
 		
 	if (m_destroyItemIcon)
 	{
@@ -74,6 +84,8 @@ void MenuInventory::Update()
 		for (int i = 0; i <= m_haveItemCount - 1; i++)
 		{
 			GetParent()->AddChild(new MenuItemIcon(std::next(m_itemList.begin(),i)->GetItemNum(), i, this));
+
+			m_nowHaveWeight += std::next(m_itemList.begin(), i)->GetItemWeight();
 		}
 		haveitem = false;
 	}
@@ -109,6 +121,7 @@ void MenuInventory::Update()
 				m_destroyTakeItem = m_takeItem;
 
 				m_chest->SetItemList(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
+				m_nowHaveWeight -= std::next(m_itemList.begin(), m_takeItem)->GetItemWeight();
 
 				m_destroyItemIcon = true;
 
@@ -169,4 +182,48 @@ void MenuInventory::Draw()
 		m_takeItemUi.Draw(m_takeItemTransform);
 
 	}
+
+	//現在の持っているアイテムの重さを描画
+	Vector2 nowHaveWeightUiPos = Vector2(80, 849);
+	nowHaveWeightUiPos.y += FontMargin;
+	int nowHaveWeight = m_nowHaveWeight;
+	int nowHaveWeightDigit = 1;
+	do
+	{
+		int value = nowHaveWeight % 10;	// 1の位の値を取り出す
+
+		DrawRectGraph(
+			static_cast<int>(nowHaveWeightUiPos.x - FontSize.x * nowHaveWeightDigit), static_cast<int>(nowHaveWeightUiPos.y),
+			static_cast<int>(FontSize.x) * value, 0,
+			static_cast<int>(FontSize.x), static_cast<int>(FontSize.y),
+			m_fontTextureId,
+			true
+		);
+
+		nowHaveWeight /= 10;	// スコアの桁下げ
+		nowHaveWeightDigit++;		// 次の桁へ
+	} while (nowHaveWeight > 0);
+
+	//現在の持てるアイテムの重さの最大容量を描画
+	Vector2 maxHaveWeightUiPos = Vector2(180, 849);
+	maxHaveWeightUiPos.y += FontMargin;
+	int maxHaveWeight = m_enhanceType->GetMaxHaveWeight();
+	int maxHaveWeightDigit = 1;
+	do
+	{
+		int value = maxHaveWeight % 10;	// 1の位の値を取り出す
+
+		DrawRectGraph(
+			static_cast<int>(maxHaveWeightUiPos.x - FontSize.x * maxHaveWeightDigit), static_cast<int>(maxHaveWeightUiPos.y),
+			static_cast<int>(FontSize.x) * value, 0,
+			static_cast<int>(FontSize.x), static_cast<int>(FontSize.y),
+			m_fontTextureId,
+			true
+		);
+
+		maxHaveWeight /= 10;	// スコアの桁下げ
+		maxHaveWeightDigit++;		// 次の桁へ
+	} while (maxHaveWeight > 0);
+
+	m_slashUi.Draw(m_slashTransform);
 }

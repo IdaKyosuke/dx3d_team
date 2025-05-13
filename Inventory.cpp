@@ -150,7 +150,7 @@ void Inventory::Draw()
 	}
 
 	//現在の持っているアイテムの重さを描画
-	Vector2 nowHaveWeightUiPos = m_inventoryTransform.position + Vector2(-150, -90);
+	Vector2 nowHaveWeightUiPos = Vector2(80, 800);
 	nowHaveWeightUiPos.y += FontMargin;
 	int nowHaveWeight = m_nowHaveWeight;
 	int nowHaveWeightDigit = 1;
@@ -171,7 +171,7 @@ void Inventory::Draw()
 	} while (nowHaveWeight > 0);
 
 	//現在の持てるアイテムの重さの最大容量を描画
-	Vector2 maxHaveWeightUiPos = m_inventoryTransform.position + Vector2(-65, -90);
+	Vector2 maxHaveWeightUiPos = Vector2(180, 800);
 	maxHaveWeightUiPos.y += FontMargin;
 	int maxHaveWeight = m_enhanceType->GetMaxHaveWeight();
 	int maxHaveWeightDigit = 1;

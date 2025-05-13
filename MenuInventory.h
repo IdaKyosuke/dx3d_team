@@ -12,8 +12,11 @@ class MenuInventory : public Node
 {
 private:
 	static constexpr int MaxHaveItem = 5;
-	static constexpr Vector2 TakeItemUiPos = Vector2(460,870);
-	static constexpr Vector2 InventoryUiPos = Vector2(460, 870);
+	static constexpr Vector2 TakeItemUiPos = Vector2(250,870);
+	static constexpr Vector2 InventoryUiPos = Vector2(250, 870);
+	static constexpr Vector2 SlashUiPos = Vector2(105, 870);
+	static constexpr Vector2 FontSize = Vector2(20, 35);	// 数字1文字の幅・高さ
+	static constexpr int FontMargin = 5;					// 数字と数字の間の余白
 
 	static constexpr int SquareSize = 90;
 
@@ -29,6 +32,7 @@ private:
 
 	int m_itemNum;		//アイテムの番号格納用
 	bool m_destroyItemIcon;		//アイコンを消すか
+	int m_nowHaveWeight;
 
 	int m_seInventory;	//サウンド
 
@@ -36,11 +40,16 @@ private:
 
 	Sprite m_menuInventoryUi;
 	Sprite m_takeItemUi;
+	Sprite m_slashUi;
 	Transform m_transform;
 	Transform m_takeItemTransform;	// 姿勢
+	Transform m_slashTransform;	// 姿勢
 
 	Chest* m_chest;
 	EnhanceType* m_enhanceType;
+
+	int m_fontTextureId;	// 数字フォント
+	Transform m_haveWeightTransform;	// 姿勢
 
 	bool haveitem = m_itemList.empty();
 

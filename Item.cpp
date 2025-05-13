@@ -15,7 +15,8 @@ Item::Item(int itemNumber, Vector3 spownPos, Inventory* inventory, LoadPlayer* p
 	m_inventory(inventory),
 	m_canGetItem(false),
 	m_playerToDistance(0),
-	m_player(player)
+	m_player(player),
+	m_iconName()
 {
 	//ƒ|ƒWƒVƒ‡ƒ“‚Ìİ’è
 	m_itemPos = spownPos;
