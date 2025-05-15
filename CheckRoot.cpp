@@ -198,6 +198,7 @@ bool CheckRoot::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 		// 次のチェック対象のポリゴン情報をコピー
 		for (int i = 0; i < nextCheckPolyNum; i++)
 		{
+			if (i >= 3) break;
 			checkPoly[i] = nextCheckPoly[i];
 		}
 

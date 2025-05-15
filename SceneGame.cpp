@@ -17,6 +17,7 @@
 #include"UiTime.h"
 #include "UiStamina.h"
 #include"Inventory.h"
+#include "Map.h"
 #include"CollisionStage.h"
 #include"NavMesh.h"
 #include"DrawStageView.h"
@@ -49,7 +50,7 @@ void SceneGame::Initialize()
 	m_rootNode->AddChild(uiLayer);
 	
 	// ステージの見た目を描画
-	m_drawStageView = new DrawStageView("stage_test_view.mv1");
+	m_drawStageView = new DrawStageView("stage_view_2.mv1");
 	uiLayer->AddChild(m_drawStageView);
 
 	// ステージの当たり判定を作成
@@ -72,6 +73,9 @@ void SceneGame::Initialize()
 	m_inventory = new Inventory(m_enhanceType);
 	uiLayer->AddChild(m_inventory);
 
+	// マップ
+	m_map = new Map();
+	uiLayer->AddChild(m_map);
 
 	// プレイヤーのスポーン地点を作成
 	int index = rand() % PointNum;
@@ -204,7 +208,7 @@ SceneBase* SceneGame::Update()
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_enhanceType,m_haveMoney,m_moneyCount);
 	}
 #ifdef _DEBUG
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}

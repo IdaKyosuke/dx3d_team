@@ -16,6 +16,7 @@ class UiStamina;
 class CollisionStage;
 class Inventory;
 class Chest;
+class Map;
 class NavMesh;
 class KeepChest;
 class KeepMoneyCount;
@@ -46,6 +47,7 @@ private:
 	CollisionStage* m_collisionStage;
 	Inventory* m_inventory;
 	Chest* m_chest;
+	Map* m_map;
 	NavMesh* m_navMesh;
 	KeepChest* m_keepChest;
 	KeepMoneyCount* m_keepMoneyCount;
@@ -113,6 +115,7 @@ public:
 		m_inventory(nullptr),
 		m_collisionStage(nullptr),
 		m_chest(nullptr),
+		m_map(nullptr),
 		m_navMesh(nullptr),
 		m_keepChest(nullptr),
 		m_keepMoneyCount(nullptr),
