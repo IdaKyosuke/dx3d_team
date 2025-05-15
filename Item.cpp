@@ -16,7 +16,8 @@ Item::Item(int itemNumber, Vector3 spownPos, Inventory* inventory, LoadPlayer* p
 	m_canGetItem(false),
 	m_playerToDistance(0),
 	m_player(player),
-	m_iconName()
+	m_iconName(),
+	m_itemData()
 {
 	//ポジションの設定
 	m_itemPos = spownPos;
@@ -24,24 +25,25 @@ Item::Item(int itemNumber, Vector3 spownPos, Inventory* inventory, LoadPlayer* p
 	//拾える範囲の設定
 	m_collider = new BoxCollider3D(CanGetRange, Vector3(0,0,0));
 
-	ItemNameList itemList = static_cast<ItemNameList>(m_itemNumber);
+	//アイテム情報をcsvからのロード
+	LoadItemData();
 
 	//アイテムのモデルのロード
-	m_model = MV1LoadModel(itemDate[static_cast<int>(itemList)].m_modelName);
+	m_model = MV1LoadModel(m_itemData[m_itemNumber].m_modelName);
 
 	//ポジションの設定
 	MV1SetPosition(m_model, m_itemPos);
 
 	//名前の設定
-	m_itemName = itemDate[static_cast<int>(itemList)].m_itemName;
+	m_itemName = m_itemData[m_itemNumber].m_itemName;
 	//売った時の金額設定
-	m_sellMoney = itemDate[static_cast<int>(itemList)].m_sellMoney;
+	m_sellMoney = m_itemData[m_itemNumber].m_sellMoney;
 	//アイテムの重さ設定
-	m_itemWeight = itemDate[static_cast<int>(itemList)].m_weight;
+	m_itemWeight = m_itemData[m_itemNumber].m_weight;
 	//アイコンのテクスチャID
-	m_iconName = IconName[static_cast<int>(itemList)];
+	m_iconName = m_itemData[m_itemNumber].m_iconName;
 	//フレーバーテキストの設定
-	m_flavorText = itemDate[static_cast<int>(itemList)].m_flavorText;
+	m_flavorText = m_itemData[m_itemNumber].m_flavorText;
 }
 
 void Item::Release()
@@ -81,4 +83,23 @@ void Item::DestroyMine()
 {
 	ActorCollision3D::GetInstance()->Remove(this);
 	Destroy();
+}
+
+void Item::LoadItemData()
+{
+	int fileHandle = FileRead_open("Item.csv");
+
+	char dontUseLine[9][256];
+
+	for (int i = 0; i < 1; i++) FileRead_gets(dontUseLine[0], 256, fileHandle);
+
+	for (int i = 0; i < static_cast<int>(ItemNameList::Length); i++) 
+	{
+		FileRead_scanf(fileHandle, "%[^,],%[^,],%[^,],%[^,],%d,%d",
+			m_itemData[i].m_itemName, m_itemData[i].m_modelName, m_itemData[i].m_iconName,
+			m_itemData[i].m_flavorText, &m_itemData[i].m_sellMoney, &m_itemData[i].m_weight);//読み込み
+	}
+
+	//ファイルを閉じる
+	FileRead_close(fileHandle);
 }

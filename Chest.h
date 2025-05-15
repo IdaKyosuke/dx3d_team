@@ -15,6 +15,7 @@ private:
 	int m_takeItem;			//今何番目のアイテムを持っているか
 
 	int m_destroyTakeItem;		//捨てたときどこのアイテムを持っていたか
+	int m_destroyItemIconCount;	//何個アイテムのアイコンを消したか
 
 	bool m_canStorageItem;		//アイテムを収納できるか
 	bool m_storagingItem;		//アイテムを収納した時
@@ -28,6 +29,7 @@ private:
 	int m_seChest;	//サウンド
 
 	std::vector<Item> m_itemList;
+	std::vector<Item*> m_addItemList;
 	std::vector<Item> m_lostItemList;
 
 	Sprite m_chestUi;
@@ -44,9 +46,14 @@ protected:
 public:
 	Chest();
 
-	bool DestoryItemIcon()
+	bool DestroyItemIcon()
 	{
 		return m_destroyItemIcon;
+	}
+
+	void AddDestroyItemIconCount()
+	{
+		m_destroyItemIconCount++;
 	}
 
 	int DestroyTakeItem()
@@ -98,9 +105,23 @@ public:
 
 	void CreateIcon(int itemNum);
 
-	void LostItem(int itemNum)
+	void AddItemCount()
 	{
-		m_destroyTakeItem = itemNum;
+		m_haveItemCount++;
+	}
+
+	void AddAdvanceItemList(int itemNum)
+	{
+		Item* item = new Item(itemNum);
+
+		m_addItemList.push_back(item);
+	}
+
+	void CheckCanAddItem();
+
+	void LostItem(int loatItemNum)
+	{
+		m_destroyTakeItem = loatItemNum;
 		m_destroyItemIcon = true;
 
 		//一番最後のアイテム消したらエラーが起こったから起こらないようにしてる
@@ -109,6 +130,8 @@ public:
 			m_takeItem = m_takeItem -1;
 		}
 
-		m_itemList.erase(m_itemList.begin() + itemNum);
+		m_haveItemCount--;
+
+		m_itemList.erase(m_itemList.begin() + loatItemNum);
 	}
 };

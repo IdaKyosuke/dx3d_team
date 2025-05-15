@@ -60,34 +60,13 @@ void MenuInventory::Update()
 	m_takeItemUi.Update();
 	m_slashUi.Update();
 		
+	m_maxHaveItem = m_enhanceType->GetMaxHaveInventory();
+
+	CheckCanAddItem();
+
 	if (m_destroyItemIcon)
 	{
 		m_destroyItemIcon = false;
-	}
-
-	m_maxHaveItem = m_enhanceType->GetMaxHaveInventory();
-
-	//拾ったアイテムを認識する
-	//認識してアイコンを生成
-	m_haveItemCount = static_cast<int>(std::distance(m_itemList.begin(), m_itemList.end()));
-
-	if (m_gettingItem)
-	{
-		GetParent()->AddChild(new MenuItemIcon(std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemNum(), 
-			m_haveItemCount - 1, this));
-
-		m_gettingItem = false;
-	}
-	//アイコンの生成
-	if(haveitem)
-	{
-		for (int i = 0; i <= m_haveItemCount - 1; i++)
-		{
-			GetParent()->AddChild(new MenuItemIcon(std::next(m_itemList.begin(),i)->GetItemNum(), i, this));
-
-			m_nowHaveWeight += std::next(m_itemList.begin(), i)->GetItemWeight();
-		}
-		haveitem = false;
 	}
 
 	if (m_isIventory)
@@ -120,12 +99,14 @@ void MenuInventory::Update()
 				//格納したアイテムが何番目のアイテムか
 				m_destroyTakeItem = m_takeItem;
 
-				m_chest->SetItemList(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
+				m_chest->AddAdvanceItemList(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
 				m_nowHaveWeight -= std::next(m_itemList.begin(), m_takeItem)->GetItemWeight();
 
 				m_destroyItemIcon = true;
 
 				m_chest->StringingChest();
+
+				m_haveItemCount--;
 
 				//vectorの中から捨てたアイテムのデータを消す
 				m_itemList.erase(m_itemList.begin() + m_takeItem);
@@ -226,4 +207,35 @@ void MenuInventory::Draw()
 	} while (maxHaveWeight > 0);
 
 	m_slashUi.Draw(m_slashTransform);
+}
+
+void MenuInventory::TakeItem(int itemNum)
+{
+	if (m_haveItemCount <= m_maxHaveItem)
+	{
+		AddChild(new MenuItemIcon(itemNum, m_haveItemCount - 1, this));
+
+		m_nowHaveWeight += Item(itemNum).GetItemWeight();
+	}
+}
+
+void MenuInventory::CheckCanAddItem()
+{
+	std::vector<Item*> addItemList = m_addItemList;
+	m_addItemList.clear();
+	for (Item* item : addItemList)
+	{
+		if (m_haveItemCount >= m_maxHaveItem) break;
+
+		if (m_haveItemCount >= m_maxHaveItem) break;
+		Item i = *item;
+
+		m_itemList.push_back(i);
+
+		AddItemCount();
+
+		TakeItem(item->GetItemNum());
+
+		item->DestroyMine();
+	}
 }

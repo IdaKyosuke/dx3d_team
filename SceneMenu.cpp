@@ -19,6 +19,8 @@
 
 #include"Inventory.h"
 
+#include "Item.h"
+
 #include "SceneTitle.h"
 
 void SceneMenu::Initialize()
@@ -101,8 +103,10 @@ void SceneMenu::Initialize()
 	{
 		for (int i = 0; i <= m_inventory->GetItemList().size() - 1; i++)
 		{
+			m_item = new Item(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
+
 			//持って帰ったアイテムを格納する
-			m_menuInventory->Change(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
+			m_menuInventory->AddAdvanceItemList(m_item);
 		}
 	}
 
@@ -111,8 +115,7 @@ void SceneMenu::Initialize()
 		for (int i = 0; i <= m_chestItem.size() - 1; i++)
 		{
 			//チェストに保管していたアイテム
-			m_chest->SetItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
-			m_chest->CreateIcon(i);
+			m_chest->AddAdvanceItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
 		}
 	}
 }

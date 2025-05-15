@@ -9,7 +9,7 @@ class Inventory;
 class MenuItemIcon : public Node
 {
 private:
-	static constexpr Vector2 SetPos =  Vector2(460,870);
+	static constexpr Vector2 SetPos =  Vector2(250,870);
 
 	int m_itemNum;
 	int m_countGetItem;

@@ -23,7 +23,7 @@ void ChestItemIcon::Update()
 {
 	m_itemIconUi.Update();
 
-	if (m_chest->DestoryItemIcon())
+	if (m_chest->DestroyItemIcon())
 	{
 		if (m_countGetItem == m_chest->DestroyTakeItem())
 		{
@@ -33,6 +33,8 @@ void ChestItemIcon::Update()
 		{
 			m_countGetItem--;
 		}
+
+		m_chest->AddDestroyItemIconCount();
 	}
 
 	//Т▓Ро

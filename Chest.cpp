@@ -45,7 +45,7 @@ void Chest::Update()
 	m_chestUi.Update();
 	m_takeItemUi.Update();
 
-	m_haveItemCount = static_cast<int>(m_itemList.size());
+	CheckCanAddItem();
 
 	//アイテムを収納できるか
 	if (m_haveItemCount >= MaxHaveItem)
@@ -57,15 +57,16 @@ void Chest::Update()
 		m_canStorageItem = true;
 	}
 
-	//拾ったアイテムを認識する
-	//認識してアイコンを生成
-	if (m_storagingItem)
+	//アイテムのアイコンがすべて消されたら消すフラグをfalseに
+	if (m_destroyItemIconCount >= m_haveItemCount + 1)
 	{
-		GetParent()->AddChild(new ChestItemIcon(std::next(m_itemList.begin(), m_haveItemCount - 1)->GetItemNum(),
-			m_haveItemCount - 1, this));
+		if (m_destroyItemIcon)
+		{
+			m_destroyItemIcon = false;
+		}
 
-		m_storagingItem = false;
-	}
+		m_destroyItemIconCount = 0;
+	}	
 
 	if (m_haveItemCount >= 0)
 	{
@@ -126,11 +127,6 @@ void Chest::Update()
 	{
 		m_takeItemTransform.position = TakeItemUiPos + Vector2(90 * m_takeItem, 0);
 	}
-
-	if (m_destroyItemIcon)
-	{
-		m_destroyItemIcon = false;
-	}
 }
 
 void Chest::Draw()
@@ -142,8 +138,31 @@ void Chest::Draw()
 	}
 }
 
-void Chest::CreateIcon(int ItemNum)
+void Chest::CreateIcon(int itemNum)
 {
-	GetParent()->AddChild(new ChestItemIcon(std::next(m_itemList.begin(), ItemNum)->GetItemNum(),
-		ItemNum, this));
+	if (m_haveItemCount <= MaxHaveItem)
+	{
+		AddChild(new ChestItemIcon(itemNum, m_haveItemCount - 1, this));
+	}
+}
+
+void Chest::CheckCanAddItem()
+{
+	std::vector<Item*> addItemList = m_addItemList;
+	m_addItemList.clear();
+	for (Item* item : addItemList)
+	{
+		if (m_haveItemCount >= MaxHaveItem) break;
+
+		if (m_haveItemCount >= MaxHaveItem) break;
+		Item i = *item;
+
+		m_itemList.push_back(i);
+
+		AddItemCount();
+
+		CreateIcon(item->GetItemNum());
+
+		item->DestroyMine();
+	}
 }

@@ -12,6 +12,8 @@ class Wallet;
 class SellButton;
 class MoneyCount;
 
+class Item;
+
 class EnhanceType;
 
 class EnhanceInventory;
@@ -34,6 +36,8 @@ private:
 	Shop* m_shop;
 	SellButton* m_sellButton;
 	MoneyCount* m_moneyCount;
+
+	Item* m_item;
 
 	EnhanceType* m_enhanceType;
 
@@ -84,7 +88,8 @@ public:
 		m_enhanceTheWorldTime(nullptr),
 		m_enhanceUseTheWorld(nullptr),
 		m_enhanceStaminaRecovery(nullptr),
-		m_enhanceStaminaDecrease(nullptr){};
+		m_enhanceStaminaDecrease(nullptr),
+		m_item(nullptr){};
 	
 
 	virtual void Initialize() override;		// èâä˙âª

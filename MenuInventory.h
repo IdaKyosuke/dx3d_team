@@ -37,6 +37,7 @@ private:
 	int m_seInventory;	//サウンド
 
 	std::vector<Item> m_itemList;
+	std::vector<Item*> m_addItemList;
 
 	Sprite m_menuInventoryUi;
 	Sprite m_takeItemUi;
@@ -92,10 +93,23 @@ public:
 		return m_itemList;
 	}
 
-	void Change(int itemNum)
+	void Change(Item item)
 	{
-		Item item = Item(itemNum);
-
 		m_itemList.push_back(item);
 	}
+
+	void AddAdvanceItemList(Item* item)
+	{
+		m_addItemList.push_back(item);
+	}
+
+	void AddItemCount()
+	{
+		m_haveItemCount++;
+	}
+
+	//アイテムを拾ったときのアイコンの生成、重さの追加
+	void TakeItem(int itemNum);
+
+	void CheckCanAddItem();
 };
