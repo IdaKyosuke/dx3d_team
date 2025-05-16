@@ -2,11 +2,10 @@
 #include "Node.h"
 #include "Transform.h"
 #include "Sprite.h"
-#include "Screen.h"
 
 class Map : public Node
 {
-	static constexpr Vector2 MapPos = Vector2(640, 480);
+	static constexpr Vector2 MapPos = Vector2(640, 400);
 
 	Sprite m_drawMap;
 	Transform m_transform;

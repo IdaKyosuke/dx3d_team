@@ -89,9 +89,9 @@ private:
 
 	float Rotate[PointNum] =
 	{
-		-90.0f,
-		180.0f,
 		90.0f,
+		180.0f,
+		-90.0f,
 		180.0f,
 		0.0f,
 		90.0f,
