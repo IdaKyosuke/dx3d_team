@@ -217,4 +217,7 @@ public:
 	{
 		return m_finish;
 	}
+
+	//ƒAƒCƒeƒ€‚ð—Ž‚Æ‚µ‚½Žž
+	void DropItem();
 };

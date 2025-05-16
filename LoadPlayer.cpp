@@ -196,9 +196,13 @@ void LoadPlayer::Update()
 	}
 	else
 	{
-		// プレイヤーの移動
-		NormalMove();
+		if (m_maxHaveWeight * 1.5 > m_inventory->GetHaveWeight())
+		{
+			// プレイヤーの移動
+			NormalMove();
+		}
 
+		DropItem();
 		TheWorld();
 	}
 
@@ -350,19 +354,6 @@ void LoadPlayer::NormalMove()
 			}
 		}
 	}
-
-	if (m_inventory->GetDropItem())
-	{
-		//捨てたオブジェクトを生成
-		
-		GetParent()->AddChild(new Item(
-			std::next(m_inventory->GetItemList().begin(), m_inventory->GetTakeItem())->GetItemNum(),
-			GetPosition(),
-			m_inventory, 
-			this));
-
-		m_inventory->GetDropItemCompletion();
-	}
 }
 
 // 移動先を決める
@@ -371,14 +362,16 @@ void LoadPlayer::CheckMove()
 	// 移動
 	if (m_stamina > 0)
 	{
+
 		// ダッシュフラグの管理
 		m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
-
-		// LSHIFTだけ押してもスタミナが減らないように調整
+		
 		if (m_moveDirection.IsZero())
 		{
 			m_isDash = false;
 		}
+
+		
 
 		//重さオーバーしたら移動スピードを下げる。
 		if (m_weightOver)
@@ -388,7 +381,23 @@ void LoadPlayer::CheckMove()
 		else
 		{
 			m_runSpeed = RunSpeed;
+
+			if (m_maxHaveWeight * 0.9 <= m_inventory->GetHaveWeight())
+			{
+				m_runSpeed = RunSpeed * 0.7;
+			}
+			if (m_maxHaveWeight * 0.7 <= m_inventory->GetHaveWeight())
+			{
+				m_runSpeed = RunSpeed * 0.8;
+			}
+			if (m_maxHaveWeight * 0.5 <= m_inventory->GetHaveWeight())
+			{
+				m_runSpeed = RunSpeed * 0.9;
+			}
 		}
+
+		
+		
 
 		Vector3 nextPos = m_transform.position + m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
 
@@ -588,5 +597,21 @@ void LoadPlayer::StaminaManagement()
 			m_stamina = MaxStamina;
 			m_duration = 0;
 		}
+	}
+}
+
+void LoadPlayer::DropItem()
+{
+	if (m_inventory->GetDropItem())
+	{
+		//捨てたオブジェクトを生成
+
+		GetParent()->AddChild(new Item(
+			std::next(m_inventory->GetItemList().begin(), m_inventory->GetTakeItem())->GetItemNum(),
+			GetPosition(),
+			m_inventory,
+			this));
+
+		m_inventory->GetDropItemCompletion();
 	}
 }
