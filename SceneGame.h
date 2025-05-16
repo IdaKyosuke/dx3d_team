@@ -33,7 +33,7 @@ class LightFactory;
 class SceneGame : public SceneBase
 {
 private:
-	static constexpr int PointNum = 8;
+	static constexpr int PointNum = 10;
 
 	Node* m_rootNode;
 	LoadPlayer* m_loadPlayer;
@@ -81,7 +81,9 @@ private:
 		Vector3(-8741, 0, 598),		// 180
 		Vector3(-9671, 0, -1576),	// 0
 		Vector3(4020, 0, -9387),	// 90
-		Vector3(6068, 0, -9649),	// 180
+		Vector3(9800, 0, 9800),		// 0
+		Vector3(-9800, 0, 9800),	// 0
+		Vector3(-5400, 0, -8000),	// 0
 		Vector3(9055, 0, -4712),	// 0
 	};
 
@@ -93,7 +95,9 @@ private:
 		180.0f,
 		0.0f,
 		90.0f,
-		180.0f,
+		0.0f,
+		0.0f,
+		0.0f,
 		0.0f,
 	};
 

@@ -55,6 +55,8 @@ bool CheckRoot::CheckPolyMove(Vector3 startPos, Vector3 goalPos)
 		// 次のループでチェック対象から外すポリゴン数をリセット
 		nextCheckPolyPrevNum = 0;
 
+		if (checkPolyNum >= 4) checkPolyNum = 3;
+
 		// チェック対象のポリゴン数だけループ
 		for (int i = 0; i < checkPolyNum; i++)
 		{

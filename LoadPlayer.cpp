@@ -144,7 +144,7 @@ void LoadPlayer::PlayAnim()
 	MV1DrawModel(m_model);
 	
 #ifdef _DEBUG
-	DrawFormatString(0, 60, GetColor(255, 255, 255),
+	DrawFormatString(0, 160, GetColor(255, 255, 255),
 		"PlayerPos Vector3(%.0f, %.0f, %.0f)",
 		m_transform.position.x, m_transform.position.y, m_transform.position.z
 	);
@@ -285,10 +285,7 @@ void LoadPlayer::NormalMove()
 	}
 
 	// 実際の移動先を決める
-	if (!m_moveDirection.IsZero())
-	{
-		CheckMove();
-	}
+	CheckMove();
 
 	// スタミナ管理
 	StaminaManagement();
@@ -374,10 +371,13 @@ void LoadPlayer::CheckMove()
 	// 移動
 	if (m_stamina > 0)
 	{
-		if (!m_moveDirection.IsZero())
+		// ダッシュフラグの管理
+		m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+
+		// LSHIFTだけ押してもスタミナが減らないように調整
+		if (m_moveDirection.IsZero())
 		{
-			// ダッシュフラグの管理
-			m_isDash = Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT);
+			m_isDash = false;
 		}
 
 		//重さオーバーしたら移動スピードを下げる。

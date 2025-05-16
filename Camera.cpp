@@ -282,7 +282,7 @@ void Camera::Update()
 	{
 		ChangeSightMode(m_loadPlayerNode->GetPosition());
 	}
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C))
 	{
 		m_isLocked = !m_isLocked;
 	}

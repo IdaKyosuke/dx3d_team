@@ -46,7 +46,7 @@ void LightFactory::Draw()
 {
 #ifdef _DEBUG
 	DrawFormatString(0, 60, GetColor(255, 255, 255),
-		"PlayerPos Vector3(%.0f, %.0f, %.0f)",
+		"LightPos Vector3(%.0f, %.0f, %.0f)",
 		m_hundlePos.x, m_hundlePos.y, m_hundlePos.z
 	);
 #endif // _DEBUG
