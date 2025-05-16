@@ -118,6 +118,9 @@ void SceneMenu::Initialize()
 			m_chest->AddAdvanceItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
 		}
 	}
+
+	// マウスカーソルを表示する
+	SetMouseDispFlag(true);
 }
 
 void SceneMenu::Finalize()
@@ -141,7 +144,6 @@ SceneBase* SceneMenu::Update()
 			if (m_moneyCount->GetTaskClear())
 			{
 				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
-
 				return new SceneGame(m_chest->GetItemList(),m_enhanceType, m_wallet->HaveMoney(), m_moneyCount);
 			}
 			else 
@@ -155,7 +157,6 @@ SceneBase* SceneMenu::Update()
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 		{
 			m_haveMoney = m_wallet->HaveMoney();
-
 			return new SceneGame(m_chest->GetItemList(), m_enhanceType, m_haveMoney, m_moneyCount);
 		}
 	}

@@ -167,6 +167,9 @@ void SceneGame::Initialize()
 	// スクリーンに掛けるフィルター
 	m_screenFilter = new ScreenFilter(m_loadPlayer);
 	uiLayer->AddChild(m_screenFilter);
+
+	// マウスカーソルを非表示にする
+	SetMouseDispFlag(false);
 }
 
 // 終了
@@ -193,7 +196,6 @@ SceneBase* SceneGame::Update()
 	if (m_uiTime->IsFinsh() || m_loadPlayer->GetIsDeath())
 	{
 		m_inventory->ItemClear();
-
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
 	
