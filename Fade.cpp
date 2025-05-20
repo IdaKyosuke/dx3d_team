@@ -37,8 +37,9 @@ void Fade::Update(int screen)
 
 	// 引数で受け取ったスクリーンに対して、輝度を設定
 	GraphFilter(screen, DX_GRAPH_FILTER_HSB, 0, 0, 0, bright);
-
+#ifdef _DEBUG
 	DrawFormatString(5, 5, GetColor(255, 0, 0), "bright:%d", bright);
+#endif // _DEBUG
 }
 
 // フェードイン

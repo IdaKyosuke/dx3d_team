@@ -32,5 +32,9 @@ void ItemFactory::Update()
 
 void ItemFactory::Draw()
 {
+#ifdef _DEBUG
 	DrawFormatString(0, 100, GetColor(255, 255, 255), "HIT:%d", m_getNum);
+
+#endif // _DEBUG
+
 }
