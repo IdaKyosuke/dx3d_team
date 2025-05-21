@@ -27,6 +27,7 @@
 #include "EnhanceType.h"
 #include"LightFactory.h"
 #include"Camera.h"
+#include"UiTheWorld.h"
 #include "DxLib.h"
 
 #include "Chest.h"
@@ -118,6 +119,10 @@ void SceneGame::Initialize()
 	// 制限時間
 	m_uiTime = new UiTime();
 	uiLayer->AddChild(m_uiTime);
+
+	// ザ・ワールドのアイコン
+	m_uiTheWorld = new UiTheWorld(m_loadPlayer);
+	uiLayer->AddChild(m_uiTheWorld);
 
 	//スタミナ
 	m_uiStamina = new UiStamina(m_loadPlayer);

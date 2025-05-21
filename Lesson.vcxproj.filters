@@ -187,6 +187,9 @@
     <ClCompile Include="Map.cpp">
       <Filter>ソースファイル</Filter>
     </ClCompile>
+    <ClCompile Include="UiTheWorld.cpp">
+      <Filter>ソースファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h">
@@ -415,6 +418,9 @@
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
     <ClInclude Include="Map.h">
+      <Filter>ヘッダーファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="UiTheWorld.h">
       <Filter>ヘッダーファイル</Filter>
     </ClInclude>
   </ItemGroup>

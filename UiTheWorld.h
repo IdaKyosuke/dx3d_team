@@ -4,17 +4,22 @@
 #include "Sprite.h"
 #include "Vector2.h"
 
+class LoadPlayer;
 
 class UiTheWorld : public Actor
 {
 private:
 	static constexpr Vector2 GridSize = Vector2(80, 80);	// アニメーションのサイズ
 	static constexpr int GridNum = 5;	// アニメコマ数
-	static constexpr Vector2 Offset = Vector2(50, 25);
+	static constexpr Vector2 Offset = Vector2(70, 70);
+	static constexpr float ChangeAngleTime = 0.8f;	// スキル再使用可能時に砂時計を反転させるのにかかる時間
 
 	int m_imageId;
-	Transform m_transform;
-
+	LoadPlayer* m_player;
+	float m_elapsedTime;
+	bool m_isCoolDown;
+	bool m_isStop;	// 時間が停止しているか
+	float m_angle;	// 静止画を描画する際の角度
 
 	const char* AnimeName[1] =
 	{
@@ -23,7 +28,7 @@ private:
 
 	const Animation AnimeData[1] =
 	{
-		Animation("theworld_icon.png",5, 9)
+		Animation("theworld_icon.png",5, 1)
 	};
 
 protected:
@@ -33,5 +38,5 @@ protected:
 	virtual void Draw() override;	// 描画
 
 public:
-	UiTheWorld();
+	UiTheWorld(LoadPlayer* player);
 };

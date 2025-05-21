@@ -62,4 +62,10 @@ public:
 	{
 		return m_runningAnime ? m_elapsedTime >= GetTotalFrameTime() : true;
 	}
+
+	// 経過時間をリセットする
+	void ResetElapsedTime()
+	{
+		m_elapsedTime = 0;
+	}
 };

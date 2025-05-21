@@ -28,6 +28,7 @@ class Wallet;
 class ScreenFilter;
 class EnhanceType;
 class LightFactory;
+class UiTheWorld;
 
 // ゲームシーン
 class SceneGame : public SceneBase
@@ -59,6 +60,7 @@ private:
 	ScreenFilter* m_screenFilter;
 	EnhanceType* m_enhanceType;
 	LightFactory* m_lightFactory;
+	UiTheWorld* m_uiTheWorld;
 
 	std::vector<Item> m_chestItem;
 
@@ -140,7 +142,8 @@ public:
 		m_staminaRecovery(0),
 		m_staminaDecrease(0),
 		m_escapePointIndex(0),
-		m_lightFactory(nullptr){};
+		m_lightFactory(nullptr),
+		m_uiTheWorld(nullptr){};
 
 	virtual void Initialize() override;		// 初期化
 	virtual void Finalize() override;		// 終了

@@ -72,6 +72,7 @@ private:
 	float m_nowStopTime;	//時間停止してから何秒経ったか
 	float m_stopTime;		//時間停止できる時間
 	bool m_isStop;			//時間停止してるか
+	bool m_isCooldown;		// クールダウン中か
 
 	bool m_isGetting;	//アイテムを拾ったか
 
@@ -90,6 +91,8 @@ private:
 	Vector3 m_playerRotate;
 	Vector3 m_moveDirection;
 
+
+	static constexpr int maxNum = 10;
 
 	// アニメーション切り替え用
 	Anim m_nowAnim;
@@ -160,9 +163,22 @@ public:
 		return m_isJump;
 	}
 
+	// 時間が止まっているか
 	bool IsTheWorld()
 	{
 		return m_isStop;
+	}
+
+	// クールダウン中か
+	bool IsCoolDown()
+	{
+		return m_isCooldown;
+	}
+
+	// 停止できる時間を取得
+	float GetStopTime()
+	{
+		return m_stopTime;
 	}
 
 	// 現在のHpの割合を返す

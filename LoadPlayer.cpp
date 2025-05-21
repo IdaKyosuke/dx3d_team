@@ -61,7 +61,8 @@ LoadPlayer::LoadPlayer(
 	m_maxHaveWeight(0),
 	m_runSpeed(RunSpeed),
 	m_weightOver(false),
-	m_finish(false)
+	m_finish(false),
+	m_isCooldown(false)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -108,6 +109,8 @@ LoadPlayer::LoadPlayer(
 
 	// 音を聞くポイントを更新
 	Set3DSoundListenerPosAndFrontPos_UpVecY(this->GetPosition(), m_camNode->CamFrontPlaneVec());
+
+	m_stopTime = m_enhanceType->GetMaxTheWorldTime();
 }
 
 // アニメーションを切り替える(Lerp)
@@ -525,24 +528,35 @@ void LoadPlayer::DecreaseHP(int damage)
 //時間停止
 void LoadPlayer::TheWorld()
 {
-	m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
+	if (m_useTheWorldCount < maxNum && m_theWorldCoolDown > 0)
+	{
+		m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
+		if (m_theWorldCoolDown <= 0)
+		{
+			m_theWorldCoolDown = 0;
+			// クールダウン状態解除
+			m_isCooldown = false;
+		}
+	}
 
-	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0
-		&& m_useTheWorldCount < m_enhanceType->GetMaxUseTheWorldCount())
+	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_C) && m_theWorldCoolDown <= 0)
 	{
 		m_isStop = true;
+		// 使用したらクールダウン中扱い
+		m_isCooldown = true;
 	}
 
 	if (m_isStop)
 	{
-		m_stopTime = m_enhanceType->GetMaxTheWorldTime();
+		//m_stopTime = m_enhanceType->GetMaxTheWorldTime();
 
 		m_nowStopTime += Time::GetInstance()->GetDeltaTime();
 
 		if (m_nowStopTime >= m_stopTime)
 		{
 			m_theWorldCoolDown = TheWorldCoolDown;
-			m_useTheWorldCount+=1;
+			m_useTheWorldCount += 1;
+			m_nowStopTime = 0;
 			m_isStop = false;
 		}
 	}
