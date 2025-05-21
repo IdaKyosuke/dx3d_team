@@ -14,6 +14,7 @@ private:
 	static constexpr Vector2 UiPos = Vector2(125, 250);
 	static constexpr Vector2 FontSize = Vector2(20, 35);	// 数字1文字の幅・高さ
 	static constexpr int FontMargin = 5;					// 数字と数字の間の余白
+	static constexpr int AddNeedMoney = 100;
 
 	int m_needMoney;
 	int m_restDays;
@@ -28,6 +29,8 @@ private:
 	int m_fontTextureId;	// 数字フォント
 	Sprite m_moneyCountUi;
 	Transform m_transform;
+
+	bool isClear = false;
 
 protected:
 	virtual void Load();

@@ -94,7 +94,7 @@ void SceneMenu::Initialize()
 
 	m_restDays = m_moneyCount->GetRestDays();
 	m_clearCount = m_moneyCount->GetClearCount();
-
+	//残り日数の表示、必要金額の表示
 	m_moneyCount = new MoneyCount(m_wallet, m_restDays, m_clearCount);
 	uiLayer->AddChild(m_moneyCount);
 	m_moneyCount->BackMenu();

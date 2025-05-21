@@ -87,22 +87,22 @@ void EnhanceStaminaRecovery::OnClick()
 bool EnhanceStaminaRecovery::CheckCondition()
 {
 	//Œˆ‚ß‚½’l‚Ü‚Å‹­‰»‚µ‚½‚çI—¹
-	if (m_enhanceType->GetStaminaRecovery() < EndEnhanceCount)
+	if (m_enhanceType->GetStaminaRecovery() <= EndEnhanceCount)
 	{
 		//Ž‚¿•¨‚ ‚é‚©‚¨‹à‚ ‚é‚©‚Ì”»’è
 		if (!m_chest->GetItemList().empty())
 		{
 			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
 			{
-				for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
+				if (m_needItemNum != std::next(m_chest->GetItemList().begin(), i)->GetItemNum() ||
+					m_needMoney >= m_wallet->HaveMoney())
 				{
-					if (m_needItemNum != std::next(m_chest->GetItemList().begin(), i)->GetItemNum() ||
-						m_needMoney >= m_wallet->HaveMoney())
-					{
-						m_canEnhance = false;
-					}
+					m_canEnhance = false;
 				}
+			}
 
+			for (int i = 0; i <= m_chest->GetItemList().size() - 1; i++)
+			{
 				if (m_needItemNum == std::next(m_chest->GetItemList().begin(), i)->GetItemNum() &&
 					m_needMoney <= m_wallet->HaveMoney())
 				{

@@ -16,7 +16,6 @@
 #include"UiResult.h"
 #include"UiTime.h"
 #include "UiStamina.h"
-#include "UiTheWorld.h"
 #include"Inventory.h"
 #include "Map.h"
 #include"CollisionStage.h"
@@ -81,15 +80,11 @@ void SceneGame::Initialize()
 	// プレイヤーのスポーン地点を作成
 	int index = rand() % PointNum;
 	m_escapePointIndex = index;
-	/*
+	
 	// プレイヤー
 	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
 	actorLayer->AddChild(m_loadPlayer);
-	*/
-
-	// プレイヤーデバック用
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, Vector3(850, 10, 850));
-	actorLayer->AddChild(m_loadPlayer);
+	
 
 	// カメラ
 	m_cam = new Camera(m_loadPlayer, m_collisionStage);
@@ -128,10 +123,6 @@ void SceneGame::Initialize()
 	m_uiStamina = new UiStamina(m_loadPlayer);
 	uiLayer->AddChild(m_uiStamina);
 
-	// ザ・ワールド
-	m_uiTheWorld = new UiTheWorld();
-	uiLayer->AddChild(m_uiTheWorld);
-
 	// アイテムの生成
 	m_itemfactory = new ItemFactory(m_inventory, m_navMesh, m_loadPlayer);
 	actorLayer->AddChild(m_itemfactory);
@@ -155,7 +146,8 @@ void SceneGame::Initialize()
 	uiLayer->AddChild(m_uiResult);
 
 	m_restDays = m_moneyCount->GetRestDays();
-	m_moneyCount = new MoneyCount(m_wallet, m_restDays, 0);
+	m_clearcount = m_moneyCount->GetClearCount();
+	m_moneyCount = new MoneyCount(m_wallet, m_restDays, m_clearcount);
 	m_keepChest = new KeepChest;
 	
 	//チェストとインベントリ
