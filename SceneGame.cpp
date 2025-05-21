@@ -104,17 +104,17 @@ void SceneGame::Initialize()
 	m_item = new Item(0, Vector3(300, 0, 0),m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
 
-	m_item = new Item(3, Vector3(300, 0, 0), m_inventory, m_loadPlayer);
+	m_item = new Item(8, Vector3(400, 0, 0), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-	m_item = new Item(4, Vector3(300, 0, 200), m_inventory, m_loadPlayer);
+	m_item = new Item(9, Vector3(300, 0, 200), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-	m_item = new Item(0, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
+	m_item = new Item(10, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-	m_item = new Item(2, Vector3(500, 0, 200), m_inventory, m_loadPlayer);
+	m_item = new Item(11, Vector3(500, 0, 200), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-	m_item = new Item(6, Vector3(500, 0, 500), m_inventory, m_loadPlayer);
+	m_item = new Item(12, Vector3(500, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
-	m_item = new Item(7, Vector3(400, 0, 500), m_inventory, m_loadPlayer);
+	m_item = new Item(13, Vector3(400, 0, 500), m_inventory, m_loadPlayer);
 	actorLayer->AddChild(m_item);
 
 #endif // _DEBUG

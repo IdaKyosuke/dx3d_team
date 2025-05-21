@@ -44,6 +44,12 @@ private:
 		Watch,
 		Powder,
 		Scroll,
+		Burger,
+		KituneMusk,
+		GoldCup,
+		ChiliPepper,
+		Rock,
+		Gem,
 
 		Length,
 	};
