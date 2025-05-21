@@ -13,6 +13,7 @@ class EnemyFactory;
 class UiResult;
 class UiTime;
 class UiStamina;
+class UiTheWorld;
 class CollisionStage;
 class Inventory;
 class Chest;
@@ -44,6 +45,7 @@ private:
 	UiResult* m_uiResult;
 	UiTime* m_uiTime;
 	UiStamina* m_uiStamina;
+	UiTheWorld* m_uiTheWorld;
 	CollisionStage* m_collisionStage;
 	Inventory* m_inventory;
 	Chest* m_chest;
@@ -115,6 +117,7 @@ public:
 		m_uiResult(nullptr),
 		m_uiTime(nullptr),
 		m_uiStamina(nullptr),
+		m_uiTheWorld(nullptr),
 		m_item(nullptr),
 		m_inventory(nullptr),
 		m_collisionStage(nullptr),
