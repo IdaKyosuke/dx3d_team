@@ -1,5 +1,6 @@
 #include "SceneMenu.h"
 #include "SceneGame.h"
+#include "SceneGameOver.h"
 #include "DxLib.h"
 #include "Input.h"
 #include "Screen.h"
@@ -148,7 +149,7 @@ SceneBase* SceneMenu::Update()
 			}
 			else 
 			{
-				return new SceneTitle();
+				return new SceneGameOver();
 			}
 		}
 	}

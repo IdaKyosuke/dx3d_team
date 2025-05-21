@@ -11,7 +11,7 @@ Coin,Resource/Item/coin.mv1,coin_icon.png,"どこの国の硬貨なのか
 Watch,Resource/Item/watch.mv1,watch_icon.png,"もう動いていない時計。
 随分と前のものだ。",60,15
 Powder,Resource/Item/powder.mv1,powder_icon.png,白い粉。これに限る。,20,5
-Scroll,Resource/Item/burger.mv1,scroll_icon.png,"ただの巻物。
+Scroll,Resource/Item/scroll.mv1,scroll_icon.png,"ただの巻物。
 （この巻を解く者よ。知識は力なれ
 ど、代償を伴う。覚悟なき者、ここ
 より先へ進むべからず。ｇじゃいおｊｆｄｈそご",50,5

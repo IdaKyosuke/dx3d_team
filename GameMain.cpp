@@ -5,6 +5,7 @@
 #include "SceneMenu.h"
 #include "SceneTitle.h"
 #include "SceneGame.h"
+#include "SceneGameOver.h"
 #include "Input.h"
 #include "Time.h"
 #include "ActorCollision.h"
@@ -50,6 +51,7 @@ void GameMain::Run()
 
 	// ƒV[ƒ“‹N“®
 	m_sceneManager = new SceneManager(new SceneTitle());
+	//m_sceneManager = new SceneManager(new SceneGameOver());
 	//m_sceneManager = new SceneManager(new SceneMenu());
 	//m_sceneManager = new SceneManager(new SceneGame(m_chest));
 
