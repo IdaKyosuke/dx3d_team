@@ -10,6 +10,7 @@
 #include"BoxCollider3D.h"
 #include "Inventory.h"
 #include "EnhanceType.h"
+#include"ItemFactory.h"
 #include<math.h>
 
 // アニメーションリスト
@@ -25,7 +26,8 @@ LoadPlayer::LoadPlayer(
 	CollisionStage* collisionStage,
 	Inventory* inventory,
 	EnhanceType* enhanceType,
-	const Vector3& pos
+	const Vector3& pos,
+	ItemFactory* itemFactory
 ) :
 	Actor3D("Player", pos),
 	m_model(MV1LoadModel("Resource/Man/Man.mv1")),
@@ -62,7 +64,8 @@ LoadPlayer::LoadPlayer(
 	m_runSpeed(RunSpeed),
 	m_weightOver(false),
 	m_finish(false),
-	m_isCooldown(false)
+	m_isCooldown(false),
+	m_itemFactory(itemFactory)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
@@ -620,11 +623,15 @@ void LoadPlayer::DropItem()
 	{
 		//捨てたオブジェクトを生成
 
-		GetParent()->AddChild(new Item(
-			std::next(m_inventory->GetItemList().begin(), m_inventory->GetTakeItem())->GetItemNum(),
-			GetPosition(),
-			m_inventory,
-			this));
+		int num = std::next(m_inventory->GetItemList().begin(), m_inventory->GetTakeItem())->GetItemNum();
+
+		GetParent()->AddChild(
+			new Item(
+				num,
+				m_itemFactory->GetItemData(num),
+				GetPosition(),
+				m_inventory
+			));
 
 		m_inventory->GetDropItemCompletion();
 	}

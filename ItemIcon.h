@@ -1,5 +1,6 @@
 #pragma once
 #include "Node.h"
+#include"Item.h"
 #include "Transform.h"
 #include "Sprite.h"
 
@@ -25,5 +26,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ItemIcon(int itemNum, int countGetItem,Inventory* inventory);
+	ItemIcon(const int countGetItem, Item* item, Inventory* inventory);
 };

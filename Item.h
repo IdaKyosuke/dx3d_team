@@ -17,23 +17,7 @@ struct ItemData
 
 class Item : public Actor3D
 {
-private:
-	int m_itemNumber;	//アイテムを識別するための番号格納用
-	int m_model;		//アイテムのモデル
-	const char* m_itemName;
-	const char* m_flavorText;
-	int m_sellMoney;	//売った時の金額
-	int m_itemWeight;	//アイテムの重さ
-
-	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//拾える範囲
-
-	const char* m_iconName;
-
-	bool m_canGetItem;
-
-	Vector3 m_itemPos; 
-
-
+public:
 	enum class ItemNameList
 	{
 		GoldBar,
@@ -54,6 +38,22 @@ private:
 		Length,
 	};
 
+private:
+	int m_itemNumber;	//アイテムを識別するための番号格納用
+	int m_model;		//アイテムのモデル
+	const char* m_itemName;
+	const char* m_flavorText;
+	int m_sellMoney;	//売った時の金額
+	int m_itemWeight;	//アイテムの重さ
+
+	static constexpr Vector3 CanGetRange = Vector3(100, 100, 100);	//拾える範囲
+
+	const char* m_iconName;
+
+	bool m_canGetItem;
+
+	Vector3 m_itemPos; 
+
 	ItemData m_itemData[static_cast<int>(ItemNameList::Length)];
 
 	Inventory* m_inventory;
@@ -67,9 +67,12 @@ protected:
 	virtual void Draw();
 
 public:
-	Item(int itemNumber, Vector3 spownPos = Vector3(0, 0, 0), Inventory* inventory = nullptr,LoadPlayer* player = nullptr);
-
-	void LoadItemData();
+	Item(
+		int itemNum,
+		ItemData* item = nullptr,
+		Vector3 spownPos = Vector3(0, 0, 0), 
+		Inventory* inventory = nullptr
+	);
 
 	int GetItemNum() const
 	{

@@ -74,6 +74,9 @@ void SceneGame::Initialize()
 	m_inventory = new Inventory(m_enhanceType);
 	uiLayer->AddChild(m_inventory);
 
+	// アイテムの生成
+	m_itemfactory = new ItemFactory(m_inventory, m_navMesh);
+
 	// マップ
 	m_map = new Map();
 	uiLayer->AddChild(m_map);
@@ -83,10 +86,9 @@ void SceneGame::Initialize()
 	m_escapePointIndex = index;
 	
 	// プレイヤー
-	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index]);
+	m_loadPlayer = new LoadPlayer(m_collisionStage,m_inventory, m_enhanceType, pos[index], m_itemfactory);
 	actorLayer->AddChild(m_loadPlayer);
 	
-
 	// カメラ
 	m_cam = new Camera(m_loadPlayer, m_collisionStage);
 	actorLayer->AddChild(m_cam);
@@ -94,6 +96,7 @@ void SceneGame::Initialize()
 	// ライトを作成
 	m_lightFactory = new LightFactory(m_cam, m_loadPlayer);
 	actorLayer->AddChild(m_lightFactory);
+	/*
 #ifdef _DEBUG
 	//アイテム
 	m_item = new Item(1, Vector3(300, 0, 0),m_inventory,m_loadPlayer);
@@ -115,11 +118,13 @@ void SceneGame::Initialize()
 	actorLayer->AddChild(m_item);
 
 #endif // _DEBUG
+	*/
 
 	// 制限時間
 	m_uiTime = new UiTime();
 	uiLayer->AddChild(m_uiTime);
 
+	actorLayer->AddChild(m_itemfactory);
 	// ザ・ワールドのアイコン
 	m_uiTheWorld = new UiTheWorld(m_loadPlayer);
 	uiLayer->AddChild(m_uiTheWorld);
@@ -127,10 +132,6 @@ void SceneGame::Initialize()
 	//スタミナ
 	m_uiStamina = new UiStamina(m_loadPlayer);
 	uiLayer->AddChild(m_uiStamina);
-
-	// アイテムの生成
-	m_itemfactory = new ItemFactory(m_inventory, m_navMesh, m_loadPlayer);
-	actorLayer->AddChild(m_itemfactory);
 	
 	// 敵の生成
 	m_enemyFactory = new EnemyFactory(actorLayer, m_navMesh, m_loadPlayer);

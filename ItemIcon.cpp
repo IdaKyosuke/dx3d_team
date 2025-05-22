@@ -3,12 +3,11 @@
 #include "Screen.h"
 
 
-ItemIcon::ItemIcon(int itemNum, int countGetItem,Inventory* inventry) :
-	m_itemNum(itemNum),
-	m_countGetItem(countGetItem),
-	m_inventory(inventry)
+ItemIcon::ItemIcon(const int countGetItem, Item* item, Inventory* inventry) :
+	m_inventory(inventry),
+	m_countGetItem(countGetItem)
 {
-	m_itemIconUi.Register(std::next(m_inventory->GetItemList().begin(), m_countGetItem)->GetItemIconName());
+	m_itemIconUi.Register(item->GetItemIconName());
 }
 
 void ItemIcon::Load()

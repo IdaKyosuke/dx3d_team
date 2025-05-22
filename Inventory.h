@@ -67,7 +67,7 @@ public:
 	}
 
 	//アイテムを拾ったときのアイコンの生成、重さの追加
-	void TakeItem(int itemNum);
+	void TakeItem(Item* item);
 
 	bool GetItemNow()
 	{

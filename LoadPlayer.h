@@ -9,6 +9,7 @@ class Animation3D;
 class CollisionStage;
 class Inventory;
 class EnhanceType;
+class ItemFactory;
 
 class LoadPlayer : public Actor3D
 {
@@ -86,6 +87,7 @@ private:
 
 	Inventory* m_inventory;
 	EnhanceType* m_enhanceType;
+	ItemFactory* m_itemFactory;
 
 	Vector3 m_playerPastPos;
 	Vector3 m_playerRotate;
@@ -124,7 +126,8 @@ public:
 		CollisionStage* collisionStage, 
 		Inventory* inventory, 
 		EnhanceType* enhanceType,
-		const Vector3& pos
+		const Vector3& pos,
+		ItemFactory* itemFactory
 	);
 
 	// アニメーションを切り替える(Lerp)

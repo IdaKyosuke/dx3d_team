@@ -195,13 +195,13 @@ void Inventory::Draw()
 	m_slashUi.Draw(m_slashTransform);
 }
 
-void Inventory::TakeItem(int itemNum)
+void Inventory::TakeItem(Item* item)
 {
 	if (m_haveItemCount <= m_maxHaveItem)
 	{
-		AddChild(new ItemIcon(itemNum, m_haveItemCount - 1, this));
+		AddChild(new ItemIcon(m_haveItemCount - 1, item, this));
 
-		m_nowHaveWeight += Item(itemNum).GetItemWeight();
+		m_nowHaveWeight += item->GetItemWeight();
 	}
 }
 
@@ -212,15 +212,13 @@ void Inventory::CheckCanAddItem()
 	for (Item* item : addItemList)
 	{
 		if (m_haveItemCount >= m_maxHaveItem) break;
-
-		if (m_haveItemCount >= m_maxHaveItem) break;
 		Item i = *item;
 
 		m_itemList.push_back(i);
 
 		AddItemCount();
 
-		TakeItem(item->GetItemNum());
+		TakeItem(item);
 
 		item->DestroyMine();
 	}
