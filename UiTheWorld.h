@@ -21,16 +21,21 @@ private:
 	bool m_isCoolDown;
 	bool m_isStop;	// ŠÔ‚ª’â~‚µ‚Ä‚¢‚é‚©
 	float m_angle;	// Ã~‰æ‚ğ•`‰æ‚·‚éÛ‚ÌŠp“x
+	int m_seStopTime;
+	int m_seStopTimePlay;
+	int m_seStopTimeFinish;
+	int m_seCoolDownFinish;
+	bool m_seStart;
 
 	const char* AnimeName[1] =
 	{
 		"TheWorld"
 	};
 
-	const Animation AnimeData[1] =
+	/*const Animation AnimeData[1] =
 	{
 		Animation("theworld_icon.png",5, 1)
-	};
+	};*/
 
 protected:
 	virtual void Load() override;	// ƒŠƒ\[ƒX‚Ì“Ç‚İ‚İ

@@ -12,8 +12,8 @@ class ItemFactory : public Node
 {
 private:
 	static constexpr int ItemNum = 40;
-	static constexpr int ProbabilityEnhanceItem = 7;	// 強化アイテムが選ばれる割合
-	static constexpr int ProbabilitySellItem = 3;		// 売却用アイテムが選ばれる割合
+	static constexpr int ProbabilityEnhanceItem = 6;	// 強化アイテムが選ばれる割合
+	static constexpr int ProbabilitySellItem = 4;		// 売却用アイテムが選ばれる割合
 
 	bool m_isFinish;		// アイテムをすべて集め終えたか
 	int m_getNum;		// 集め終えたアイテム数
