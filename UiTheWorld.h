@@ -10,11 +10,12 @@ class UiTheWorld : public Actor
 {
 private:
 	static constexpr Vector2 GridSize = Vector2(80, 80);	// アニメーションのサイズ
-	static constexpr int GridNum = 5;	// アニメコマ数
+	static constexpr int GridNum = 30;	// アニメコマ数
 	static constexpr Vector2 Offset = Vector2(70, 70);
 	static constexpr float ChangeAngleTime = 0.8f;	// スキル再使用可能時に砂時計を反転させるのにかかる時間
 
-	int m_imageId;
+	int m_glassImageId;
+	Sprite m_glass_backImageId;
 	LoadPlayer* m_player;
 	float m_elapsedTime;
 	bool m_isCoolDown;

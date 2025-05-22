@@ -40,7 +40,8 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 	m_isMove(false),
 	m_polyCount(0),
 	m_isCheck(false),
-	m_pastAttackFlg(false)
+	m_pastAttackFlg(false),
+	m_stoped(false)
 {
 	// アニメーションクラスをリスト化する
 	for (int i = 0; i < AnimNum; i++)
@@ -119,46 +120,61 @@ void Enemy::PlayAnim()
 
 void Enemy::Update()
 {
-	if (!m_player->IsTheWorld())
+	if (m_player->IsTheWorld())
 	{
-		if (m_isAttack)
+		if (!m_stoped)
 		{
-			Attack();
+			m_stoped = m_player->IsTheWorld();
+			m_attachAnimList[static_cast<int>(m_nowAnim)]->StopAnim();
+		}
+		return;
+	}
+	else
+	{
+		if (m_stoped != m_player->IsTheWorld())
+		{
+			m_stoped = m_player->IsTheWorld();
+			m_attachAnimList[static_cast<int>(m_nowAnim)]->StartAnim();
+		}
+	}
+
+	if (m_isAttack)
+	{
+		Attack();
+	}
+	else
+	{
+		// 攻撃中でないとき
+		if (m_isFind)
+		{
+			MoveCombat();
+			// アニメーションは常に移動アニメーション
+			m_nextAnim = Anim::Run;
 		}
 		else
 		{
-			// 攻撃中でないとき
-			if (m_isFind)
-			{
-				MoveCombat();
-				// アニメーションは常に移動アニメーション
-				m_nextAnim = Anim::Run;
-			}
-			else
-			{
-				MoveWanderAround();
-			}
-			// 現在の移動方向を取得
-			m_moveDirection = m_transform.position - m_enemyPastPos;
+			MoveWanderAround();
 		}
-
-		// モデルの回転
-		if (!m_moveDirection.IsZero())
-		{
-			float afterAngle = 0;
-
-			Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
-
-			m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
-		}
-
-		// アニメーションの切り替え
-		ChangeAnimLerp();
-
-		m_enemyPastPos = this->GetPosition();
-
-		m_pastAttackFlg = m_isAttack;
+		// 現在の移動方向を取得
+		m_moveDirection = m_transform.position - m_enemyPastPos;
 	}
+
+	// モデルの回転
+	if (!m_moveDirection.IsZero())
+	{
+		float afterAngle = 0;
+
+		Math::MatchAngleSign(afterAngle, m_moveDirection, m_transform.angle);
+
+		m_transform.angle.y = Lerp::Exec(m_transform.angle.y, afterAngle, 0.2f);
+	}
+
+	// アニメーションの切り替え
+	ChangeAnimLerp();
+
+	m_enemyPastPos = this->GetPosition();
+
+	m_pastAttackFlg = m_isAttack;
 }
 
 // 敵の移動（臨戦態勢）

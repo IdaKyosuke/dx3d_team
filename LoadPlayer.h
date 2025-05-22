@@ -91,9 +91,6 @@ private:
 	Vector3 m_playerRotate;
 	Vector3 m_moveDirection;
 
-
-	static constexpr int maxNum = 10;
-
 	// アニメーション切り替え用
 	Anim m_nowAnim;
 	Anim m_nextAnim;

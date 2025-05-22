@@ -9,7 +9,7 @@
 UiTheWorld::UiTheWorld(LoadPlayer* player) :
 	Actor("UiTheWorld"),
 	m_player(player),
-	m_imageId(0),
+	m_glassImageId(0),
 	m_elapsedTime(0),
 	m_isCoolDown(false),
 	m_isStop(false),
@@ -19,25 +19,31 @@ UiTheWorld::UiTheWorld(LoadPlayer* player) :
 	
 	float t = (GridNum - 1) / m_player->GetStopTime();
 
+	m_glass_backImageId.Register("hourglass_back.png");
+
 	m_sprite = new Sprite();
-	m_sprite->Register(AnimeName[0], Animation("theworld_icon.png", 5, t));
+	m_sprite->Register(AnimeName[0], Animation("hourglass.png", GridNum, t));
 	m_sprite->gridSize = GridSize;
 }
 
 void UiTheWorld::Load()
 {
 	Actor::Load();
-	m_imageId = ImageLoader::GetInstance()->Load("theworld_icon.png");
+	m_glassImageId = ImageLoader::GetInstance()->Load("hourglass.png");
+	m_glass_backImageId.Load();
 }
 
 void UiTheWorld::Release()
 {
 	Actor::Release();
-	ImageLoader::GetInstance()->Delete("theworld_icon.png");
+	ImageLoader::GetInstance()->Delete("hourglass.png");
+	m_glass_backImageId.Release();
 }
 
 void UiTheWorld::Update()
 {
+	m_glass_backImageId.Update();
+
 	if (!m_isCoolDown)
 	{
 		// スキルがクールダウン中か取得
@@ -82,6 +88,7 @@ void UiTheWorld::Draw()
 {
 	if (m_isStop)
 	{
+		m_glass_backImageId.Draw(m_transform);
 		// 時間停止中
 		Actor::Draw();
 	}
@@ -92,13 +99,14 @@ void UiTheWorld::Draw()
 		{
 			// クールダウン中は暗化させる
 			SetDrawBright(100, 100, 100);
+			m_glass_backImageId.Draw(m_transform);
 			DrawRectRotaGraph(
 				static_cast<int>(m_transform.position.x), static_cast<int>(m_transform.position.y),
 				static_cast<int>(GridSize.x) * 0, 0,
 				static_cast<int>(GridSize.x), static_cast<int>(GridSize.y),
 				m_transform.scale,
 				m_angle,
-				m_imageId,
+				m_glassImageId,
 				true,
 				false, false
 			);
@@ -106,13 +114,14 @@ void UiTheWorld::Draw()
 		}
 		else
 		{
+			m_glass_backImageId.Draw(m_transform);
 			DrawRectRotaGraph(
 				static_cast<int>(m_transform.position.x), static_cast<int>(m_transform.position.y),
 				static_cast<int>(GridSize.x) * 0, 0,
 				static_cast<int>(GridSize.x), static_cast<int>(GridSize.y),
 				m_transform.scale,
 				m_angle,
-				m_imageId,
+				m_glassImageId,
 				true,
 				false, false
 			);

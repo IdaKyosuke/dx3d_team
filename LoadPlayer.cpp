@@ -528,7 +528,7 @@ void LoadPlayer::DecreaseHP(int damage)
 //ŽžŠÔ’âŽ~
 void LoadPlayer::TheWorld()
 {
-	if (m_useTheWorldCount < maxNum && m_theWorldCoolDown > 0)
+	if (m_useTheWorldCount < m_enhanceType->GetMaxUseTheWorldCount() && m_theWorldCoolDown > 0)
 	{
 		m_theWorldCoolDown -= Time::GetInstance()->GetDeltaTime();
 		if (m_theWorldCoolDown <= 0)

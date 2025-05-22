@@ -13,7 +13,8 @@ Animation3D::Animation3D(const int model, const char* anim, bool roopFlg) :
 	m_animTime(0),
 	m_isActive(false),
 	m_roopFlg(roopFlg),
-	m_finishAnim(false)
+	m_finishAnim(false),
+	m_isStop(false)
 {
 	std::string path;
 	path += "Resource/";
@@ -35,6 +36,8 @@ Animation3D::~Animation3D()
 void Animation3D::Update()
 {
 	if (!m_isActive) return;
+
+	if (m_isStop) return;
 
 	// アニメーション時間の加算
 	m_animTime += FrameRate * Time::GetInstance()->GetDeltaTime();

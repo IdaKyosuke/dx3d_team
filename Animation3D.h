@@ -20,6 +20,8 @@ private:
 	bool m_roopFlg;
 	bool m_finishAnim;	// ループしないアニメーションが終了したか
 
+	bool m_isStop;	// アニメーションを止めるか
+
 protected:
 	virtual void Update() override;
 
@@ -36,5 +38,17 @@ public:
 	void ChangeIn();
 
 	// ループしないアニメーションの終了フラグ
-	bool FinishAnim(){ return m_finishAnim; }
+	bool FinishAnim() { return m_finishAnim; }
+
+	// 任意のタイミングでアニメーションを止める
+	void StopAnim()
+	{
+		m_isStop = true;
+	}
+
+	// アニメーションを進める
+	void StartAnim()
+	{
+		m_isStop = false;
+	}
 };

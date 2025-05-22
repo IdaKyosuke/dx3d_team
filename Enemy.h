@@ -64,6 +64,8 @@ private:
 	bool m_isCheck;		// プレイヤー発見時、プレイヤーまでの探索が終わっているか
 	bool m_pastAttackFlg;	// 攻撃時に再探索を行う用
 
+	bool m_stoped;	// 前のフレームで動きを止められていたか
+
 	std::thread* m_thread = nullptr;
 	bool m_found = false;	// 探索が終わったかどうか
 

@@ -30,8 +30,12 @@ void SceneTitle::Initialize()
 		Screen::TopCenter + Vector2(0, Screen::Height / 3)
 	));
 
-	// Press Any Button
-	m_rootNode->AddChild(new PressAny());
+	// PressAnyButton
+	m_rootNode->AddChild(new Actor(
+		"PressAny",
+		"press_any_button.png",
+		Screen::BottomCenter - Vector2(0, Screen::Height / 4)
+	));
 
 	m_chest = new Chest();
 	m_wallet = new Wallet();
