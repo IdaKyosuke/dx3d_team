@@ -26,7 +26,6 @@ void SceneGameOver::Finalize()
 
 SceneBase* SceneGameOver::Update()
 {
-	
 	if (GetMovieStateToGraph(m_movieGraphHandle) == 0)
 	{
 		if (Input::GetInstance()->IsAnyKeyDown())

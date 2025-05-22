@@ -62,8 +62,12 @@ private:
 	int m_restDays;
 	int m_clearCount;
 
+	int m_clearMovieHandle;
+
+	bool m_clearFlag;
+
 public:
-	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, EnhanceType* enhanceType, int haveMoney,MoneyCount* moneyCount) :
+	SceneMenu(std::vector<Item> itemList, Inventory* inventoy, EnhanceType* enhanceType, int haveMoney, MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_menuInventory(nullptr),
 		m_chest(nullptr),
@@ -83,6 +87,8 @@ public:
 		m_moneyCount(moneyCount),
 		m_restDays(0),
 		m_clearCount(0),
+		m_clearMovieHandle(0),
+		m_clearFlag(false),
 		m_enhanceInventory(nullptr),
 		m_enhanceHaveWeight(nullptr),
 		m_enhanceTheWorldTime(nullptr),

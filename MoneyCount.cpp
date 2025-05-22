@@ -20,23 +20,7 @@ MoneyCount::MoneyCount(Wallet* wallet, int restDays, int clearCount) :
 	if (m_clearCount > 0)
 	{
 		m_needMoney += AddNeedMoney * m_clearCount;
-	}
-
-	if (m_restDays <= 0)
-	{
-		if (m_wallet->HaveMoney() >= m_needMoney && !isClear)
-		{
-			m_taskClear = true;
-			m_clearCount++;
-
-			isClear = true;
-		}
-		else
-		{
-			m_taskClear = false;
-			isClear = false;
-		}
-	}
+	}	
 }
 
 void MoneyCount::Load()
@@ -54,6 +38,22 @@ void MoneyCount::Release()
 void MoneyCount::Update()
 {
 	m_moneyCountUi.Update();
+
+	if (m_restDays <= 0)
+	{
+		if (m_wallet->HaveMoney() >= m_needMoney && !isClear)
+		{
+			m_taskClear = true;
+			m_clearCount++;
+
+			isClear = true;
+		}
+		if (m_wallet->HaveMoney() <= m_needMoney)
+		{
+			m_taskClear = false;
+			isClear = false;
+		}
+	}
 
 	if (m_backMenu)
 	{

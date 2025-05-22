@@ -120,6 +120,8 @@ void SceneMenu::Initialize()
 		}
 	}
 
+	
+
 	// マウスカーソルを表示する
 	SetMouseDispFlag(true);
 }
@@ -130,6 +132,8 @@ void SceneMenu::Finalize()
 	m_rootNode->TreeRelease();
 	delete m_rootNode;
 	m_rootNode = nullptr;
+
+	DeleteGraph(m_clearMovieHandle);
 }
 
 SceneBase* SceneMenu::Update()
@@ -142,16 +146,30 @@ SceneBase* SceneMenu::Update()
 	{
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 		{
-			if (m_moneyCount->GetTaskClear())
+			if (m_moneyCount->GetTaskClear() && !m_clearFlag)
 			{
+				WaitTimer(100);
+
+				//週のノルマをクリアした時のムービーのロード
+				m_clearMovieHandle = LoadGraph("Resource/GameClear.mp4");
+
 				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
-				return new SceneGame(m_chest->GetItemList(),m_enhanceType, m_wallet->HaveMoney(), m_moneyCount);
+				PlayMovieToGraph(m_clearMovieHandle);
+
+				m_clearFlag = true;
 			}
-			else 
+			
+			if (!m_moneyCount->GetTaskClear())
 			{
 				return new SceneGameOver();
 			}
 		}
+
+		if (GetMovieStateToGraph(m_clearMovieHandle) == 0)
+		{
+			return new SceneGame(m_chest->GetItemList(), m_enhanceType, m_wallet->HaveMoney(), m_moneyCount);
+		}
+		
 	}
 	else
 	{
@@ -169,4 +187,6 @@ void SceneMenu::Draw()
 {
 	// ノードの描画
 	m_rootNode->TreeDraw();
+
+	DrawExtendGraph(0, 0, 1280, 960, m_clearMovieHandle, FALSE);
 }
