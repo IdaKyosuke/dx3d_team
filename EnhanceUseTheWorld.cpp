@@ -48,6 +48,13 @@ void EnhanceUseTheWorld::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 
+	SetFontSize(20);
+	DrawFormatString(590, 305,
+		GetColor(255, 255, 255),
+		"スキル使用可能回数→%d:強化後→%d",
+		m_enhanceType->GetMaxUseTheWorldCount(),
+		m_enhanceType->GetMaxUseTheWorldCount() + m_enhanceType->AddUseTheWorld);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{
@@ -83,7 +90,7 @@ void EnhanceUseTheWorld::OnClick()
 bool EnhanceUseTheWorld::CheckCondition()
 {
 	//決めた値まで強化したら終了
-	if (m_enhanceType->GetMaxHaveInventory() < EndEnhanceCount)
+	if (m_enhanceType->GetMaxHaveInventory() <= EndEnhanceCount)
 	{
 		//持ち物あるかお金あるかの判定
 		if (!m_chest->GetItemList().empty())
@@ -108,8 +115,8 @@ bool EnhanceUseTheWorld::CheckCondition()
 				}
 				if (m_enhanceType->OnUseTheWorldButton())
 				{
-					m_enhanceType->UseTheWorldButtonReset();
 					m_canEnhance = false;
+					m_enhanceType->UseTheWorldButtonReset();
 				}
 			}
 		}

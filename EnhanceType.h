@@ -24,6 +24,13 @@ private:
 
 public:
 
+	static constexpr int AddHaveInventroy = 1;
+	static constexpr int AddHaveWeight = 10;
+	static constexpr float AddMaxTheWroldTime = 2;
+	static constexpr int AddUseTheWorld = 1;
+	static constexpr float AddStaminaRecovery = 2;
+	static constexpr float DecreaseStaminaDecrease = -2;
+
 	EnhanceType(int maxHaveInventory,
 		int maxHaveWeight,
 		float maxTheWorldTime,
@@ -61,32 +68,32 @@ public:
 		switch (enhanceType)
 		{
 		case EnhanceTypeChoice::EnhanceInventory:
-			m_maxHaveInventory++;
+			m_maxHaveInventory += AddHaveInventroy;
 			m_onInventoryButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceHaveWeight:
-			m_maxHaveWeight += 10;
+			m_maxHaveWeight += AddHaveWeight;
 			m_onHaveWeightButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceTheWorldTime:
-			m_maxTheWorldTime += 2;
+			m_maxTheWorldTime += AddMaxTheWroldTime;
 			m_onTheWorldTimeButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceUseTheWorld:
-			m_maxUseTheWorld++;
+			m_maxUseTheWorld += AddUseTheWorld;
 			m_onUseTheWorldButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceStaminaRecovery:
-			m_staminaRecovery += 2;
+			m_staminaRecovery += AddStaminaRecovery;
 			m_onStaminaRecoveryButton = true;
 			break;
 
 		case EnhanceTypeChoice::EnhanceStaminaDecrease:
-			m_staminaDecrease -= 2;
+			m_staminaDecrease += DecreaseStaminaDecrease;
 			m_onStaminaDecreaseButton = true;
 			break;
 		}

@@ -52,6 +52,13 @@ void EnhanceStaminaRecovery::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 
+	SetFontSize(20);
+	DrawFormatString(260, 455,
+		GetColor(255, 255, 255),
+		"スタミナ回復量→%.0f:強化後→%.0f",
+		m_enhanceType->GetStaminaRecovery(),
+		m_enhanceType->GetStaminaRecovery() + m_enhanceType->AddStaminaRecovery);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{

@@ -52,6 +52,13 @@ void EnhanceStaminaDecrease::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 
+	SetFontSize(20);
+	DrawFormatString(590, 455,
+		GetColor(255, 255, 255),
+		"スタミナ減少量→%.0f:強化後→%.0f",
+		m_enhanceType->GetStaminaDecrease(),
+		m_enhanceType->GetStaminaDecrease() + m_enhanceType->DecreaseStaminaDecrease);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{

@@ -52,6 +52,13 @@ void EnhanceTheWorldTime::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 
+	SetFontSize(20);
+	DrawFormatString(260, 305,
+		GetColor(255, 255, 255),
+		"スキル最大時間→%.0f:強化後→%.0f",
+		m_enhanceType->GetMaxTheWorldTime(),
+		m_enhanceType->GetMaxTheWorldTime() + m_enhanceType->AddMaxTheWroldTime);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{

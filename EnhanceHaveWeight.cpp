@@ -52,6 +52,13 @@ void EnhanceHaveWeight::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 
+	SetFontSize(20);
+	DrawFormatString(590, 155,
+		GetColor(255, 255, 255),
+		"‹Ø“÷—Ê¨%d:‹­‰»Œã¨%d",
+		m_enhanceType->GetMaxHaveWeight(),
+		m_enhanceType->GetMaxHaveWeight() + m_enhanceType->AddHaveWeight);
+
 	//ğŒ‚ğ–‚½‚µ‚Ä‚È‚¢ê‡‚Íƒ{ƒ^ƒ“‚ğˆÃ‰»‚³‚¹‚é
 	if (!CheckCondition())
 	{

@@ -52,6 +52,13 @@ void EnhanceInventory::Draw()
 		"%d$",
 		NeedMoney[m_enhanceStep]);
 	
+	SetFontSize(20);
+	DrawFormatString(260, 155,
+		GetColor(255, 255, 255),
+		"インベントリ容量→%d:強化後→%d",
+		m_enhanceType->GetMaxHaveInventory(),
+		m_enhanceType->GetMaxHaveInventory() + m_enhanceType->AddHaveInventroy);
+
 	//条件を満たしてない場合はボタンを暗化させる
 	if (!CheckCondition())
 	{
