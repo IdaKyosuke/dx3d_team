@@ -26,6 +26,7 @@ class EnhanceStaminaDecrease;
 class SceneMenu : public SceneBase
 {
 private:
+	static constexpr int NeedClearCount = 7;
 	Node* m_rootNode;
 
 	Inventory* m_inventory;

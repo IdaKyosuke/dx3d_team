@@ -34,15 +34,7 @@ void SceneMenu::Initialize()
 
 	// UIレイヤー
 	Node* uiLayer = new Node();
-	m_rootNode->AddChild(uiLayer);
-	/*
-	// 背景
-	m_rootNode->AddChild(new Actor(
-		"Background",
-		"menu_background.png",
-		Screen::Center
-	));
-	*/
+	m_rootNode->AddChild(uiLayer);	
 
 	//強化の種類＋強化した内容の保持
 	m_maxHaveInventory = m_enhanceType->GetMaxHaveInventory();
@@ -92,7 +84,6 @@ void SceneMenu::Initialize()
 	m_enhanceStaminaDecrease = new EnhanceStaminaDecrease(m_chest, m_wallet, m_enhanceType);
 	uiLayer->AddChild(m_enhanceStaminaDecrease);
 
-
 	m_restDays = m_moneyCount->GetRestDays();
 	m_clearCount = m_moneyCount->GetClearCount();
 	//残り日数の表示、必要金額の表示
@@ -102,19 +93,7 @@ void SceneMenu::Initialize()
 
 	if (!m_inventory->GetItemList().empty())
 	{
-		/*
-		for (int i = 0; i <= m_inventory->GetItemList().size() - 1; i++)
-		{
-			//m_item = new Item(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
-			m_item = new Item(
-				m_inventory->GetItemList()[i].GetItemNum(),
-				m_inventory->GetItemList()[i].GetItemData()
-			);
-
-			//持って帰ったアイテムを格納する
-			m_menuInventory->AddAdvanceItemList(m_item);
-		}
-		*/
+		
 		int i = 0;
 		for (Item item : m_inventory->GetItemList())
 		{
@@ -132,12 +111,9 @@ void SceneMenu::Initialize()
 		for (int i = 0; i <= m_chestItem.size() - 1; i++)
 		{
 			//チェストに保管していたアイテム
-			//m_chest->AddAdvanceItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
 			m_chest->AddAdvanceItemList(m_chestItem[i].GetItemNum(), m_chestItem[i].GetItemData());
 		}
 	}
-
-	
 
 	// マウスカーソルを表示する
 	SetMouseDispFlag(true);
@@ -158,35 +134,57 @@ SceneBase* SceneMenu::Update()
 	// ノードの更新
 	m_rootNode->TreeUpdate();
 
-	
+	bool isClear = false;
+
 	if (m_moneyCount->GetRestDays() <= 0)
 	{
+
 		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 		{
-			if (m_moneyCount->GetTaskClear() && !m_clearFlag)
+			WaitTimer(200);
+
+			if (m_moneyCount->GetClearCount() >= NeedClearCount)
 			{
-				WaitTimer(100);
+				//7週目をクリアした時のムービーのロード
+				m_clearMovieHandle = LoadGraph("Resource/movie/gameClear.mp4");
+
+				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
+				PlayMovieToGraph(m_clearMovieHandle);
+
+				isClear = true;
+			}
+
+			if (m_moneyCount->GetTaskClear() && !m_clearFlag && !isClear)
+			{
 
 				//週のノルマをクリアした時のムービーのロード
-				m_clearMovieHandle = LoadGraph("Resource/GameClear.mp4");
+				m_clearMovieHandle = LoadGraph("Resource/movie/weekClear.mp4");
 
 				m_wallet->LostMoney(m_moneyCount->GetNeedMoney());
 				PlayMovieToGraph(m_clearMovieHandle);
 
 				m_clearFlag = true;
 			}
-			
+
 			if (!m_moneyCount->GetTaskClear())
 			{
 				return new SceneGameOver();
 			}
 		}
 
-		if (GetMovieStateToGraph(m_clearMovieHandle) == 0)
+		if (GetMovieStateToGraph(m_clearMovieHandle) == 0 && m_clearFlag)
 		{
 			return new SceneGame(m_chest->GetItemList(), m_enhanceType, m_wallet->HaveMoney(), m_moneyCount);
 		}
-		
+
+		if (GetMovieStateToGraph(m_clearMovieHandle) == 0)
+		{
+			if (Input::GetInstance()->IsAnyKeyDown())
+			{
+				return new SceneTitle();
+			}
+		}
+
 	}
 	else
 	{

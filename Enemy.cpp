@@ -80,28 +80,24 @@ Enemy::Enemy(NavMesh* navMesh, const Vector3& pos, LoadPlayer* loadPlayer) :
 // アニメーションを切り替える(Lerp)
 void Enemy::ChangeAnimLerp()
 {
-	if (!m_player->IsTheWorld())
-	{
-		if (m_nowAnim == m_nextAnim) return;
+	if (m_nowAnim == m_nextAnim) return;
 
-		m_attachAnimList[static_cast<int>(m_nowAnim)]->FadeOut();
-		m_attachAnimList[static_cast<int>(m_nextAnim)]->FadeIn();
+	m_attachAnimList[static_cast<int>(m_nowAnim)]->FadeOut();
+	m_attachAnimList[static_cast<int>(m_nextAnim)]->FadeIn();
 
-		m_nowAnim = m_nextAnim;
-	}
+	m_nowAnim = m_nextAnim;
+	
 }
 
 // アニメーションを切り替える(即座)
 void Enemy::ChangeAnimQuick(const Anim nextAnim)
 {
-	if (!m_player->IsTheWorld())
-	{
-		m_attachAnimList[static_cast<int>(m_nowAnim)]->ChangeOut();
-		m_attachAnimList[static_cast<int>(nextAnim)]->ChangeIn();
+	m_attachAnimList[static_cast<int>(m_nowAnim)]->ChangeOut();
+	m_attachAnimList[static_cast<int>(nextAnim)]->ChangeIn();
 
-		m_nowAnim = nextAnim;
-		m_nextAnim = nextAnim;
-	}
+	m_nowAnim = nextAnim;
+	m_nextAnim = nextAnim;
+	
 }
 
 // アニメーションを再生する
@@ -135,9 +131,9 @@ void Enemy::Update()
 		{
 			m_stoped = m_player->IsTheWorld();
 			m_attachAnimList[static_cast<int>(m_nowAnim)]->StartAnim();
-		}
+		}	
 	}
-
+		
 	if (m_isAttack)
 	{
 		Attack();
@@ -158,7 +154,7 @@ void Enemy::Update()
 		// 現在の移動方向を取得
 		m_moveDirection = m_transform.position - m_enemyPastPos;
 	}
-
+	
 	// モデルの回転
 	if (!m_moveDirection.IsZero())
 	{
@@ -288,7 +284,7 @@ void Enemy::Draw()
 
 void Enemy::OnCollision(const Actor3D* other)
 {
-	if (other->GetName() == "Player")
+	if (other->GetName() == "Player" && !m_player->IsTheWorld())
 	{
 		if (!m_isFind)
 		{

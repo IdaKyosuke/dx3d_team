@@ -51,9 +51,6 @@ void GameMain::Run()
 
 	// シーン起動
 	m_sceneManager = new SceneManager(new SceneTitle());
-	//m_sceneManager = new SceneManager(new SceneGameOver());
-	//m_sceneManager = new SceneManager(new SceneMenu());
-	//m_sceneManager = new SceneManager(new SceneGame(m_chest));
 
 	// スクリーン作成
 	m_screen = MakeScreen(Screen::Width, Screen::Height);

@@ -9,7 +9,7 @@ void SceneGameOver::Initialize()
 {
 	m_rootNode = new Node();
 
-	m_movieGraphHandle = LoadGraph("Resource/GameOver.mp4");
+	m_movieGraphHandle = LoadGraph("Resource/movie/GameOver.mp4");
 
 	PlayMovieToGraph(m_movieGraphHandle);
 }

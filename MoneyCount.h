@@ -30,7 +30,7 @@ private:
 	Sprite m_moneyCountUi;
 	Transform m_transform;
 
-	bool isClear = false;
+	bool m_isClear;
 
 protected:
 	virtual void Load();
@@ -64,5 +64,10 @@ public:
 	void BackMenu()
 	{
 		m_backMenu = true;
+	}
+
+	void AddClearCount()
+	{
+		m_clearCount++;
 	}
 };

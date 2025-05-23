@@ -2,6 +2,7 @@
 #include "Screen.h"
 #include "ImageLoader.h"
 #include "Wallet.h"
+#include "Input.h"
 #include <DxLib.h>
 
 MoneyCount::MoneyCount(Wallet* wallet, int restDays, int clearCount) :
@@ -11,7 +12,8 @@ MoneyCount::MoneyCount(Wallet* wallet, int restDays, int clearCount) :
 	m_clearCount(clearCount),
 	m_fontTextureId(0),
 	m_taskClear(false),
-	m_backMenu(false)
+	m_backMenu(false),
+	m_isClear(false)
 {
 	m_transform.position = UiPos;
 	m_transform.scale = 0.3f;
@@ -41,17 +43,20 @@ void MoneyCount::Update()
 
 	if (m_restDays <= 0)
 	{
-		if (m_wallet->HaveMoney() >= m_needMoney && !isClear)
+		if (Input::GetInstance()->IsKeyDown(KEY_INPUT_M))
 		{
-			m_taskClear = true;
-			m_clearCount++;
+			if (m_wallet->HaveMoney() >= m_needMoney && !m_isClear)
+			{
+				m_taskClear = true;
+				m_clearCount++;
 
-			isClear = true;
-		}
-		if (m_wallet->HaveMoney() <= m_needMoney)
-		{
-			m_taskClear = false;
-			isClear = false;
+				m_isClear = true;
+			}
+			if (m_wallet->HaveMoney() <= m_needMoney)
+			{
+				m_taskClear = false;
+				m_isClear = false;
+			}
 		}
 	}
 
