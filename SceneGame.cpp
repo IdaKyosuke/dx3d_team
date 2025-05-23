@@ -210,11 +210,11 @@ SceneBase* SceneGame::Update()
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_enhanceType,m_haveMoney,m_moneyCount);
 	}
 #ifdef _DEBUG
+#endif // _DEBUG
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
-#endif // _DEBUG
 
 
 	return this;

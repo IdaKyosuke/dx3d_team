@@ -7,7 +7,7 @@
 class SellButton : public Actor
 {
 private:
-	static constexpr Vector2 Position = Vector2(125, 400);
+	static constexpr Vector2 Position = Vector2(125, 450);
 	static constexpr Vector2 Size = Vector2(200, 100);
 
 	bool m_checkOnClick;

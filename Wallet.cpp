@@ -7,7 +7,7 @@ Wallet::Wallet() :
 	m_fontTextureId(0),
 	m_haveMoney(0)
 {
-	m_transform.position = Screen::TopCenter + Offset;
+	m_transform.position = WalletPos;
 	m_transform.scale = 0.3f;
 	m_walletImg.Register("wallet.png");
 }
