@@ -54,7 +54,7 @@ private:
 
 	Vector3 m_itemPos; 
 
-	ItemData m_itemData[static_cast<int>(ItemNameList::Length)];
+	ItemData m_itemData;
 
 	Inventory* m_inventory;
 	LoadPlayer* m_player;
@@ -81,27 +81,32 @@ public:
 
 	int GetItemWeight() const
 	{
-		return m_itemWeight;
+		return m_itemData.m_weight;
 	}
 
 	int GetSellMoney() const
 	{
-		return m_sellMoney;
+		return m_itemData.m_sellMoney;
 	}
 
 	const char* GetItemName()
 	{
-		return m_itemName;
+		return m_itemData.m_itemName;
 	}
 
 	const char* GetItemIconName()
 	{
-		return m_iconName;
+		return m_itemData.m_iconName;
 	}
 
 	const char* GetFlavorText()
 	{
-		return m_flavorText;
+		return m_itemData.m_flavorText;
+	}
+
+	ItemData* GetItemData()
+	{
+		return &m_itemData;
 	}
 
 	virtual void OnCollision(const Actor3D* other);

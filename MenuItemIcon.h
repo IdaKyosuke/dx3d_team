@@ -5,6 +5,7 @@
 
 class MenuInventory;
 class Inventory;
+class Item;
 
 class MenuItemIcon : public Node
 {
@@ -26,5 +27,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	MenuItemIcon(int itemNum, int countGetItem,MenuInventory* menuInventory = nullptr);
+	MenuItemIcon(const int countGetItem, Item* item, MenuInventory* menuInventory = nullptr);
 };

@@ -16,7 +16,7 @@ Item::Item(int itemNum, ItemData* item, Vector3 spownPos, Inventory* inventory) 
 	m_canGetItem(false),
 	m_playerToDistance(0),
 	m_iconName(),
-	m_itemData()
+	m_itemData(*item)
 {
 	//ポジションの設定
 	m_transform.position = spownPos;
@@ -29,7 +29,7 @@ Item::Item(int itemNum, ItemData* item, Vector3 spownPos, Inventory* inventory) 
 
 	//ポジションの設定
 	MV1SetPosition(m_model, m_transform.position);
-
+	/*
 	//名前の設定
 	m_itemName = item->m_itemName;
 	//売った時の金額設定
@@ -40,6 +40,7 @@ Item::Item(int itemNum, ItemData* item, Vector3 spownPos, Inventory* inventory) 
 	m_iconName = item->m_iconName;
 	//フレーバーテキストの設定
 	m_flavorText = item->m_flavorText;
+	*/
 }
 
 void Item::Release()

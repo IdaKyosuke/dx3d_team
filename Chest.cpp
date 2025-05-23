@@ -138,11 +138,11 @@ void Chest::Draw()
 	}
 }
 
-void Chest::CreateIcon(int itemNum)
+void Chest::CreateIcon(Item* item)
 {
 	if (m_haveItemCount <= MaxHaveItem)
 	{
-		AddChild(new ChestItemIcon(itemNum, m_haveItemCount - 1, this));
+		AddChild(new ChestItemIcon(m_haveItemCount - 1, item, this));
 	}
 }
 
@@ -161,7 +161,7 @@ void Chest::CheckCanAddItem()
 
 		AddItemCount();
 
-		CreateIcon(item->GetItemNum());
+		CreateIcon(item);
 
 		item->DestroyMine();
 	}

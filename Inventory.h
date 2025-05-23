@@ -99,6 +99,18 @@ public:
 		return m_itemList;
 	}
 
+	std::vector<Item*> GetItemAddlessList()
+	{
+		std::vector<Item*> addList;
+		for (Item item : m_itemList)
+		{
+			Item* i = &item;
+			addList.push_back(i);
+		}
+
+		return addList;
+	}
+
 	int GetTakeItem()
 	{
 		return m_takeItem;

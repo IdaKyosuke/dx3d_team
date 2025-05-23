@@ -178,9 +178,6 @@ void SceneGame::Initialize()
 // 終了
 void SceneGame::Finalize()
 {
-	// プレイヤー情報の削除
-	m_loadPlayer->Finalize();
-
 	// ポリゴンの連結情報を破棄
 	m_navMesh->RemovePolyLinkInfo();
 

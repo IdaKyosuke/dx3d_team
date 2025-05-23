@@ -4,6 +4,7 @@
 #include "Sprite.h"
 
 class Chest;
+class Item;
 
 class ChestItemIcon : public Node
 {
@@ -25,5 +26,5 @@ protected:
 	virtual void Draw() override;
 
 public:
-	ChestItemIcon(int itemNum, int countGetItem, Chest* chest);
+	ChestItemIcon(const int countGetItem, Item* item, Chest* chest);
 };

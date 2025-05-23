@@ -111,7 +111,6 @@ void UiTheWorld::Update()
 		m_seStart = true;
 		PlaySoundMem(m_seStopTimePlay, DX_PLAYTYPE_BACK);
 		PlaySoundMem(m_seStopTime, DX_PLAYTYPE_LOOP);
-
 	}
 	if (!m_isStop)
 	{

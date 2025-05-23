@@ -99,8 +99,9 @@ void MenuInventory::Update()
 				//格納したアイテムが何番目のアイテムか
 				m_destroyTakeItem = m_takeItem;
 
-				m_chest->AddAdvanceItemList(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
-				m_nowHaveWeight -= std::next(m_itemList.begin(), m_takeItem)->GetItemWeight();
+				//m_chest->AddAdvanceItemList(std::next(m_itemList.begin(), m_takeItem)->GetItemNum());
+				m_chest->AddAdvanceItemList(m_itemList[m_takeItem].GetItemNum(), m_itemList[m_takeItem].GetItemData());
+				m_nowHaveWeight -= m_itemList[m_takeItem].GetItemWeight();
 
 				m_destroyItemIcon = true;
 
@@ -209,13 +210,13 @@ void MenuInventory::Draw()
 	m_slashUi.Draw(m_slashTransform);
 }
 
-void MenuInventory::TakeItem(int itemNum)
+void MenuInventory::TakeItem(Item* item)
 {
 	if (m_haveItemCount <= m_maxHaveItem)
 	{
-		AddChild(new MenuItemIcon(itemNum, m_haveItemCount - 1, this));
+		AddChild(new MenuItemIcon(m_haveItemCount - 1, item, this));
 
-		m_nowHaveWeight += Item(itemNum).GetItemWeight();
+		m_nowHaveWeight += item->GetItemWeight();
 	}
 }
 
@@ -226,16 +227,15 @@ void MenuInventory::CheckCanAddItem()
 	for (Item* item : addItemList)
 	{
 		if (m_haveItemCount >= m_maxHaveItem) break;
-
-		if (m_haveItemCount >= m_maxHaveItem) break;
 		Item i = *item;
 
 		m_itemList.push_back(i);
 
 		AddItemCount();
 
-		TakeItem(item->GetItemNum());
+		TakeItem(item);
 
 		item->DestroyMine();
 	}
 }
+

@@ -46,7 +46,6 @@ LoadPlayer::LoadPlayer(
 	m_duration(0),
 	m_isFall(false),
 	m_fallStartY(0),
-	m_hit(false),
 	m_stopTime(0),
 	m_useTheWorldCount(0),
 	m_isStop(false),
@@ -84,10 +83,6 @@ LoadPlayer::LoadPlayer(
 		}
 	}
 
-	// ダメージボイスを設定
-	m_seDamage = LoadSoundMem("Resource/sound/damage.mp3");
-	ChangeVolumeSoundMem(128, m_seDamage);
-
 	// アニメーション用の位置
 	m_playerPastPos = m_transform.position;
 
@@ -114,6 +109,33 @@ LoadPlayer::LoadPlayer(
 	Set3DSoundListenerPosAndFrontPos_UpVecY(this->GetPosition(), m_camNode->CamFrontPlaneVec());
 
 	m_stopTime = m_enhanceType->GetMaxTheWorldTime();
+}
+
+void LoadPlayer::Load()
+{
+	// ダメージボイスを設定
+	m_seDamage = LoadSoundMem("Resource/sound/damage.mp3");
+	ChangeVolumeSoundMem(128, m_seDamage);
+
+	// 走る音
+	m_seRun = LoadSoundMem("Resource/sound/player_run.mp3");
+
+	// 歩く音
+	m_seWalk = LoadSoundMem("Resource/sound/player_walk.mp3");
+
+	Actor3D::Load();
+}
+
+void LoadPlayer::Release()
+{
+	// seを削除
+	DeleteSoundMem(m_seDamage);
+	DeleteSoundMem(m_seRun);
+	DeleteSoundMem(m_seWalk);
+	// プレイヤーのモデルを削除
+	MV1DeleteModel(m_model);
+
+	Actor3D::Release();
 }
 
 // アニメーションを切り替える(Lerp)
@@ -157,13 +179,6 @@ void LoadPlayer::PlayAnim()
 
 	DrawFormatString(0, 150, GetColor(255, 255, 255), "PlayerHP %d", m_hp);
 #endif // _DEBUG
-}
-
-// モデル関係を削除
-void LoadPlayer::Finalize()
-{
-	// プレイヤーのモデルを削除
-	MV1DeleteModel(m_model);
 }
 
 void LoadPlayer::Update()
@@ -402,9 +417,6 @@ void LoadPlayer::CheckMove()
 			}
 		}
 
-		
-		
-
 		Vector3 nextPos = m_transform.position + m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
 
 		// 球が壁に当たっていたら
@@ -435,9 +447,55 @@ void LoadPlayer::CheckMove()
 		}
 
 		m_transform.position += m_moveDirection * (Input::GetInstance()->IsKeyPress(KEY_INPUT_LSHIFT) ? m_runSpeed : WalkSpeed);
+
+		if (!m_moveDirection.IsZero())
+		{
+			if (m_isDash)
+			{
+				if (CheckSoundMem(m_seRun) == 0)
+				{
+					// 移動速度に応じてseを変える
+					if (CheckSoundMem(m_seWalk) == 1)
+					{
+						StopSoundMem(m_seWalk);
+					}
+					PlaySoundMem(m_seRun, DX_PLAYTYPE_BACK);
+				}
+			}
+			else
+			{
+				if (CheckSoundMem(m_seWalk) == 0)
+				{
+					// 移動速度に応じてseを変える
+					if (CheckSoundMem(m_seRun) == 1)
+					{
+						StopSoundMem(m_seRun);
+					}
+					PlaySoundMem(m_seWalk, DX_PLAYTYPE_BACK);
+				}
+			}
+		}
+		else
+		{
+			// 移動終了時にSEを止める
+			if (CheckSoundMem(m_seRun) == 1)
+			{
+				StopSoundMem(m_seRun);
+			}
+			if (CheckSoundMem(m_seWalk) == 1)
+			{
+				StopSoundMem(m_seWalk);
+			}
+		}
 	}
 	else
 	{
+		// スタミナがなくなった時点で走る用SEを止める
+		if (CheckSoundMem(m_seRun) == 1)
+		{
+			StopSoundMem(m_seRun);
+		}
+
 		Vector3 nextPos = m_transform.position + m_moveDirection * WalkSpeed;
 		m_isDash = false;
 
@@ -470,6 +528,23 @@ void LoadPlayer::CheckMove()
 		}
 
 		m_transform.position += m_moveDirection * WalkSpeed;
+
+		if (!m_moveDirection.IsZero())
+		{
+			if (CheckSoundMem(m_seWalk) == 0)
+			{
+				// 移動速度に応じてseを変える
+				PlaySoundMem(m_seWalk, DX_PLAYTYPE_BACK);
+			}
+		}
+		else
+		{
+			if (CheckSoundMem(m_seWalk) == 1)
+			{
+				// 移動速度に応じてseを変える
+				StopSoundMem(m_seWalk);
+			}
+		}
 	}
 
 }

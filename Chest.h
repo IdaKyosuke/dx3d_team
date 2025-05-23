@@ -103,16 +103,16 @@ public:
 		return m_takeItem;
 	}
 
-	void CreateIcon(int itemNum);
+	void CreateIcon(Item* item);
 
 	void AddItemCount()
 	{
 		m_haveItemCount++;
 	}
 
-	void AddAdvanceItemList(int itemNum)
+	void AddAdvanceItemList(int itemNum, ItemData* itemData)
 	{
-		Item* item = new Item(itemNum);
+		Item* item = new Item(itemNum, itemData);
 
 		m_addItemList.push_back(item);
 	}

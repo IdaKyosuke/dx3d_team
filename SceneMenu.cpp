@@ -102,12 +102,28 @@ void SceneMenu::Initialize()
 
 	if (!m_inventory->GetItemList().empty())
 	{
+		/*
 		for (int i = 0; i <= m_inventory->GetItemList().size() - 1; i++)
 		{
-			m_item = new Item(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
+			//m_item = new Item(std::next(m_inventory->GetItemList().begin(), i)->GetItemNum());
+			m_item = new Item(
+				m_inventory->GetItemList()[i].GetItemNum(),
+				m_inventory->GetItemList()[i].GetItemData()
+			);
 
 			//持って帰ったアイテムを格納する
 			m_menuInventory->AddAdvanceItemList(m_item);
+		}
+		*/
+		int i = 0;
+		for (Item item : m_inventory->GetItemList())
+		{
+			m_item = new Item(
+				m_inventory->GetItemList()[i].GetItemNum(),
+				m_inventory->GetItemList()[i].GetItemData()
+			);
+			m_menuInventory->AddAdvanceItemList(m_item);
+			i++;
 		}
 	}
 
@@ -116,7 +132,8 @@ void SceneMenu::Initialize()
 		for (int i = 0; i <= m_chestItem.size() - 1; i++)
 		{
 			//チェストに保管していたアイテム
-			m_chest->AddAdvanceItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
+			//m_chest->AddAdvanceItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
+			m_chest->AddAdvanceItemList(m_chestItem[i].GetItemNum(), m_chestItem[i].GetItemData());
 		}
 	}
 

@@ -1,14 +1,14 @@
 #include "MenuItemIcon.h"
 #include "MenuInventory.h"
 #include "Inventory.h"
+#include"Item.h"
 #include "Screen.h"
 
-MenuItemIcon::MenuItemIcon(int itemNum, int countGetItem, MenuInventory* menuInventory) :
-	m_itemNum(itemNum),
+MenuItemIcon::MenuItemIcon(const int countGetItem, Item* item, MenuInventory* menuInventory) :
 	m_countGetItem(countGetItem),
 	m_menuInventory(menuInventory)
 {
-	m_itemIconUi.Register(std::next(m_menuInventory->GetItemList().begin(), m_countGetItem)->GetItemIconName());
+	m_itemIconUi.Register(item->GetItemIconName());
 }
 
 void MenuItemIcon::Load()

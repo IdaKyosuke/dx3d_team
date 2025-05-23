@@ -113,12 +113,15 @@ private:
 	// プレイヤーのジャンプ処理
 	void Jumping();		// 自分でジャンプする処理
 
-
-	bool m_hit;	// テスト用
+	// ---- SE ----
+	int m_seWalk;
+	int m_seRun;
 
 protected:
 	virtual void Update() override;
 	virtual void Draw() override;
+	virtual void Load() override;
+	virtual void Release() override;
 	virtual void OnCollision(const Actor3D* other) override;
 
 public:
@@ -138,9 +141,6 @@ public:
 
 	// アニメーションを再生する
 	void PlayAnim();
-
-	// モデル関係を削除
-	void Finalize();
 
 	// プレイヤーの通常移動
 	void NormalMove();

@@ -1,12 +1,12 @@
 #include "ChestItemIcon.h"
 #include "Chest.h"
+#include"Item.h"
 
-ChestItemIcon::ChestItemIcon(int itemNum, int countGetItem, Chest* chest) :
-	m_itemNum(itemNum),
+ChestItemIcon::ChestItemIcon(const int countGetItem, Item* item, Chest* chest) :
 	m_countGetItem(countGetItem),
 	m_chest(chest)
 {
-	m_itemIconUi.Register(std::next(m_chest->GetItemList().begin(), m_countGetItem)->GetItemIconName());
+	m_itemIconUi.Register(item->GetItemIconName());
 }
 
 void ChestItemIcon::Load()
