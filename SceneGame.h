@@ -137,6 +137,7 @@ public:
 		m_moneyCount(moneyCount),
 		m_wallet(nullptr),
 		m_restDays(0),
+		m_clearcount(0),
 		m_screenFilter(nullptr),
 		m_enhanceType(enhanceType),
 		m_staminaRecovery(0),

@@ -96,29 +96,6 @@ void SceneGame::Initialize()
 	// ライトを作成
 	m_lightFactory = new LightFactory(m_cam, m_loadPlayer);
 	actorLayer->AddChild(m_lightFactory);
-	/*
-#ifdef _DEBUG
-	//アイテム
-	m_item = new Item(1, Vector3(300, 0, 0),m_inventory,m_loadPlayer);
-	actorLayer->AddChild(m_item);//アイテム
-	m_item = new Item(0, Vector3(300, 0, 0),m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-
-	m_item = new Item(3, Vector3(300, 0, 0), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-	m_item = new Item(4, Vector3(300, 0, 200), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-	m_item = new Item(0, Vector3(300, 0, 500), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-	m_item = new Item(2, Vector3(500, 0, 200), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-	m_item = new Item(6, Vector3(500, 0, 500), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-	m_item = new Item(7, Vector3(400, 0, 500), m_inventory, m_loadPlayer);
-	actorLayer->AddChild(m_item);
-
-#endif // _DEBUG
-	*/
 
 	// 制限時間
 	m_uiTime = new UiTime();
@@ -213,11 +190,11 @@ SceneBase* SceneGame::Update()
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory,m_enhanceType,m_haveMoney,m_moneyCount);
 	}
 #ifdef _DEBUG
-#endif // _DEBUG
 	if (Input::GetInstance()->IsKeyDown(KEY_INPUT_TAB))
 	{
 		return new SceneMenu(m_keepChest->TakeItMenu(), m_inventory, m_enhanceType, m_haveMoney, m_moneyCount);
 	}
+#endif // _DEBUG
 
 
 	return this;

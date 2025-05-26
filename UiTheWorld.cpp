@@ -75,7 +75,7 @@ void UiTheWorld::Update()
 				t = 1.0f;
 			}
 			// クールダウン時間が終了したとき
-			m_angle = Math::DegtoRad(Lerp::Exec(180, 0, t));
+			m_angle = Math::DegtoRad(static_cast<float>(Lerp::Exec(180, 0, t)));
 			if (m_angle == 0)
 			{
 				m_isCoolDown = false;

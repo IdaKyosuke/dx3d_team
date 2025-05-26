@@ -64,7 +64,10 @@ LoadPlayer::LoadPlayer(
 	m_weightOver(false),
 	m_finish(false),
 	m_isCooldown(false),
-	m_itemFactory(itemFactory)
+	m_itemFactory(itemFactory),
+	m_seDamage(0),
+	m_seRun(0),
+	m_seWalk(0)
 {
 	//-----アニメーションの作成-----
 	// アニメーションクラスをリスト化する
