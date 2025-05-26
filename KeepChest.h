@@ -17,11 +17,9 @@ private:
 public:
 	KeepChest() {};
 
-	void SetItemList(int itemNum)
+	void SetItemList(Item* item)
 	{
-		Item m_item = Item(itemNum);
-
-		m_itemList.push_back(m_item);
+		m_itemList.push_back(*item);
 	}
 
 	std::vector<Item> TakeItMenu()

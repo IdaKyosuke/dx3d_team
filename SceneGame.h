@@ -108,7 +108,7 @@ private:
 
 public:
 	// コンストラクタ
-	SceneGame(std::vector<Item> itemList, EnhanceType* enhanceType, int haveMoney, MoneyCount* moneyCount) :
+	SceneGame(std::vector<Item> chestItemList, EnhanceType* enhanceType, int haveMoney, MoneyCount* moneyCount) :
 		m_rootNode(nullptr),
 		m_loadPlayer(nullptr),
 		m_cam(nullptr),
@@ -126,7 +126,7 @@ public:
 		m_navMesh(nullptr),
 		m_keepChest(nullptr),
 		m_keepMoneyCount(nullptr),
-		m_chestItem(itemList),
+		m_chestItem(chestItemList),
 		m_maxHaveInventory(0),
 		m_maxHaveWeight(0),
 		m_theWorldTime(0),

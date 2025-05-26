@@ -227,7 +227,7 @@ void LoadPlayer::Update()
 		TheWorld();
 	}
 
-	if (m_maxHaveWeight <= m_inventory->GetHaveWeight())
+	if (m_maxHaveWeight < m_inventory->GetHaveWeight())
 	{
 		m_weightOver = true;
 	}
@@ -403,17 +403,17 @@ void LoadPlayer::CheckMove()
 		{
 			m_runSpeed = RunSpeed;
 
-			if (m_maxHaveWeight * 0.9 <= m_inventory->GetHaveWeight())
+			if (m_maxHaveWeight * 0.9f <= m_inventory->GetHaveWeight())
 			{
-				m_runSpeed = RunSpeed * 0.7;
+				m_runSpeed = RunSpeed * 0.7f;
 			}
-			if (m_maxHaveWeight * 0.7 <= m_inventory->GetHaveWeight())
+			if (m_maxHaveWeight * 0.7f <= m_inventory->GetHaveWeight())
 			{
-				m_runSpeed = RunSpeed * 0.8;
+				m_runSpeed = RunSpeed * 0.8f;
 			}
-			if (m_maxHaveWeight * 0.5 <= m_inventory->GetHaveWeight())
+			if (m_maxHaveWeight * 0.5f <= m_inventory->GetHaveWeight())
 			{
-				m_runSpeed = RunSpeed * 0.9;
+				m_runSpeed = RunSpeed * 0.9f;
 			}
 		}
 

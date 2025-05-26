@@ -163,7 +163,10 @@ void SceneGame::Initialize()
 
 		for (int i = 0; i <= haveItemCount - 1; i++)
 		{
-			m_keepChest->SetItemList(std::next(m_chestItem.begin(), i)->GetItemNum());
+			m_keepChest->SetItemList(new Item(
+				m_chestItem[i].GetItemNum(),
+				m_itemfactory->GetItemData(m_chestItem[i].GetItemNum()))
+			);
 		}
 	}
 
