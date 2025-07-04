@@ -15,13 +15,12 @@
   DrawStageView.cpp
   Enemy.cpp
   EnemyFactory.cpp
+  EnhanceHaveWeight.cpp
   EnhanceInventory.cpp
-D:\GitHub\dx3d_team_vol1\EnhanceInventory.cpp(120,30): warning C4804: '>=': 演算中の 'bool' 型の使用方法が安全ではありません
-D:\GitHub\dx3d_team_vol1\EnhanceInventory.cpp(122,31): warning C4804: '>=': 演算中の 'bool' 型の使用方法が安全ではありません
   EnhanceStaminaDecrease.cpp
-  EnhanceStaminaRecovery.cpp
   コードを生成中...
   コンパイル中...
+  EnhanceStaminaRecovery.cpp
   EnhanceTheWorldTime.cpp
   EnhanceUseTheWorld.cpp
   EscapePoint.cpp
@@ -34,46 +33,40 @@ D:\GitHub\dx3d_team_vol1\EnhanceInventory.cpp(122,31): warning C4804: '>=': 演�
   ItemFactory.cpp
   ItemIcon.cpp
   Lerp.cpp
+  LightFactory.cpp
   LoaderBase.cpp
   LoadPlayer.cpp
   Main.cpp
+  Map.cpp
   Math.cpp
   MenuInventory.cpp
+  コードを生成中...
+  コンパイル中...
   MenuItemIcon.cpp
   ModelLoader.cpp
   MoneyCount.cpp
-  コードを生成中...
-  コンパイル中...
   NavMesh.cpp
   Node.cpp
   PressAny.cpp
   Quaternion.cpp
   SceneGame.cpp
+  SceneGameOver.cpp
   SceneManager.cpp
   SceneMenu.cpp
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(45,52): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(47,58): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(48,66): warning C4244: '=': 'float' から 'int' への変換です。データが失われる可能性があります。
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(49,109): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(49,90): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
-D:\GitHub\dx3d_team_vol1\SceneMenu.cpp(49,54): warning C4244: '引数': 'int' から 'float' への変換です。データが失われる可能性があります。
   SceneTitle.cpp
-D:\GitHub\dx3d_team_vol1\SceneTitle.cpp(73,33): warning C4244: '=': 'LONGLONG' から 'int' への変換です。データが失われる可能性があります。
   ScreenFilter.cpp
   SellButton.cpp
   Shop.cpp
-  Sphere.cpp
   Sprite.cpp
   Time.cpp
   UiResult.cpp
-  UiScore.cpp
   UiStamina.cpp
-  UiTime.cpp
-D:\GitHub\dx3d_team_vol1\UiTime.cpp(39,12): warning C4244: '初期化中': 'float' から 'int' への変換です。データが失われる可能性があります。
-  Vector2.cpp
-  Vector3.cpp
+  UiTheWorld.cpp
   コードを生成中...
   コンパイル中...
+  UiTime.cpp
+  Vector2.cpp
+  Vector3.cpp
   Wallet.cpp
   コードを生成中...
-  Lesson.vcxproj -> D:\GitHub\dx3d_team_vol1\x64\Debug\Lesson.exe
+  Lesson.vcxproj -> D:\2024\GitHub\Dx3d_Team\x64\Debug\Lesson.exe

@@ -1,0 +1,18 @@
+■Free Pack
+https://assetstore.unity.com/packages/audio/sound-fx/free-sound-effects-pack-155776
+Hand Gun 2.wav (bullet.wav)
+Magic Spell_Simple Swoosh_6.wav (explosion.wav)
+
+■CasualGameSounds
+https://assetstore.unity.com/packages/audio/sound-fx/free-casual-game-sfx-pack-54116
+DM-CGS-07.wav (get_item.wav)
+
+■CasualGameBGM05
+https://assetstore.unity.com/packages/audio/music/casual-game-bgm-5-135943
+BGM_03.wav (bgm_game.wav)
+
+
+■『コーゲンシティ・オールスターズ！』ユニティちゃんアクションボイスパック Vol.1
+https://unity-chan.com/download/index.php
+V0019.wav (gameover.wav)
+V0021.wav (damage.wav)

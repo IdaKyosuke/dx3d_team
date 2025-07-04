@@ -1,7 +1,72 @@
-﻿  SceneGame.cpp
+﻿  Actor.cpp
+  Actor3D.cpp
+  ActorCollision.cpp
+  ActorCollision3D.cpp
+  Animation3D.cpp
+  Audio3D.cpp
+  Button.cpp
+  Camera.cpp
+  CheckRoot.cpp
+  Chest.cpp
+  ChestItemIcon.cpp
+  Collision.cpp
+  Collision3D.cpp
+  CollisionStage.cpp
+  DrawStageView.cpp
+  Enemy.cpp
+  EnemyFactory.cpp
+  EnhanceHaveWeight.cpp
+  EnhanceInventory.cpp
+  EnhanceStaminaDecrease.cpp
+  コンパイル中...
+  EnhanceStaminaRecovery.cpp
+  EnhanceTheWorldTime.cpp
+  EnhanceUseTheWorld.cpp
+  EscapePoint.cpp
+  Fade.cpp
+  GameMain.cpp
+  ImageLoader.cpp
+  Input.cpp
+  Inventory.cpp
+  Item.cpp
+  ItemFactory.cpp
+  ItemIcon.cpp
+  Lerp.cpp
+  LightFactory.cpp
+  LoaderBase.cpp
+  LoadPlayer.cpp
+  Main.cpp
+  Map.cpp
+  Math.cpp
+  MenuInventory.cpp
+  コンパイル中...
+  MenuItemIcon.cpp
+  ModelLoader.cpp
+  MoneyCount.cpp
+  NavMesh.cpp
+  Node.cpp
+  PressAny.cpp
+  Quaternion.cpp
+  SceneGame.cpp
+  SceneGameOver.cpp
+  SceneManager.cpp
+  SceneMenu.cpp
+  SceneTitle.cpp
+  ScreenFilter.cpp
+  SellButton.cpp
+  Shop.cpp
+  Sprite.cpp
+  Time.cpp
+  UiResult.cpp
+  UiStamina.cpp
+  UiTheWorld.cpp
+  コンパイル中...
+  UiTime.cpp
+  Vector2.cpp
+  Vector3.cpp
+  Wallet.cpp
   コード生成しています。
-  1 of 1572 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    2 functions had inline decision re-evaluated but remain unchanged
+  Previous IPDB not found, fall back to full compilation.
+  All 1719 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   コード生成が終了しました。
-  Lesson.vcxproj -> D:\2024井田\2024\GitHub\dx3d_team\x64\Release\Lesson.exe
+  Lesson.vcxproj -> D:\2024\GitHub\Dx3d_Team\x64\Release\Lesson.exe
